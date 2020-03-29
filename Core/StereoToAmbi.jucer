@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" jucerVersion="5.4.7">
+  <MAINGROUP id="fq5xQe" name="StereoToAmbi">
+    <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
+      <FILE id="ykVx9p" name="WindowedFIFOBuffer.h" compile="0" resource="0"
+            file="Source/WindowedFIFOBuffer.h"/>
+      <FILE id="kOabqY" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
+            file="Source/WindowedFIFOBuffer.cpp"/>
+      <FILE id="y1B4HR" name="PluginProcessor.cpp" compile="1" resource="0"
+            file="Source/PluginProcessor.cpp"/>
+      <FILE id="WOzrTp" name="PluginProcessor.h" compile="0" resource="0"
+            file="Source/PluginProcessor.h"/>
+      <FILE id="jOiO0p" name="PluginEditor.cpp" compile="1" resource="0"
+            file="Source/PluginEditor.cpp"/>
+      <FILE id="Q8Rb7A" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
+      <FILE id="O2eR1R" name="MultiLevelThreshold.cpp" compile="1" resource="0"
+            file="Source/MultiLevelThreshold.cpp"/>
+      <FILE id="WN70uN" name="MultiLevelThreshold.h" compile="0" resource="0"
+            file="Source/MultiLevelThreshold.h"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../Desktop/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+    <VS2017 targetFolder="Builds/VisualStudio2017">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug"/>
+        <CONFIGURATION isDebug="0" name="Release"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_plugin_client" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_utils" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_video" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
+      </MODULEPATHS>
+    </VS2017>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_plugin_client" showAllCode="1" useLocalCopy="0"
+            useGlobalPath="0"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_audio_utils" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+    <MODULE id="juce_video" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <WINDOWS buildEnabled="0" continuousRebuildEnabled="1"/>
+    <OSX/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+</JUCERPROJECT>
