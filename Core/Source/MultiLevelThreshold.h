@@ -1,6 +1,7 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>
+#include "Histogram.h"
 
 using namespace std;
 
@@ -28,7 +29,7 @@ private:
 	const int sourcesPerChannel;
 	const int totalNumberOfSources;
 
-	struct Histograms {
+	/*struct Histograms {
 		vector< vector<int> > bins;
         vector< vector<float> > probabilityBins;
 		vector<float> increment;
@@ -36,10 +37,13 @@ private:
         void calculateProbabilityBins();
 	};
 
-	Histograms histogram;
+	Histograms histogram;*/
 	vector<vector<float>> thresholds;
     
     void zeroVector(vector<vector<float>> &input);
+    
+    Histogram leftHistogram;
+    Histogram rightHistogram;
 
 public:
 
