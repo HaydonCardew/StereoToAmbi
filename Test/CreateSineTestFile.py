@@ -1,7 +1,7 @@
 import soundfile as sf
 import numpy as np
 
-filename = 'Test.wav'
+filename = 'TestAudio/Test.wav'
 
 samplerate = 48000
 length = 10 # seconds

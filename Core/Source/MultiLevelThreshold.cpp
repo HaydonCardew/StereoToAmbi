@@ -299,68 +299,9 @@ void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
     rightHistogram.loadData(panMap[RIGHT].begin() + kMin, panMap[RIGHT].begin() + kMax);
 }
 
-/*
-void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
-{
-    // ASSERT(panMap[LEFT].size() == panMap[LEFT].size())
-    float freqStep = float(panMap[LEFT].size()) / float(fs);
-    int kMin = freqStep * minFreq;
-    int kMax = freqStep * maxFreq;
-	for (int channel = 0; channel < STEREO; channel++)
-    {
-		std::fill(histogram.bins[channel].begin(), histogram.bins[channel].end(), 0);
-
-		histogram.maxValue[channel] = *std::max_element(panMap[channel].begin(), panMap[channel].end());
-		histogram.increment[channel] = histogram.maxValue[channel] / ((float)histogram.bins[channel].size() - 1);
-		if (histogram.maxValue[channel] == 0)
-        {
-            // place all values in the first bin
-			histogram.bins[channel][0] = (int)panMap[channel].size();
-		}
-		else
-        {
-			for (int i = kMin; i < kMax; ++i)
-            {
-                // for linear
-				int index = floor(panMap[channel][i] / histogram.increment[channel]);
-                // for non linear
-                //float tmp = pow(panMap[channel][i] / histogram.maxValue[channel], 1) * histogram.maxValue[channel];
-                //int index = floor(tmp / histogram.increment[channel]);
-                if (index >= histogram.bins[channel].size())
-                {
-                    index = ((int)histogram.bins[channel].size() - 1);
-                }
-				else if (index < 0) { index = 0; }
-                
-				histogram.bins[channel][index]++;
-			}
-		}
-	}
-    histogram.calculateProbabilityBins();
-}
-
-void MultiLevelThreshold::Histograms::calculateProbabilityBins()
-{
-    float leftTotal = accumulate(bins[LEFT].begin(), bins[LEFT].end(), 0);
-    if(leftTotal == 0.0f)
-    {
-        leftTotal = 0.1f;
-    }
-    float rightTotal = accumulate(bins[RIGHT].begin(), bins[RIGHT].end(), 0);
-    if(rightTotal == 0.0f)
-    {
-        rightTotal = 0.1f;
-    }
-    for(int i = 0; i < bins[LEFT].size(); ++i)
-    {
-        probabilityBins[LEFT][i] = ((float)bins[LEFT][i]) / leftTotal;
-        probabilityBins[RIGHT][i] = ((float)bins[RIGHT][i]) / rightTotal;
-    }
-}*/
-
 void MultiLevelThreshold::testMultiLevelThreshold(float* data, int nDataPoints, float* thresholds, int nThresholds, int nBins)
 {
-    /*
+    
     bool debug = false;
     
     // Resize Pl Sl
@@ -532,7 +473,7 @@ void MultiLevelThreshold::testMultiLevelThreshold(float* data, int nDataPoints, 
           thresholds[i] *= histIncre;
       }
       //thresholds[LEFT][noOfThresholds] = histogram.maxValue[LEFT]; //just add source num? +1?
-     */
+     
 }
 
 void MultiLevelThreshold::getLastHisto(vector<int>& leftBin, vector<float>& leftProb)

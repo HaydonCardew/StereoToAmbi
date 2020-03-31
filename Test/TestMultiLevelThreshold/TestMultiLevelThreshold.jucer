@@ -4,21 +4,23 @@
               jucerVersion="5.4.7">
   <MAINGROUP id="l5DJT6" name="TestMultiLevelThreshold">
     <GROUP id="{40B1F5E3-14F8-5007-F277-D7ED203EC41E}" name="Source"/>
-    <FILE id="QaiB6b" name="MultiLevelThreshold.cpp" compile="1" resource="0"
-          file="../../Core.cpp/Source/MultiLevelThreshold.cpp"/>
-    <FILE id="WwRBx3" name="MultiLevelThreshold.h" compile="0" resource="0"
-          file="../../Core.cpp/Source/MultiLevelThreshold.h"/>
-    <FILE id="kZp7CI" name="PluginEditor.cpp" compile="1" resource="0"
-          file="../../Core.cpp/Source/PluginEditor.cpp"/>
-    <FILE id="YNvXLC" name="PluginEditor.h" compile="0" resource="0" file="../../Core.cpp/Source/PluginEditor.h"/>
-    <FILE id="BpnVyp" name="PluginProcessor.cpp" compile="1" resource="0"
-          file="../../Core.cpp/Source/PluginProcessor.cpp"/>
-    <FILE id="BSsaGY" name="PluginProcessor.h" compile="0" resource="0"
-          file="../../Core.cpp/Source/PluginProcessor.h"/>
-    <FILE id="KjKWfr" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
-          file="../../Core.cpp/Source/WindowedFIFOBuffer.cpp"/>
-    <FILE id="L7SzjK" name="WindowedFIFOBuffer.h" compile="0" resource="0"
-          file="../../Core.cpp/Source/WindowedFIFOBuffer.h"/>
+    <FILE id="TfqT0t" name="Histogram.cpp" compile="1" resource="0" file="../../Core/Source/Histogram.cpp"/>
+    <FILE id="YUQMNx" name="Histogram.h" compile="0" resource="0" file="../../Core/Source/Histogram.h"/>
+    <FILE id="e0UoaJ" name="MultiLevelThreshold.cpp" compile="1" resource="0"
+          file="../../Core/Source/MultiLevelThreshold.cpp"/>
+    <FILE id="TdEZmd" name="MultiLevelThreshold.h" compile="0" resource="0"
+          file="../../Core/Source/MultiLevelThreshold.h"/>
+    <FILE id="jAt6sQ" name="PluginEditor.cpp" compile="1" resource="0"
+          file="../../Core/Source/PluginEditor.cpp"/>
+    <FILE id="N1x4wD" name="PluginEditor.h" compile="0" resource="0" file="../../Core/Source/PluginEditor.h"/>
+    <FILE id="bshtFc" name="PluginProcessor.cpp" compile="1" resource="0"
+          file="../../Core/Source/PluginProcessor.cpp"/>
+    <FILE id="PYMmFi" name="PluginProcessor.h" compile="0" resource="0"
+          file="../../Core/Source/PluginProcessor.h"/>
+    <FILE id="JJZMiF" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
+          file="../../Core/Source/WindowedFIFOBuffer.cpp"/>
+    <FILE id="uBWeHO" name="WindowedFIFOBuffer.h" compile="0" resource="0"
+          file="../../Core/Source/WindowedFIFOBuffer.h"/>
   </MAINGROUP>
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">

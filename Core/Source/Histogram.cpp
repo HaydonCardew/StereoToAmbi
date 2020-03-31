@@ -2,11 +2,21 @@
 #include <numeric>
 #include <math.h>
 
+#include <iostream>
+
+Histogram::Histogram(unsigned nBins) : nBins(nBins)
+{
+    bins.resize(nBins);
+    probabilityBins.resize(nBins);
+    weightedProbabilityBins.resize(nBins);
+}
+
 void Histogram::loadData(vector<float>::iterator start, vector<float>::iterator end)
 {
     std::fill(bins.begin(), bins.end(), 0);
     float maxValue = *std::max_element(start, end);
     float increment = maxValue / ((float)nBins - 1);
+    //cout << "Max Value: " << maxValue << " Increment : " << increment << endl;
     if (maxValue == 0)
     {
         bins[0] = (unsigned)distance(start, end);

@@ -9,7 +9,7 @@ using namespace std;
 class Histogram
 {
 public:
-    Histogram(unsigned nBins) : nBins(nBins) {};
+    Histogram(unsigned nBins);
     void loadData(vector<float>::iterator start, vector<float>::iterator end);
     vector<float>::iterator getFirstProbabilityBin();
     vector<float>::iterator getLastProbabilityBin();
