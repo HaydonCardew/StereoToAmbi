@@ -16,12 +16,7 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	: leftHistogram(nHistogramBins), rightHistogram(nHistogramBins), ambiOrder(ambiOrder), noOfThresholds(noOfThresholds), fftSize(fftSize), sourcesPerChannel(noOfThresholds+1), totalNumberOfSources(sourcesPerChannel*STEREO), nHistogramBins(histogramSize)
 {
 	thresholds.resize(STEREO, vector<float>(noOfThresholds+1, 0)); // +1 for a maximum value
-    /*
-	histogram.bins.resize(STEREO, vector<int>(nHistogramBins, 0));
-    histogram.probabilityBins.resize(STEREO, vector<float>(nHistogramBins, 0));
-	histogram.increment.resize(STEREO, 0);
-	histogram.maxValue.resize(STEREO, 0);
-    */
+
 	panMap.resize(STEREO, vector<float>(fftSize,0));
 	magnitude.resize(STEREO, vector<float>(fftSize, 0));
 
@@ -55,7 +50,7 @@ void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const Co
 	}
     calcMagnitudeVectors(leftFft, rightFft);
 	generatePanMap();
-    int fs = 96000;
+    int fs = 48000;
 	calcHistogram(100, 4000, fs);
 	fastMultiLevelthreshold(); // still not fast enough
 	extractAudioSources(leftFft, rightFft, ambiFfts, azimuths, width);
@@ -80,37 +75,42 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
     zeroVector(leftSourceMagnitudes);
     zeroVector(rightSourceMagnitudes);
 
-	for (int i = 0; i < totalNumberOfSources; i++) {
+	for (int i = 0; i < totalNumberOfSources; i++)
+    {
 		std::fill(ambiFfts[i].begin(), ambiFfts[i].end(), 0);
 	}
 
-    vector<vector<int>> nonZeroBinsInSource(STEREO, vector<int>(sourcesPerChannel, 0));
-    
-	for (int i = 0; i < fftSize; i++) {
+    //vector<vector<int>> nonZeroBinsInSource(STEREO, vector<int>(sourcesPerChannel, 0));
+
+	for (int i = 0; i < fftSize; i++)
+    {
 		if (panMap[LEFT][i] == 0 && panMap[RIGHT][i] == 0)
         {
 			ambiFfts[0][i] = leftFft[i].real() + rightFft[i].real();
 			ambiFfts[0][i] = leftFft[i].imag() + rightFft[i].imag();
 			leftSourceMagnitudes[LEFT][0] += magnitude[LEFT][i];
 			leftSourceMagnitudes[RIGHT][0] += magnitude[RIGHT][i];
-            nonZeroBinsInSource[LEFT][0]++;
+            //nonZeroBinsInSource[LEFT][0]++;
 		}
-		else {
+		else
+        {
 			for (int j = 0; j < sourcesPerChannel; j++) { // panmap == 0 for both?
-				if ((panMap[LEFT][i] != 0) && (panMap[LEFT][i] <= thresholds[LEFT][j])) { // right mag is bigger for all of these? - not sure
+				if ((panMap[LEFT][i] != 0) && (panMap[LEFT][i] <= thresholds[LEFT][j]))
+                { // right mag is bigger for all of these? - not sure
 					ambiFfts[j][i].real(leftFft[i].real() + rightFft[i].real());
 					ambiFfts[j][i].imag(leftFft[i].imag() + rightFft[i].imag());
 					leftSourceMagnitudes[LEFT][j] += magnitude[LEFT][i];
 					leftSourceMagnitudes[RIGHT][j] += magnitude[RIGHT][i];
-                    nonZeroBinsInSource[LEFT][j]++;
+                    //nonZeroBinsInSource[LEFT][j]++;
 					break;
 				}
-				if ((panMap[RIGHT][i] != 0) && (panMap[RIGHT][i] <= thresholds[RIGHT][j])) {
+				if ((panMap[RIGHT][i] != 0) && (panMap[RIGHT][i] <= thresholds[RIGHT][j]))
+                {
 					ambiFfts[j + sourcesPerChannel][i].real(leftFft[i].real() + rightFft[i].real());
 					ambiFfts[j + sourcesPerChannel][i].imag(leftFft[i].imag() + rightFft[i].imag());
 					rightSourceMagnitudes[LEFT][j] += magnitude[LEFT][i];
 					rightSourceMagnitudes[RIGHT][j] += magnitude[RIGHT][i];
-                    nonZeroBinsInSource[RIGHT][j]++;
+                    //nonZeroBinsInSource[RIGHT][j]++;
 					break;
 				}
 			}
@@ -139,9 +139,14 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 float MultiLevelThreshold::estimateScaledAngle(float leftMagnitude, float rightMagnitude)
 {
     float totalSourceMagnitude = sqrt( pow(leftMagnitude,2) + pow(rightMagnitude,2) );
+    if(totalSourceMagnitude == 0.f)
+    {
+        return 0.f;
+    }
     float angleInRads = asin(rightMagnitude / totalSourceMagnitude); // returns a scale 0 - pi/2
     const float quarterPi = 0.78539816339;
-    return (angleInRads/quarterPi) - 1;
+    //cout << "Left Mag: " << leftMagnitude << " Right Mag: " << rightMagnitude << " Angle : " << (angleInRads/quarterPi) - 1 << endl;
+    return (angleInRads/quarterPi) - 1.f;
 }
 
 void MultiLevelThreshold::calcMagnitudeVectors(const ComplexFft& leftFft, const ComplexFft& rightFft)
@@ -162,7 +167,7 @@ void MultiLevelThreshold::fastMultiLevelthreshold()
 
     std::partial_sum(leftHistogram.getFirstWeightedProbabilityBin(), leftHistogram.getLastWeightedProbabilityBin(), Sl[0].begin());
 	std::partial_sum(rightHistogram.getFirstWeightedProbabilityBin(), rightHistogram.getLastWeightedProbabilityBin(), Sr[0].begin());
-
+    
 	for (int u = 1; u < nHistogramBins; u++)
     {
 		for (int v = u; v < nHistogramBins; v++)
@@ -174,6 +179,13 @@ void MultiLevelThreshold::fastMultiLevelthreshold()
 		}
 	}
 
+    //debug
+    /*for(int i = 0; i < Pl.size(); ++i)
+    {
+        cout << "Pl " << i << " : " << Pl[i][0] << endl;
+    }*/
+    //debug
+    
 	// Make 'P' the 'G' to save making a whole new matrix in mem
 	// must be faster recursive methods...
 
@@ -276,15 +288,18 @@ void MultiLevelThreshold::generatePanMap()
     zeroVector(panMap);
     for (int i = 0; i < magnitude[LEFT].size(); i++)
     {
-        if (magnitude[RIGHT][i] == 0.0) {
+        if (magnitude[RIGHT][i] == 0.0)
+        {
 			magnitude[RIGHT][i] = 1e-7;
 		} //small enough?
         double tmp = 20*log(magnitude[LEFT][i] / magnitude[RIGHT][i]);
 
-        if (tmp >= 0) {
+        if (tmp >= 0)
+        {
 			panMap[LEFT][i] = tmp;
         }
-        else {
+        else
+        {
 			panMap[RIGHT][i] = -1 * tmp;
         }
     }
@@ -295,8 +310,9 @@ void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
     float freqStep = float(nHistogramBins) / float(fs);
     int kMin = freqStep * minFreq;
     int kMax = freqStep * maxFreq;
-    leftHistogram.loadData(panMap[LEFT].begin() + kMin, panMap[LEFT].begin() + kMax);
-    rightHistogram.loadData(panMap[RIGHT].begin() + kMin, panMap[RIGHT].begin() + kMax);
+    
+    leftHistogram.loadData(panMap[LEFT], kMin, kMax);
+    rightHistogram.loadData(panMap[RIGHT], kMin, kMax);
 }
 
 void MultiLevelThreshold::testMultiLevelThreshold(float* data, int nDataPoints, float* thresholds, int nThresholds, int nBins)

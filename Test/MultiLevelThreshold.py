@@ -70,8 +70,8 @@ nSources = (nThresholds+1)*2
 
 x = StereoToAmbiAudioProcessor(nThresholds)
 
-filename = 'TestAudio/PannedSources.wav'
-#filename = 'Test.wav'
+#filename = 'TestAudio/PannedSources.wav'
+filename = 'TestAudio/Test.wav'
 # get audio size
 f = sf.SoundFile(filename)
 samplerate = f.samplerate

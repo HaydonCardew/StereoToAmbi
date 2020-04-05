@@ -11,22 +11,30 @@ Histogram::Histogram(unsigned nBins) : nBins(nBins)
     weightedProbabilityBins.resize(nBins);
 }
 
-void Histogram::loadData(vector<float>::iterator start, vector<float>::iterator end)
+void Histogram::loadData(const vector<float>& data, unsigned start, unsigned end)
 {
+    // check start and end are valid
     std::fill(bins.begin(), bins.end(), 0);
-    float maxValue = *std::max_element(start, end);
-    float increment = maxValue / ((float)nBins - 1);
-    //cout << "Max Value: " << maxValue << " Increment : " << increment << endl;
+    maxValue = *std::max_element(data.begin() + start, data.begin() + end);
+    increment = maxValue / float(nBins - 1);
+    int nValues = end-start;
     if (maxValue == 0)
     {
-        bins[0] = (unsigned)distance(start, end);
+        //bins[0] = (unsigned)distance(start, end);
+        bins[0] = (unsigned)nValues;
     }
     else
     {
-        for (vector<float>::iterator it = start; it !=end; ++it)
+        //for (vector<float>::iterator it = start; it !=end; ++it)
+        for (int i = 0; i < nValues; ++i)
         {
+            if(data[i] == 0.0)
+            {
+                //continue;
+            }
             // for linear
-            int index = floor(*it / increment);
+            int index = floor(data[i] / increment);
+            //cout << "It : " << data[i] << " Bin : " << index << endl;
             // for non linear
             //float tmp = pow(panMap[channel][i] / histogram.maxValue[channel], 1) * histogram.maxValue[channel];
             //int index = floor(tmp / histogram.increment[channel]);
@@ -41,6 +49,7 @@ void Histogram::loadData(vector<float>::iterator start, vector<float>::iterator 
             bins[index]++;
         }
     }
+    calculateProbabilityBins();
 }
 
 void Histogram::calculateProbabilityBins()

@@ -21,9 +21,7 @@ def createPannedSineWave(freq, length, samplerate, pan):
     pan = (float(pan)+180)/360
     pan = pan*(np.pi/2)
     x[:,0] = np.cos(pan)*y
-    print('L = {}'.format(np.cos(pan)))
     x[:,1] = np.sin(pan)*y
-    print('R = {}'.format(np.sin(pan)))
     return x
 
 def createMovingPannedSineWave(freq, length, samplerate, startPan, endPan):

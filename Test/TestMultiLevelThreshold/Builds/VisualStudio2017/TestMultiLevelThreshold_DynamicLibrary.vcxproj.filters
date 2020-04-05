@@ -415,16 +415,19 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\MultiLevelThreshold.cpp">
+    <ClCompile Include="..\..\..\..\Core\Source\Histogram.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\PluginEditor.cpp">
+    <ClCompile Include="..\..\..\..\Core\Source\MultiLevelThreshold.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\PluginProcessor.cpp">
+    <ClCompile Include="..\..\..\..\Core\Source\PluginEditor.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\WindowedFIFOBuffer.cpp">
+    <ClCompile Include="..\..\..\..\Core\Source\PluginProcessor.cpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
@@ -2340,16 +2343,19 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\MultiLevelThreshold.h">
+    <ClInclude Include="..\..\..\..\Core\Source\Histogram.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\PluginEditor.h">
+    <ClInclude Include="..\..\..\..\Core\Source\MultiLevelThreshold.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\PluginProcessor.h">
+    <ClInclude Include="..\..\..\..\Core\Source\PluginEditor.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\WindowedFIFOBuffer.h">
+    <ClInclude Include="..\..\..\..\Core\Source\PluginProcessor.h">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h">

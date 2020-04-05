@@ -10,7 +10,7 @@ class Histogram
 {
 public:
     Histogram(unsigned nBins);
-    void loadData(vector<float>::iterator start, vector<float>::iterator end);
+    void loadData(const vector<float>& data, unsigned start, unsigned end);
     vector<float>::iterator getFirstProbabilityBin();
     vector<float>::iterator getLastProbabilityBin();
     vector<float>::iterator getFirstWeightedProbabilityBin();
