@@ -307,7 +307,7 @@ void MultiLevelThreshold::generatePanMap()
 
 void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
 {
-    float freqStep = float(nHistogramBins) / float(fs);
+    float freqStep = float(fftSize) / float(fs);
     int kMin = freqStep * minFreq;
     int kMax = freqStep * maxFreq;
     
