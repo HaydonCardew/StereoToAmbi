@@ -138,10 +138,11 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\MultiLevelThreshold.cpp"/>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\PluginEditor.cpp"/>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\PluginProcessor.cpp"/>
-    <ClCompile Include="..\..\..\..\Core.cpp\Source\WindowedFIFOBuffer.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\Histogram.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\MultiLevelThreshold.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\PluginEditor.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\PluginProcessor.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.cpp"/>
     <ClCompile Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
     </ClCompile>
@@ -1924,10 +1925,11 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_opengl.cpp"/>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\MultiLevelThreshold.h"/>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\PluginEditor.h"/>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\PluginProcessor.h"/>
-    <ClInclude Include="..\..\..\..\Core.cpp\Source\WindowedFIFOBuffer.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\Histogram.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\MultiLevelThreshold.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\PluginEditor.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\PluginProcessor.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.h"/>
     <ClInclude Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>
     <ClInclude Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.h"/>
     <ClInclude Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\buffers\juce_AudioDataConverters.h"/>

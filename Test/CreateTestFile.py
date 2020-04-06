@@ -1,7 +1,7 @@
 import soundfile as sf
 import numpy as np
 
-outFile = "PannedSources.wav"
+outFile = "TestAudio/PannedSources.wav"
 length = 10
 samplerate = 96000
 

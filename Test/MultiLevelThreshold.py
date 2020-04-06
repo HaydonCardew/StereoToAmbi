@@ -3,6 +3,7 @@ import numpy.ctypeslib as ctl
 import numpy as np
 import soundfile as sf
 import matplotlib.pyplot as plt
+import os
 
 _c_nddouble = ctl.ndpointer(np.float64, flags='aligned, c_contiguous')
 _c_ndfloat = ctl.ndpointer(np.float32, flags='aligned, c_contiguous')
@@ -69,8 +70,8 @@ nSources = (nThresholds+1)*2
 
 x = StereoToAmbiAudioProcessor(nThresholds)
 
-filename = 'PannedSources.wav'
-#filename = 'Test.wav'
+#filename = 'TestAudio/PannedSources.wav'
+filename = 'TestAudio/Test.wav'
 # get audio size
 f = sf.SoundFile(filename)
 samplerate = f.samplerate
@@ -122,13 +123,15 @@ plt.xlabel('Sample Blocks')
 plt.ylabel('Angle')
 plt.title('Extracted Source Azimuths')
 plt.grid(True)
-plt.savefig("Azimuths.png")
+if not os.path.exists("Graphs"):
+    os.makedirs("Graphs")
+plt.savefig("Graphs/Azimuths.png")
 #plt.show()
 for i in range(nSources):
     out = 'Azimuth {} avg = {}'.format(i, np.mean(azimuths[:,i]))
     print(out)
 
 for i in range(nSources):
-    name = 'testOut{}.wav'.format(i)
+    name = 'TestAudio/testOut{}.wav'.format(i)
     sf.write(name, outData[:,i], samplerate)
 print("Finito")

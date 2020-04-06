@@ -54,9 +54,9 @@ class Human : public Component {
         // add nose
         float noseLength = size*0.1f;
         float noseWidth = size*0.3f;
-        Point<float> top(size/ 2.0f,-noseLength + offset);
-        Point<float> left((size/ 2.0f)-(noseWidth/ 2.0f), noseLength + offset);
-        Point<float> right((size/ 2.0f)+(noseWidth/ 2.0f), noseLength + offset);
+        juce::Point<float> top(size/ 2.0f,-noseLength + offset);
+        juce::Point<float> left((size/ 2.0f)-(noseWidth/ 2.0f), noseLength + offset);
+        juce::Point<float> right((size/ 2.0f)+(noseWidth/ 2.0f), noseLength + offset);
         nose.addTriangle(top, left, right);
 
         rotate();
@@ -144,12 +144,12 @@ public:
 		return curveOffset * alpha;
 	}
 
-	Path getArcWithLinkedLines(float centre, float radius, float angle, float rotationOfArc, std::vector<Point<float>> linkedPoints, bool reverse=false) {
+	Path getArcWithLinkedLines(float centre, float radius, float angle, float rotationOfArc, std::vector<juce::Point<float>> linkedPoints, bool reverse=false) {
 		Path arc;
 		arc.addCentredArc(centre, centre, radius, radius, rotationOfArc, -angle, angle, true);
 		size_t noOfLines = linkedPoints.size();
 		float stepSize = arc.getLength() / (static_cast<float>(noOfLines) - 1.0f);
-		std::vector<Point<float>> arcPoints;
+		std::vector<juce::Point<float>> arcPoints;
 		for (int lineNumber = 0; lineNumber < noOfLines; lineNumber++)
 		{
 			arcPoints.push_back(arc.getPointAlongPath(lineNumber * stepSize));
@@ -167,7 +167,7 @@ public:
 		return arc;
 	}
 
-	Path getInsideGrid(const float size, std::vector<Point<float>> &topGridPoints, std::vector<Point<float>> &bottomGridPoints) {
+	Path getInsideGrid(const float size, std::vector<juce::Point<float>> &topGridPoints, std::vector<juce::Point<float>> &bottomGridPoints) {
 		Path grid;
 		topGridPoints.clear();
 		bottomGridPoints.clear();
@@ -175,20 +175,20 @@ public:
 		float curveOffset = maxCurve * curveProportion * 2.0f; // why by 2?!
 
 		grid.quadraticTo(size / 2.0f, -curveOffset, size, 0.0f);
-		std::vector<Point<float>> midPoints;
+		std::vector<juce::Point<float>> midPoints;
 		float stepSize = grid.getLength() / (noOfLines - 1);
 		for (int lineNumber = 0; lineNumber < noOfLines; lineNumber++) {
-			Point<float> start = grid.getPointAlongPath(stepSize*lineNumber);
+			juce::Point<float> start = grid.getPointAlongPath(stepSize*lineNumber);
 			topGridPoints.push_back(start);
-			Point<float> mid(start.getX() + getOffset(lineNumber, noOfLines, curveOffset), size / 2);
+			juce::Point<float> mid(start.getX() + getOffset(lineNumber, noOfLines, curveOffset), size / 2);
 			midPoints.push_back(mid);
-			Point<float> end = start;
+			juce::Point<float> end = start;
 			end.setY(size - start.getY());
 			bottomGridPoints.push_back(end);
 		}
 
 		// 'copy' top curve to bottom
-		Point<float> bottomLeft(0, size);
+		juce::Point<float> bottomLeft(0, size);
 		grid.startNewSubPath(bottomLeft);
 		grid.quadraticTo(size / 2, size + curveOffset, size, size);
 
@@ -204,8 +204,8 @@ public:
 		// pass 'size' and figure the rest out...
 		float insideGridSize = size * innerRatio;
 
-		std::vector<Point<float>> topGridPoints;
-		std::vector<Point<float>> bottomGridPoints;
+		std::vector<juce::Point<float>> topGridPoints;
+		std::vector<juce::Point<float>> bottomGridPoints;
 
 		Path insideGrid = getInsideGrid(insideGridSize, topGridPoints, bottomGridPoints);
 		visual.addPath(insideGrid);
@@ -235,11 +235,11 @@ public:
 
 		// start of arc point
 
-		Point<float> topLeft(0, 0);
-		Point<float> topLeftExtra = topArc.getPointAlongPath(0);
+		juce::Point<float> topLeft(0, 0);
+		juce::Point<float> topLeftExtra = topArc.getPointAlongPath(0);
 		Path tarc = getFilledMorphedArc(topLeft, topLeftExtra, insideGridSize, noLines, maxExcursion, minExcursion);
-		Point<float> bottomRight(insideGridSize, insideGridSize);
-		Point<float> bottomRightExtra = bottomArc.getPointAlongPath(0);
+		juce::Point<float> bottomRight(insideGridSize, insideGridSize);
+		juce::Point<float> bottomRightExtra = bottomArc.getPointAlongPath(0);
 		visual.addPath(tarc);
 		Path barc = getFilledMorphedArc(bottomRight, bottomRightExtra, insideGridSize, noLines, -maxExcursion, -minExcursion);
 		visual.addPath(barc);
@@ -248,9 +248,9 @@ public:
 		translateToOrigin(visual);
 	};
 
-	Path getFilledMorphedArc(Point<float> p1, Point<float> p2, float length, float noOfLines, float maxExcursion, float minExcursion){
+	Path getFilledMorphedArc(juce::Point<float> p1, juce::Point<float> p2, float length, float noOfLines, float maxExcursion, float minExcursion){
 	    Path arc;
-		Point<float> p3, p4;
+		juce::Point<float> p3, p4;
 
 		bool midPiece = (p1.getX() > p2.getX() && p1.getY() > p2.getY()) || (p2.getX() > p1.getX() && p2.getY() > p1.getY());
 		bool top = p1.getY() > p2.getY();
@@ -309,14 +309,14 @@ public:
 			float distancePercentage = ((float)i + 1.0f) / (noOfLines+1.0f);
 		  float distance = 2;//pow<float>(distancePercentage, 0.8f) * leftLine.getLength();
 
-			Point<float> leftPoint = leftLine.getPointAlongLine(distance);
-			Point<float> rightPoint = rightLine.getPointAlongLine(distance);
+			juce::Point<float> leftPoint = leftLine.getPointAlongLine(distance);
+			juce::Point<float> rightPoint = rightLine.getPointAlongLine(distance);
 
 			// make it a % of max excursion relative to distance along the left/right line
 
 			float excursion = ((maxExcursion-minExcursion) * distancePercentage) + minExcursion;
 
-			Point<float> midPoint(length /2.0f, leftPoint.getY() - excursion);
+			juce::Point<float> midPoint(length /2.0f, leftPoint.getY() - excursion);
 			arc.startNewSubPath(leftPoint);
 			arc.quadraticTo(midPoint, rightPoint);
 		}
