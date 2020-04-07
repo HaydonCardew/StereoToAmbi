@@ -31,7 +31,7 @@ private:
 
 	vector<vector<float>> thresholds;
     
-    void zeroVector(vector<vector<float>> &input);
+    //void zeroVector(vector<vector<float>> &input);
     
     Histogram leftHistogram;
     Histogram rightHistogram;
