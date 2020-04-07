@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iostream>
 #include <math.h>
+#include "Tools.hpp"
 
 //#define PI 3.14159265
 #define LEFT 0
@@ -30,13 +31,13 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	azimuth.resize(STEREO, vector<float>(sourcesPerChannel, 0));
 }
 
-inline void MultiLevelThreshold::zeroVector(vector<vector<float>> &input)
+/*inline void MultiLevelThreshold::zeroVector(vector<vector<float>> &input)
 {
     for(auto & i : input)
     {
         fill(i.begin(), i.end(), 0);
     }
-}
+}*/
 
 // width 0 -> 360
 void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const int width, const int offset)
@@ -72,8 +73,8 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 {
 	//set all to zero? (sources - azimuth)
 	//set thresholds to have an extra 'threshold' which is the max
-    zeroVector(leftSourceMagnitudes);
-    zeroVector(rightSourceMagnitudes);
+    Tools::zeroVector(leftSourceMagnitudes);
+    Tools::zeroVector(rightSourceMagnitudes);
 
 	for (int i = 0; i < totalNumberOfSources; i++)
     {
@@ -117,7 +118,7 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 		}
 	}
     
-    zeroVector(azimuth);
+    Tools::zeroVector(azimuth);
     
     width /= 2; // right is positive and left is negative so this works
 	for (int i = 0; i < sourcesPerChannel; i++)
@@ -204,7 +205,7 @@ void MultiLevelThreshold::fastMultiLevelthreshold()
 		}
 	}
 
-    zeroVector(thresholds);
+    Tools::zeroVector(thresholds);
     
 	unsigned int rVarSq = 0;
 	unsigned int lVarSq = 0;
@@ -285,7 +286,7 @@ void MultiLevelThreshold::fastMultiLevelthreshold()
 
 void MultiLevelThreshold::generatePanMap()
 {
-    zeroVector(panMap);
+    Tools::zeroVector(panMap);
     for (int i = 0; i < magnitude[LEFT].size(); i++)
     {
         if (magnitude[RIGHT][i] == 0.0)

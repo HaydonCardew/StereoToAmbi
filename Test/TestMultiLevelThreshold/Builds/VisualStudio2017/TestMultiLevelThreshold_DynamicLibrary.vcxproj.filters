@@ -2355,6 +2355,9 @@
     <ClInclude Include="..\..\..\..\Core\Source\PluginProcessor.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\..\..\Core\Source\Tools.hpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>

@@ -17,6 +17,7 @@
           file="../../Core/Source/PluginProcessor.cpp"/>
     <FILE id="PYMmFi" name="PluginProcessor.h" compile="0" resource="0"
           file="../../Core/Source/PluginProcessor.h"/>
+    <FILE id="wXhhcn" name="Tools.hpp" compile="0" resource="0" file="../../Core/Source/Tools.hpp"/>
     <FILE id="JJZMiF" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
           file="../../Core/Source/WindowedFIFOBuffer.cpp"/>
     <FILE id="uBWeHO" name="WindowedFIFOBuffer.h" compile="0" resource="0"
