@@ -81,7 +81,7 @@ outTmp = np.zeros((blockSize * nSources))
 outData = np.zeros((nTotalSamples, nSources))
 
 azimuthsTmp = np.zeros((1, nSources))
-azimuths = np.zeros((int(nTotalSamples/blockSize), nSources))
+azimuths = np.zeros((int(nTotalSamples/blockSize)+1, nSources))
 
 histoSize = 100
 histoBins = np.zeros((1, histoSize))

@@ -72,8 +72,9 @@ private:
 	std::vector<float> transferBuffer;
 	std::vector<vector<dsp::Complex<float>>> extractedSources;
 	std::vector<dsp::Complex<float>> leftFreqBuffer, leftTimeBuffer, rightFreqBuffer, rightTimeBuffer;
-	WindowedFIFOBuffer leftChan, rightChan;
-	std::vector<unique_ptr<WindowedFIFOBuffer>> ambiAudio;
+	//WindowedFIFOBuffer leftChan, rightChan;
+    MultiChannelWindowedFIFOBuffer stereoAudio, extractedAudio;
+	//std::vector<unique_ptr<WindowedFIFOBuffer>> ambiAudio;
 
 	MultiLevelThreshold multiLevelThreshold;
 	std::vector<MultiLevelThreshold::ComplexFft> extractedFfts;

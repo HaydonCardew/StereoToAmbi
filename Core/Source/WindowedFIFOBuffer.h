@@ -8,21 +8,33 @@ using namespace std;
 
 class WindowedFIFOBuffer
 {
-private:
-	deque<float> inputBuffer;
-	deque<float> outputBuffer;
-	const int windowSize;
-	dsp::WindowingFunction<float> window;
-	const float overlap;
-
 public:
-	WindowedFIFOBuffer(int windowSize);
+	WindowedFIFOBuffer(const unsigned windowSize);
 
 	int write(const float *data, int nSamples);
 	int read(float *data, int nSamples);
 
 	bool windowedAudioAvailable();
-	int outputSamplesAvailable();
+	unsigned outputSamplesAvailable();
 	bool getWindowedAudio(vector<float>& buffer);
 	bool sendProcessedWindow(vector<float>& buffer);
+
+private:
+    deque<float> inputBuffer;
+    deque<float> outputBuffer;
+    const unsigned windowSize;
+    dsp::WindowingFunction<float> window;
+    const float overlap;
+};
+
+class MultiChannelWindowedFIFOBuffer
+{
+public:
+    MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize);
+    shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
+    bool windowedAudioAvailable();
+    unsigned outputSamplesAvailable();
+    
+private:
+    vector<shared_ptr<WindowedFIFOBuffer>> buffers;
 };

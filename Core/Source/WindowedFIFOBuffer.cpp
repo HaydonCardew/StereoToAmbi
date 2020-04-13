@@ -1,6 +1,6 @@
 #include "WindowedFIFOBuffer.h"
 
-WindowedFIFOBuffer::WindowedFIFOBuffer(const int windowSize)
+WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize)
 : windowSize(windowSize),
 window(windowSize, dsp::WindowingFunction<float>::hann),
 overlap(0.5f)
@@ -52,15 +52,16 @@ bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
 
 bool WindowedFIFOBuffer::sendProcessedWindow(vector<float>& buffer)
 {
-	if (buffer.size() < windowSize) {
+	if (buffer.size() != windowSize)
+    {
 		return false;
 	}
-	int overlapBorder = overlap * windowSize;
+	unsigned overlapBorder = overlap * windowSize;
 	if (outputBuffer.size() < overlapBorder)
     {
-        overlapBorder = (int)outputBuffer.size();
+        overlapBorder = (unsigned)outputBuffer.size();
     }
-	int ptr = (int)outputBuffer.size() - overlapBorder;
+	unsigned ptr = (unsigned)outputBuffer.size() - overlapBorder;
 	for (int i = 0; i < overlapBorder; ++i)
     {
 		outputBuffer[ptr] = outputBuffer[ptr] + buffer[i];
@@ -78,7 +79,51 @@ bool WindowedFIFOBuffer::windowedAudioAvailable()
 	return (inputBuffer.size() > windowSize);
 }
 
-int WindowedFIFOBuffer::outputSamplesAvailable()
+unsigned WindowedFIFOBuffer::outputSamplesAvailable()
 {
+    if(outputBuffer.size() < (windowSize*overlap))
+    {
+        return 0;
+    }
 	return outputBuffer.size() - (windowSize*overlap);
+}
+
+MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize)
+{
+    buffers.clear();
+    for(int i = 0; i < nChannels; ++i)
+    {
+        buffers.push_back(make_shared<WindowedFIFOBuffer>(windowSize));
+    }
+}
+
+shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsigned channel)
+{
+    if(channel > buffers.size())
+    {
+        return nullptr;
+    }
+    return buffers[channel];
+}
+
+bool MultiChannelWindowedFIFOBuffer::windowedAudioAvailable()
+{
+    for(auto & buffer : buffers)
+    {
+        if(!buffer->windowedAudioAvailable())
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
+unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
+{
+    unsigned nSamplesAvailable = buffers[0]->outputSamplesAvailable();
+    for(vector<shared_ptr<WindowedFIFOBuffer>>::iterator buffer = (buffers.begin()+1); buffer != buffers.end(); ++buffer)
+    {
+        nSamplesAvailable = min(nSamplesAvailable, (*buffer)->outputSamplesAvailable());
+    }
+    return nSamplesAvailable;
 }

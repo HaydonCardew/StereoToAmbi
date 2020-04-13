@@ -3,6 +3,7 @@
 <JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" jucerVersion="5.4.7">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
+      <FILE id="y61IM5" name="Tools.hpp" compile="0" resource="0" file="Source/Tools.hpp"/>
       <FILE id="oRzJEB" name="Histogram.h" compile="0" resource="0" file="Source/Histogram.h"/>
       <FILE id="Q7hs8l" name="Histogram.cpp" compile="1" resource="0" file="Source/Histogram.cpp"/>
       <FILE id="ykVx9p" name="WindowedFIFOBuffer.h" compile="0" resource="0"
