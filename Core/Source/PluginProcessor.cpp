@@ -13,21 +13,22 @@
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
-	: fftSize(pow(2,fftOrder)), windowLength(fftSize/2), fft(fftOrder), stereoAudio(2, windowLength), extractedAudio((nThresholds+1)*2, windowLength), multiLevelThreshold(nThresholds, fftSize, 100, 3)
+	: fftSize(pow(2,fftOrder)), windowLength(fftSize/2), fft(fftOrder), stereoAudio(2, windowLength), ambiAudio(1, windowLength), multiLevelThreshold(nThresholds, fftSize, 100, 1)
 #ifndef JucePlugin_PreferredChannelConfigurations
      , AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
                       #if ! JucePlugin_IsSynth
                        .withInput  ("Input",  AudioChannelSet::stereo())
                       #endif
-                       .withOutput ("Output", AudioChannelSet::stereo())
+                       //.withOutput ("Output", AudioChannelSet::stereo())
+                       .withOutput ("Output", AudioChannelSet::ambisonic (1))
                      #endif
                        )
 #endif
 {
 	extractedFfts.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());
-	transferBuffer.resize(windowLength);
+	transferBuffer.resize((nThresholds+1)*2, vector<float>(windowLength));
 	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<dsp::Complex<float>>(fftSize, 0));
 	std::fill(transferBuffer.begin(), transferBuffer.end(), 0);
 	leftFreqBuffer.resize(fftSize);
@@ -173,18 +174,18 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     {
         // memcopy and loop
         // Get Left FFT
-		stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer);
+        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer[0]);
 		for (int i = 0; i < windowLength; i++)
         {
-			leftTimeBuffer[i] = transferBuffer[i];
+			leftTimeBuffer[i] = transferBuffer[0][i];
 		}
 		fft.perform(leftTimeBuffer.data(), leftFreqBuffer.data(), false);
 
         // Get Right FFT
-		stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer);
+		stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer[0]);
 		for (int i = 0; i < windowLength; i++)
         {
-			rightTimeBuffer[i] = transferBuffer[i];
+			rightTimeBuffer[i] = transferBuffer[0][i];
 		}
 		fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
 
@@ -194,6 +195,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         // ifdef for sending to left/right buffer
         
         // this is just passthrough
+        /*
         fft.perform(leftFreqBuffer.data(), leftTimeBuffer.data(), true);
         for (int i = 0; i < windowLength; i++)
         {
@@ -207,7 +209,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             transferBuffer[i] = rightTimeBuffer[i].real();
         }
         stereoAudio.getChannel(1)->sendProcessedWindow(transferBuffer);
-        
+        */
         // else
         // Convert each object to time and send to Ambi buffer
 		for (int i = 0; i < extractedSources.size(); i++)
@@ -215,18 +217,24 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 			fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
 			for (int j = 0; j < windowLength; j++)
             {
-				transferBuffer[i] = extractedSources[i][j].real();
+				transferBuffer[j][i] = extractedSources[i][j].real();
 			}
-            extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer);
-		}
+            // Load here to an ambiAudio windowed buffer
+            //extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer);
+            ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths);
+        }
         // endif
 	}
     
     // ifdef for sending left/right chan
-	if (stereoAudio.outputSamplesAvailable() >= nSamples)
+	if (ambiAudio.outputSamplesAvailable() >= nSamples)
     {
-		stereoAudio.getChannel(0)->read(buffer.getWritePointer(0), nSamples);
-		stereoAudio.getChannel(1)->read(buffer.getWritePointer(1), nSamples);
+		//stereoAudio.getChannel(0)->read(buffer.getWritePointer(0), nSamples);
+		//stereoAudio.getChannel(1)->read(buffer.getWritePointer(1), nSamples);
+        ambiAudio.getChannel(0)->read(buffer.getWritePointer(0), nSamples);
+        ambiAudio.getChannel(1)->read(buffer.getWritePointer(1), nSamples);
+        ambiAudio.getChannel(2)->read(buffer.getWritePointer(2), nSamples);
+        ambiAudio.getChannel(3)->read(buffer.getWritePointer(3), nSamples);
 	}
     //else
     // endif
@@ -242,16 +250,16 @@ int StereoToAmbiAudioProcessor::testProcessBlockRead(float* left, float* right, 
 {
     while (stereoAudio.windowedAudioAvailable())
     {
-        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer);
+        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer[0]);
 		for (int i = 0; i < windowLength; i++)
         {
-			leftTimeBuffer[i] = transferBuffer[i];
+			leftTimeBuffer[i] = transferBuffer[0][i];
 		}
 		fft.perform(leftTimeBuffer.data(), leftFreqBuffer.data(), false);
-		stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer);
+		stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer[0]);
 		for (int i = 0; i < windowLength; i++)
         {
-			rightTimeBuffer[i] = transferBuffer[i];
+			rightTimeBuffer[i] = transferBuffer[0][i];
 		}
 		fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
 		//******
@@ -262,10 +270,11 @@ int StereoToAmbiAudioProcessor::testProcessBlockRead(float* left, float* right, 
 			fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
 			for (int j = 0; j < windowLength; j++)
             {
-				transferBuffer[j] = extractedSources[i][j].real();
+				transferBuffer[i][j] = extractedSources[i][j].real();
 			}
-			extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer);
-		}
+			//extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer);
+            ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths);
+        }
 		//******
         for (int i = 0; i < sourceAzimuths.size(); ++i)
         {
@@ -275,15 +284,15 @@ int StereoToAmbiAudioProcessor::testProcessBlockRead(float* left, float* right, 
 		fft.perform(leftFreqBuffer.data(), leftTimeBuffer.data(), true);
 		for (int i = 0; i < windowLength; i++)
         {
-			transferBuffer[i] = leftTimeBuffer[i].real();
+			transferBuffer[0][i] = leftTimeBuffer[i].real();
 		}
-		stereoAudio.getChannel(0)->sendProcessedWindow(transferBuffer);
+		stereoAudio.getChannel(0)->sendProcessedWindow(transferBuffer[0]);
 		fft.perform(rightFreqBuffer.data(), rightTimeBuffer.data(), true);
 		for (int i = 0; i < windowLength; i++)
         {
-			transferBuffer[i] = rightTimeBuffer[i].real();
+			transferBuffer[0][i] = rightTimeBuffer[i].real();
 		}
-		stereoAudio.getChannel(1)->sendProcessedWindow(transferBuffer);
+		stereoAudio.getChannel(1)->sendProcessedWindow(transferBuffer[0]);
 	}
 
 	if (stereoAudio.outputSamplesAvailable() >= nSamples)
@@ -298,14 +307,14 @@ int StereoToAmbiAudioProcessor::testProcessBlockRead(float* left, float* right, 
 int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width)
 {
     while (stereoAudio.windowedAudioAvailable()) {
-        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer);
+        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer[0]);
         for (int i = 0; i < windowLength; i++) {
-            leftTimeBuffer[i] = transferBuffer[i];
+            leftTimeBuffer[i] = transferBuffer[0][i];
         }
         fft.perform(leftTimeBuffer.data(), leftFreqBuffer.data(), false);
-        stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer);
+        stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer[0]);
         for (int i = 0; i < windowLength; i++) {
-            rightTimeBuffer[i] = transferBuffer[i];
+            rightTimeBuffer[i] = transferBuffer[0][i];
         }
         fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
         //******
@@ -314,9 +323,10 @@ int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSa
         for (int i = 0; i < extractedSources.size(); i++) {
             fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
             for (int j = 0; j < windowLength; j++) {
-                transferBuffer[j] = extractedSources[i][j].real();
+                transferBuffer[i][j] = extractedSources[i][j].real();
             }
-            extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer);
+            //extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer[0]);
+            ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths);
         }
         //******
         for (int i = 0; i < sourceAzimuths.size(); ++i)
@@ -325,11 +335,11 @@ int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSa
         }
     }
 
-    if (extractedAudio.outputSamplesAvailable() >= nSamples)
+    if (ambiAudio.outputSamplesAvailable() >= nSamples)
     {
         for (int i = 0; i < extractedSources.size(); i++)
         {
-            extractedAudio.getChannel(i)->read(buffer, nSamples);
+            ambiAudio.getChannel(i)->read(buffer, nSamples);
             buffer += nSamples;
         }
         return nSamples;

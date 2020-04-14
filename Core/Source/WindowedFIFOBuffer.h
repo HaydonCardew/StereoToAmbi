@@ -35,6 +35,19 @@ public:
     bool windowedAudioAvailable();
     unsigned outputSamplesAvailable();
     
-private:
+protected:
     vector<shared_ptr<WindowedFIFOBuffer>> buffers;
+};
+
+class BFormatBuffer : public MultiChannelWindowedFIFOBuffer
+{
+public:
+    BFormatBuffer(unsigned maxOrder, unsigned windowSize);
+    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths);
+    
+private:
+    unsigned maxAmbiOrder;
+    unsigned nAmbiChannels;
+    const unsigned windowSize;
+    vector<vector<float>> bFormatTransferBuffer;
 };

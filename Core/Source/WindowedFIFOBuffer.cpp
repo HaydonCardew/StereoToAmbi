@@ -1,4 +1,5 @@
 #include "WindowedFIFOBuffer.h"
+#include "Tools.hpp"
 
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize)
 : windowSize(windowSize),
@@ -127,3 +128,69 @@ unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
     }
     return nSamplesAvailable;
 }
+
+BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
+    : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
+{
+    bFormatTransferBuffer.resize(nAmbiChannels, vector<float>(windowSize, 0));
+}
+
+void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
+{
+    //assert audio objects size == azimuth size
+    //assert audio objects[0].size == windowSize
+    Tools::zeroVector(bFormatTransferBuffer);
+
+    float toRads = 3.14159265/180.f;
+    
+    //just 1st order atm
+    for(unsigned i = 0; i < audioObjects.size(); ++i)
+    {
+        float firstChannelMultiplier = 0.7071;
+        float secondChannelMultiplier = cos(double(azimuths[i]*toRads));
+        float thirdChannelMultiplier = sin(double(azimuths[i]*toRads));
+        
+        for(unsigned j = 0; j < windowSize; ++j)
+        {
+            bFormatTransferBuffer[0][i] += audioObjects[j][i] * firstChannelMultiplier;
+            bFormatTransferBuffer[1][i] += audioObjects[j][i] * secondChannelMultiplier;
+            bFormatTransferBuffer[2][i] += audioObjects[j][i] * thirdChannelMultiplier;
+        }
+        buffers[i]->sendProcessedWindow(bFormatTransferBuffer[i]);
+    }
+}
+
+/*
+output(:,1) = input .* 0.7071; %X
+output(:,2) = input .* cosd(azimuth);
+%Y
+output(:,3) = input .* sind(azimuth);
+%Z
+% channel for elevation only, so stay as zero
+% 2nd order
+if order > 1
+133
+%R
+output(:,5) = input .* -0.5;
+%S
+% channel zero'd by sin(2E)
+%T
+% channel zero'd by sin(2E)
+%U
+output(:,8) = input .* cosd(2 * azimuth); %V
+output(:,9) = input .* sind(2 * azimuth);
+end
+% 3rd order
+if order > 2 %K
+% channel for elevation only, so stay as zero %L
+output(:,11) = input .* -0.7262 * cosd(azimuth); %M
+output(:,12) = input .* -0.7262 * sind(azimuth);
+%N
+% channel zero'd by sin(2E)
+%O
+% channel zero'd by sin(2E)
+%P
+output(:,15) = input .* cosd(3 * azimuth); %Q
+output(:,16) = input .* sind(3 * azimuth);
+end
+*/
