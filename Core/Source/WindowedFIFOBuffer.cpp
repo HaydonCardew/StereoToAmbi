@@ -129,6 +129,11 @@ unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
     return nSamplesAvailable;
 }
 
+unsigned MultiChannelWindowedFIFOBuffer::size()
+{
+    return static_cast<unsigned>(buffers.size());
+}
+
 BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {

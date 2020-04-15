@@ -34,6 +34,7 @@ public:
     shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
     bool windowedAudioAvailable();
     unsigned outputSamplesAvailable();
+    unsigned size();
     
 protected:
     vector<shared_ptr<WindowedFIFOBuffer>> buffers;

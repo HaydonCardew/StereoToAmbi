@@ -144,8 +144,8 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
-    auto totalNumInputChannels  = getTotalNumInputChannels();
-    auto totalNumOutputChannels = getTotalNumOutputChannels();
+    unsigned totalNumInputChannels  = getTotalNumInputChannels();
+    unsigned totalNumOutputChannels = getTotalNumOutputChannels();
 	auto nSamples = buffer.getNumSamples();
 
 	getSampleRate();
@@ -229,12 +229,11 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     // ifdef for sending left/right chan
 	if (ambiAudio.outputSamplesAvailable() >= nSamples)
     {
-		//stereoAudio.getChannel(0)->read(buffer.getWritePointer(0), nSamples);
-		//stereoAudio.getChannel(1)->read(buffer.getWritePointer(1), nSamples);
-        ambiAudio.getChannel(0)->read(buffer.getWritePointer(0), nSamples);
-        ambiAudio.getChannel(1)->read(buffer.getWritePointer(1), nSamples);
-        ambiAudio.getChannel(2)->read(buffer.getWritePointer(2), nSamples);
-        ambiAudio.getChannel(3)->read(buffer.getWritePointer(3), nSamples);
+        unsigned nChannelsToWrite = min(totalNumOutputChannels, ambiAudio.size());
+        for(int i = 0; i < nChannelsToWrite; ++i)
+        {
+            ambiAudio.getChannel(i)->read(buffer.getWritePointer(i), nSamples);
+        }
 	}
     //else
     // endif
