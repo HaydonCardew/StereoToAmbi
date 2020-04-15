@@ -30,7 +30,7 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());
 	transferBuffer.resize((nThresholds+1)*2, vector<float>(windowLength));
 	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<dsp::Complex<float>>(fftSize, 0));
-	std::fill(transferBuffer.begin(), transferBuffer.end(), 0);
+	//std::fill(transferBuffer.begin(), transferBuffer.end(), 0);
 	leftFreqBuffer.resize(fftSize);
 	leftTimeBuffer.resize(fftSize);
 	rightFreqBuffer.resize(fftSize);
@@ -217,7 +217,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 			fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
 			for (int j = 0; j < windowLength; j++)
             {
-				transferBuffer[j][i] = extractedSources[i][j].real();
+				transferBuffer[i][j] = extractedSources[i][j].real();
 			}
             // Load here to an ambiAudio windowed buffer
             //extractedAudio.getChannel(i)->sendProcessedWindow(transferBuffer);

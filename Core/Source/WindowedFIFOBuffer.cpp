@@ -152,10 +152,13 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
         
         for(unsigned j = 0; j < windowSize; ++j)
         {
-            bFormatTransferBuffer[0][i] += audioObjects[j][i] * firstChannelMultiplier;
-            bFormatTransferBuffer[1][i] += audioObjects[j][i] * secondChannelMultiplier;
-            bFormatTransferBuffer[2][i] += audioObjects[j][i] * thirdChannelMultiplier;
+            bFormatTransferBuffer[0][j] += audioObjects[i][j] * firstChannelMultiplier;
+            bFormatTransferBuffer[1][j] += audioObjects[i][j] * secondChannelMultiplier;
+            bFormatTransferBuffer[2][j] += audioObjects[i][j] * thirdChannelMultiplier;
         }
+    }
+    for(unsigned i = 0; i < nAmbiChannels; ++i)
+    {
         buffers[i]->sendProcessedWindow(bFormatTransferBuffer[i]);
     }
 }
