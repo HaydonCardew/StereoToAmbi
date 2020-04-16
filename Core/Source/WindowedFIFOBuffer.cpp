@@ -82,7 +82,9 @@ bool WindowedFIFOBuffer::windowedAudioAvailable()
 
 unsigned WindowedFIFOBuffer::outputSamplesAvailable()
 {
-    if(outputBuffer.size() < (windowSize*overlap))
+    unsigned minAvail = float(windowSize)*overlap;
+    unsigned bufferSize = outputBuffer.size();
+    if(bufferSize < minAvail)
     {
         return 0;
     }
@@ -138,6 +140,7 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {
     bFormatTransferBuffer.resize(nAmbiChannels, vector<float>(windowSize, 0));
+    transferBuffer.resize(windowSize);
 }
 
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
@@ -166,6 +169,29 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     {
         buffers[i]->sendProcessedWindow(bFormatTransferBuffer[i]);
     }
+}
+
+void BFormatBuffer::readAsStereo(vector<vector<float>>& data, unsigned nSamples)
+{
+    // check data.size() == 2 && data[0].size() >= windowLength && nSamples == WindowLength
+    Tools::zeroVector(transferBuffer);
+    buffers[0]->read(&transferBuffer[0], nSamples);
+    //memcpy();
+    for(unsigned i = 0; i < nSamples; ++i)
+    {
+        data[0][i] = transferBuffer[i];
+        data[1][i] = transferBuffer[i];
+    }
+    buffers[1]->read(&transferBuffer[0], nSamples);
+    //memcpy();
+    for(unsigned i = 0; i < nSamples; ++i)
+    {
+        data[0][i] += transferBuffer[i];
+        data[1][i] -= transferBuffer[i];
+    }
+    // clear the rest...
+    buffers[2]->read(&transferBuffer[0], nSamples);
+    buffers[3]->read(&transferBuffer[0], nSamples);
 }
 
 /*

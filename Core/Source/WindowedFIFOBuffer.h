@@ -46,9 +46,13 @@ public:
     BFormatBuffer(unsigned maxOrder, unsigned windowSize);
     void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths);
     
+    // simple stereo decoder for sanity checking
+    void readAsStereo(vector<vector<float>>& data, unsigned nSamples);
+    
 private:
     unsigned maxAmbiOrder;
     unsigned nAmbiChannels;
     const unsigned windowSize;
     vector<vector<float>> bFormatTransferBuffer;
+    vector<float> transferBuffer;
 };
