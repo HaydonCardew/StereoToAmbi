@@ -47,7 +47,7 @@ public:
     void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths);
     
     // simple stereo decoder for sanity checking
-    void readAsStereo(vector<vector<float>>& data, unsigned nSamples);
+    void readAsStereo(float* left, float* right, unsigned nSamples)
     
 private:
     unsigned maxAmbiOrder;

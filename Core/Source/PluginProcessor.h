@@ -69,7 +69,7 @@ private:
 	unsigned windowLength;
 
 	dsp::FFT fft;
-	vector<vector<float>> transferBuffer, stereoDecoder;
+	vector<vector<float>> transferBuffer;
 	std::vector<vector<dsp::Complex<float>>> extractedSources;
 	std::vector<dsp::Complex<float>> leftFreqBuffer, leftTimeBuffer, rightFreqBuffer, rightTimeBuffer;
 	//WindowedFIFOBuffer leftChan, rightChan;

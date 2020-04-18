@@ -171,7 +171,7 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     }
 }
 
-void BFormatBuffer::readAsStereo(vector<vector<float>>& data, unsigned nSamples)
+void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
 {
     // check data.size() == 2 && data[0].size() >= windowLength && nSamples == WindowLength
     Tools::zeroVector(transferBuffer);
@@ -179,15 +179,15 @@ void BFormatBuffer::readAsStereo(vector<vector<float>>& data, unsigned nSamples)
     //memcpy();
     for(unsigned i = 0; i < nSamples; ++i)
     {
-        data[0][i] = transferBuffer[i];
-        data[1][i] = transferBuffer[i];
+        left[i] = transferBuffer[i];
+        right[i] = transferBuffer[i];
     }
     buffers[1]->read(&transferBuffer[0], nSamples);
     //memcpy();
     for(unsigned i = 0; i < nSamples; ++i)
     {
-        data[0][i] += transferBuffer[i];
-        data[1][i] -= transferBuffer[i];
+        left[i] += transferBuffer[i];
+        right[i] -= transferBuffer[i];
     }
     // clear the rest...
     buffers[2]->read(&transferBuffer[0], nSamples);

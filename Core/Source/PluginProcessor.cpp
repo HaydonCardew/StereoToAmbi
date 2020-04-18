@@ -36,7 +36,6 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 	leftTimeBuffer.resize(fftSize);
 	rightFreqBuffer.resize(fftSize);
 	rightTimeBuffer.resize(fftSize);
-    stereoDecoder.resize(2, vector<float>(windowLength, 0));
 }
 
 StereoToAmbiAudioProcessor::~StereoToAmbiAudioProcessor()
@@ -237,15 +236,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     // ifdef for sending left/right chan
 	if (ambiAudio.outputSamplesAvailable() >= nSamples)
     {
-        Tools::zeroVector(stereoDecoder);
-        ambiAudio.readAsStereo(stereoDecoder, nSamples); // pass as left and right pointer
-        auto left = buffer.getWritePointer(0);
-        auto right = buffer.getWritePointer(1);
-        for(int i = 0; i < nSamples; ++i)
-        {
-            left[i] = stereoDecoder[0][i];
-            right[i] = stereoDecoder[1][i];
-        }
+        ambiAudio.readAsStereo(buffer.getWritePointer(0), buffer.getWritePointer(1), nSamples); // pass as left and right pointer
         /*
         unsigned nChannelsToWrite = min(totalNumOutputChannels, ambiAudio.size());
         for(int i = 0; i < nChannelsToWrite; ++i)
