@@ -158,8 +158,6 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     unsigned totalNumOutputChannels = getTotalNumOutputChannels();
 	auto nSamples = buffer.getNumSamples();
 
-	getSampleRate();
-
     // In case we have more outputs than inputs, this code clears any output
     // channels that didn't contain input data, (because these aren't
     // guaranteed to be empty - they may contain garbage).
@@ -199,7 +197,9 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
 
 		// Perform Stereo to Ambi processing
-		multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, 360);
+        unsigned width = 360;
+        unsigned offset = 0;
+		multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
         
 		for (int i = 0; i < extractedSources.size(); i++)
         {
@@ -251,8 +251,8 @@ int StereoToAmbiAudioProcessor::testProcessBlockRead(float* left, float* right, 
 		fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
         
 		//******
-
-		multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width);
+        unsigned offset = 0;
+		multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
 		for (int i = 0; i < extractedSources.size(); i++)
         {
 			fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
@@ -306,8 +306,8 @@ int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSa
         }
         fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
         //******
-
-        multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width);
+        unsigned offset = 0;
+        multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
         for (int i = 0; i < extractedSources.size(); i++) {
             fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
             for (int j = 0; j < windowLength; j++) {

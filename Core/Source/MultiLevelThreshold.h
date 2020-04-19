@@ -30,8 +30,6 @@ private:
 
 	vector<vector<float>> thresholds;
     
-    //void zeroVector(vector<vector<float>> &input);
-    
     Histogram leftHistogram;
     Histogram rightHistogram;
 
@@ -50,9 +48,9 @@ public:
     // returns a scaling of -1 <-> 1
     float estimateScaledAngle(float leftMagnitude, float rightMagnitude);
     
-	void stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const int width, const int offset = 0);
+	void stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs);
 
-	int getNumberOfExtractedSources() { return totalNumberOfSources; };
+	unsigned getNumberOfExtractedSources() { return totalNumberOfSources; };
     
     void offsetAngles(vector<float>& azimuths, const int offset);
     

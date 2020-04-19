@@ -40,18 +40,18 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 }*/
 
 // width 0 -> 360
-void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const int width, const int offset)
+void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs)
 {
 	if (ambiFfts[0].size() < fftSize
 		|| leftFft.size() < fftSize
 		|| rightFft.size() < fftSize
 		|| ambiFfts.size() < totalNumberOfSources
-		|| azimuths.size() < totalNumberOfSources) {
+		|| azimuths.size() < totalNumberOfSources)
+    {
 		return;
 	}
     calcMagnitudeVectors(leftFft, rightFft);
 	generatePanMap();
-    int fs = 48000;
 	calcHistogram(100, 4000, fs);
 	fastMultiLevelthreshold(); // still not fast enough
 	extractAudioSources(leftFft, rightFft, ambiFfts, azimuths, width);
