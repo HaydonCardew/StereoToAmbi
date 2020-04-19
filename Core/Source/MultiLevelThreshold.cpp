@@ -13,8 +13,8 @@
 
 using namespace std;
 
-MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize, int ambiOrder)
-	: leftHistogram(nHistogramBins), rightHistogram(nHistogramBins), ambiOrder(ambiOrder), noOfThresholds(noOfThresholds), fftSize(fftSize), sourcesPerChannel(noOfThresholds+1), totalNumberOfSources(sourcesPerChannel*STEREO), nHistogramBins(histogramSize)
+MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize)
+	: leftHistogram(nHistogramBins), rightHistogram(nHistogramBins), noOfThresholds(noOfThresholds), fftSize(fftSize), sourcesPerChannel(noOfThresholds+1), totalNumberOfSources(sourcesPerChannel*STEREO), nHistogramBins(histogramSize)
 {
 	thresholds.resize(STEREO, vector<float>(noOfThresholds+1, 0)); // +1 for a maximum value
 
@@ -500,7 +500,7 @@ void MultiLevelThreshold::getLastHisto(vector<int>& leftBin, vector<float>& left
 }
 
 extern "C" {
-    MultiLevelThreshold* MT_new(int noOfThresholds, int fftSize, int histogramSize, int ambiOrder){ return new MultiLevelThreshold(noOfThresholds, fftSize, histogramSize, ambiOrder); }
+    MultiLevelThreshold* MT_new(int noOfThresholds, int fftSize, int histogramSize){ return new MultiLevelThreshold(noOfThresholds, fftSize, histogramSize); }
     int MT_getNumberOfExtractedSources(MultiLevelThreshold* MT) { return MT->getNumberOfExtractedSources(); }
 void MT_multiLevelThreshold(MultiLevelThreshold* MT, float *data, int nDataPoints, float *thresholds, int nThresholds, int nBins) { return MT->testMultiLevelThreshold(data, nDataPoints, thresholds, nThresholds, nBins); }
 void MT_delete(MultiLevelThreshold* MT) { delete MT; }

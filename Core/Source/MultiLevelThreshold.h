@@ -20,7 +20,6 @@ private:
 	vector< vector<float> > rightSourceMagnitudes;
 
 	int nHistogramBins;
-	int ambiOrder;
 	int noOfThresholds;
 	int fftSize;
 
@@ -40,7 +39,7 @@ public:
 
 	typedef vector<dsp::Complex<float>> ComplexFft;
 
-	MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize, int ambiOrder);
+	MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize);
 
 	void calcMagnitudeVectors(const ComplexFft& leftFft, const ComplexFft& rightFft);
 	void extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const int width);
