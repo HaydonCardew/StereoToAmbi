@@ -132,16 +132,20 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
     // This is the place where you check if the layout is supported.
     // In this template code we only support mono or stereo.
     if (layouts.getMainInputChannelSet() != AudioChannelSet::stereo()
-	 && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+        #ifdef STEREO_DECODER
+    && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
+        #else
+    && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER)
+        #endif
         return false;
 
     // This checks if the input layout matches the output layout
-
+/*
    #if ! JucePlugin_IsSynth
     if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
         return false;
    #endif
-
+*/
     return true;
   #endif
 }
