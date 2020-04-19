@@ -91,6 +91,12 @@ unsigned WindowedFIFOBuffer::outputSamplesAvailable()
 	return outputBuffer.size() - (windowSize*overlap);
 }
 
+void WindowedFIFOBuffer::clear()
+{
+    inputBuffer.clear();
+    outputBuffer.clear();
+}
+
 MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize)
 {
     buffers.clear();
@@ -134,6 +140,14 @@ unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
 unsigned MultiChannelWindowedFIFOBuffer::size()
 {
     return static_cast<unsigned>(buffers.size());
+}
+
+void MultiChannelWindowedFIFOBuffer::clear()
+{
+    for(auto buffer : buffers)
+    {
+        buffer->clear();
+    }
 }
 
 BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)

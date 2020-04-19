@@ -37,7 +37,6 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());
 	transferBuffer.resize((nThresholds+1)*2, vector<float>(windowLength));
 	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<dsp::Complex<float>>(fftSize, 0));
-	//std::fill(transferBuffer.begin(), transferBuffer.end(), 0);
 	leftFreqBuffer.resize(fftSize);
 	leftTimeBuffer.resize(fftSize);
 	rightFreqBuffer.resize(fftSize);
@@ -113,8 +112,8 @@ void StereoToAmbiAudioProcessor::changeProgramName (int index, const String& new
 //==============================================================================
 void StereoToAmbiAudioProcessor::prepareToPlay (double sampleRate, int samplesPerBlock)
 {
-    // Use this method as the place to do any pre-playback
-    // initialisation that you need..
+    stereoAudio.clear();
+    ambiAudio.clear();
 }
 
 void StereoToAmbiAudioProcessor::releaseResources()

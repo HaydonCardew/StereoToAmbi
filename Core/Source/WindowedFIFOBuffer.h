@@ -18,6 +18,7 @@ public:
 	unsigned outputSamplesAvailable();
 	bool getWindowedAudio(vector<float>& buffer);
 	bool sendProcessedWindow(vector<float>& buffer);
+    void clear();
 
 private:
     deque<float> inputBuffer;
@@ -35,6 +36,7 @@ public:
     bool windowedAudioAvailable();
     unsigned outputSamplesAvailable();
     unsigned size();
+    void clear();
     
 protected:
     vector<shared_ptr<WindowedFIFOBuffer>> buffers;
