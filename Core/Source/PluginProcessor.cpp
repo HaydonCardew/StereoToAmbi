@@ -9,7 +9,7 @@
 */
 
 #define STEREO_DECODER
-#define MAX_AMBI_ORDER 1
+#define MAX_AMBI_ORDER 3
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"

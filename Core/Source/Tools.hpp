@@ -31,6 +31,11 @@ void zeroVector(vector<vector<T>>& input)
     }
 }
 
+template<typename T>
+float toRadians(T degs)
+{
+    return (degs*3.14159265) / 180.f;
 }
 
+}
 // debug assert

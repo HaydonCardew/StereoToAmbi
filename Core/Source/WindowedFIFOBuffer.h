@@ -57,4 +57,6 @@ private:
     const unsigned windowSize;
     vector<vector<float>> bFormatTransferBuffer;
     vector<float> transferBuffer;
+    void calculateFurseMalhamCoefs(float sourceAzimuth);
+    vector<float> furseMalhamCoefs;
 };

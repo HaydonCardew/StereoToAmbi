@@ -154,7 +154,8 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {
     bFormatTransferBuffer.resize(nAmbiChannels, vector<float>(windowSize, 0));
-    transferBuffer.resize(windowSize);
+    transferBuffer.resize(windowSize, 0);
+    furseMalhamCoefs.resize(nAmbiChannels, 0);
 }
 
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
@@ -162,26 +163,47 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     //assert audio objects size == azimuth size
     //assert audio objects[0].size == windowSize
     Tools::zeroVector(bFormatTransferBuffer);
-
-    float toRads = 3.14159265/180.f;
     
-    //just 1st order atm
     for(unsigned i = 0; i < audioObjects.size(); ++i)
     {
-        float firstChannelMultiplier = 0.7071;
-        float secondChannelMultiplier = cos(double(azimuths[i]*toRads));
-        float thirdChannelMultiplier = sin(double(azimuths[i]*toRads));
-        
+        calculateFurseMalhamCoefs(Tools::toRadians(azimuths[i]));
         for(unsigned j = 0; j < windowSize; ++j)
         {
-            bFormatTransferBuffer[0][j] += audioObjects[i][j] * firstChannelMultiplier;
-            bFormatTransferBuffer[1][j] += audioObjects[i][j] * secondChannelMultiplier;
-            bFormatTransferBuffer[2][j] += audioObjects[i][j] * thirdChannelMultiplier;
+            for(unsigned channel = 0; channel < nAmbiChannels; ++channel)
+            {
+                bFormatTransferBuffer[channel][j] += audioObjects[i][j] * furseMalhamCoefs[channel];
+            }
         }
     }
     for(unsigned i = 0; i < nAmbiChannels; ++i)
     {
         buffers[i]->sendProcessedWindow(bFormatTransferBuffer[i]);
+    }
+}
+
+void BFormatBuffer::calculateFurseMalhamCoefs(float azimuth)
+{
+    furseMalhamCoefs[0] = 0.7071;
+    furseMalhamCoefs[1] = cos(azimuth);
+    furseMalhamCoefs[2] = sin(azimuth);
+    furseMalhamCoefs[3] = 0; // elev only
+    if(maxAmbiOrder > 1)
+    {
+        furseMalhamCoefs[4] = -0.5;
+        furseMalhamCoefs[5] = 0;
+        furseMalhamCoefs[6] = 0;
+        furseMalhamCoefs[7] = cos(2*azimuth);
+        furseMalhamCoefs[8] = sin(2*azimuth);
+    }
+    if(maxAmbiOrder > 2)
+    {
+        furseMalhamCoefs[9] = 0;
+        furseMalhamCoefs[10] = -0.7262 * cos(azimuth);
+        furseMalhamCoefs[11] = -0.7262 * sin(azimuth);
+        furseMalhamCoefs[12] = 0;
+        furseMalhamCoefs[13] = 0;
+        furseMalhamCoefs[14] = cos(3 * azimuth);
+        furseMalhamCoefs[15] = sin(3 * azimuth);
     }
 }
 
@@ -207,38 +229,3 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
     buffers[2]->read(&transferBuffer[0], nSamples);
     buffers[3]->read(&transferBuffer[0], nSamples);
 }
-
-/*
-output(:,1) = input .* 0.7071; %X
-output(:,2) = input .* cosd(azimuth);
-%Y
-output(:,3) = input .* sind(azimuth);
-%Z
-% channel for elevation only, so stay as zero
-% 2nd order
-if order > 1
-133
-%R
-output(:,5) = input .* -0.5;
-%S
-% channel zero'd by sin(2E)
-%T
-% channel zero'd by sin(2E)
-%U
-output(:,8) = input .* cosd(2 * azimuth); %V
-output(:,9) = input .* sind(2 * azimuth);
-end
-% 3rd order
-if order > 2 %K
-% channel for elevation only, so stay as zero %L
-output(:,11) = input .* -0.7262 * cosd(azimuth); %M
-output(:,12) = input .* -0.7262 * sind(azimuth);
-%N
-% channel zero'd by sin(2E)
-%O
-% channel zero'd by sin(2E)
-%P
-output(:,15) = input .* cosd(3 * azimuth); %Q
-output(:,16) = input .* sind(3 * azimuth);
-end
-*/
