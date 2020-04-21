@@ -66,18 +66,15 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 	//set thresholds to have an extra 'threshold' which is the max
     Tools::zeroVector(leftSourceMagnitudes);
     Tools::zeroVector(rightSourceMagnitudes);
-
-	for (int i = 0; i < totalNumberOfSources; i++)
-    {
-		std::fill(ambiFfts[i].begin(), ambiFfts[i].end(), 0);
-	}
+    Tools::zeroVector(ambiFfts);
 
     //vector<vector<int>> nonZeroBinsInSource(STEREO, vector<int>(sourcesPerChannel, 0));
 
 	for (int i = 0; i < fftSize; i++)
     {
-		if (panMap[LEFT][i] == 0 && panMap[RIGHT][i] == 0)
+		if (panMap[LEFT][i] == panMap[RIGHT][i])
         {
+            assert( panMap[LEFT][i] == 0.f );
 			ambiFfts[0][i] = leftFft[i].real() + rightFft[i].real();
 			ambiFfts[0][i] = leftFft[i].imag() + rightFft[i].imag();
 			leftSourceMagnitudes[LEFT][0] += magnitude[LEFT][i];
