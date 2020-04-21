@@ -31,14 +31,6 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	azimuth.resize(STEREO, vector<float>(sourcesPerChannel, 0));
 }
 
-/*inline void MultiLevelThreshold::zeroVector(vector<vector<float>> &input)
-{
-    for(auto & i : input)
-    {
-        fill(i.begin(), i.end(), 0);
-    }
-}*/
-
 // width 0 -> 360
 void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs)
 {
@@ -71,7 +63,6 @@ void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, int offset)
 
 void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, int width)
 {
-	//set all to zero? (sources - azimuth)
 	//set thresholds to have an extra 'threshold' which is the max
     Tools::zeroVector(leftSourceMagnitudes);
     Tools::zeroVector(rightSourceMagnitudes);
@@ -164,8 +155,11 @@ void MultiLevelThreshold::fastMultiLevelthreshold()
 	// using http://www.iis.sinica.edu.tw/JISE/2001/200109_01.pdf
     
 	std::partial_sum(leftHistogram.getFirstProbabilityBin(), leftHistogram.getLastProbabilityBin(), Pl[0].begin());
+    assert(Pl[0].back() > 0.99);
+    
 	std::partial_sum(rightHistogram.getFirstProbabilityBin(), rightHistogram.getLastProbabilityBin(), Pr[0].begin());
-
+    assert(Pr[0].back() > 0.99);
+    
     std::partial_sum(leftHistogram.getFirstWeightedProbabilityBin(), leftHistogram.getLastWeightedProbabilityBin(), Sl[0].begin());
 	std::partial_sum(rightHistogram.getFirstWeightedProbabilityBin(), rightHistogram.getLastWeightedProbabilityBin(), Sr[0].begin());
     
@@ -308,6 +302,8 @@ void MultiLevelThreshold::generatePanMap()
 
 void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
 {
+    assert( (minFreq > 0) && (minFreq < maxFreq) );
+    assert( (maxFreq <= (fs/2)) );
     float freqStep = float(fftSize) / float(fs);
     int kMin = freqStep * minFreq;
     int kMax = freqStep * maxFreq;

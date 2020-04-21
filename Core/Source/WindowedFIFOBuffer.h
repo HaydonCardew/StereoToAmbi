@@ -11,8 +11,8 @@ class WindowedFIFOBuffer
 public:
 	WindowedFIFOBuffer(const unsigned windowSize);
 
-	int write(const float *data, int nSamples);
-	int read(float *data, int nSamples);
+	unsigned write(const float *data, unsigned nSamples);
+	unsigned read(float *data, unsigned nSamples);
 
 	bool windowedAudioAvailable();
 	unsigned outputSamplesAvailable();

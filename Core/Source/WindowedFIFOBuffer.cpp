@@ -7,21 +7,22 @@ window(windowSize, dsp::WindowingFunction<float>::hann),
 overlap(0.5f)
 {}
 
-int WindowedFIFOBuffer::write(const float *data, int nSamples)
+unsigned WindowedFIFOBuffer::write(const float *data, unsigned nSamples)
 {
-	for (int i = 0; i < nSamples; ++i)
+	for (unsigned i = 0; i < nSamples; ++i)
     {
 		inputBuffer.push_back(data[i]);
 	}
 	return nSamples;
 }
 
-int WindowedFIFOBuffer::read(float *data, int nSamples)
+unsigned WindowedFIFOBuffer::read(float *data, unsigned nSamples)
 {
 	// don't read the last overlap*windowSize, this needs to be added with another window to be valid
-	int effectiveOutputBufferSize = outputBuffer.size() - (windowSize*overlap);
-	int nRead = (nSamples > effectiveOutputBufferSize) ? effectiveOutputBufferSize : nSamples;
-	for (int i = 0; i < nRead; ++i)
+    assert(outputBuffer.size() >= (windowSize*overlap));
+	unsigned effectiveOutputBufferSize = outputBuffer.size() - (windowSize*overlap);
+	unsigned nRead = (nSamples > effectiveOutputBufferSize) ? effectiveOutputBufferSize : nSamples;
+	for (unsigned i = 0; i < nRead; ++i)
     {
 		// halve the output as the Hanning windowws cause's +6dB?
 		data[i] = outputBuffer[0] * 0.5;
@@ -36,14 +37,14 @@ bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
     {
 		return false;
 	}
-	int border = (1.0f - overlap) * windowSize;
-	for (int i = 0; i < border; ++i)
+	unsigned border = (1.0f - overlap) * windowSize;
+	for (unsigned i = 0; i < border; ++i)
     {
 		buffer[i] = inputBuffer[0];
 		inputBuffer.pop_front();
 	}
-	int j = 0;
-	for (int i = border; i < windowSize; ++i, ++j)
+	unsigned j = 0;
+	for (unsigned i = border; i < windowSize; ++i, ++j)
     {
 		buffer[i] = inputBuffer[j];
 	}
@@ -63,12 +64,12 @@ bool WindowedFIFOBuffer::sendProcessedWindow(vector<float>& buffer)
         overlapBorder = (unsigned)outputBuffer.size();
     }
 	unsigned ptr = (unsigned)outputBuffer.size() - overlapBorder;
-	for (int i = 0; i < overlapBorder; ++i)
+	for (unsigned i = 0; i < overlapBorder; ++i)
     {
 		outputBuffer[ptr] = outputBuffer[ptr] + buffer[i];
 		ptr++;
 	}
-	for (int i = overlapBorder; i < windowSize; ++i)
+	for (unsigned i = overlapBorder; i < windowSize; ++i)
     {
 		outputBuffer.push_back(buffer[i]);
 	}
@@ -83,7 +84,7 @@ bool WindowedFIFOBuffer::windowedAudioAvailable()
 unsigned WindowedFIFOBuffer::outputSamplesAvailable()
 {
     unsigned minAvail = float(windowSize)*overlap;
-    unsigned bufferSize = outputBuffer.size();
+    unsigned bufferSize = (unsigned)outputBuffer.size();
     if(bufferSize < minAvail)
     {
         return 0;
@@ -100,7 +101,7 @@ void WindowedFIFOBuffer::clear()
 MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize)
 {
     buffers.clear();
-    for(int i = 0; i < nChannels; ++i)
+    for(unsigned i = 0; i < nChannels; ++i)
     {
         buffers.push_back(make_shared<WindowedFIFOBuffer>(windowSize));
     }
@@ -108,6 +109,7 @@ MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannel
 
 shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsigned channel)
 {
+    assert(channel < buffers.size());
     if(channel > buffers.size())
     {
         return nullptr;
@@ -160,10 +162,9 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
 
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
 {
-    //assert audio objects size == azimuth size
-    //assert audio objects[0].size == windowSize
+    assert(audioObjects.size() == azimuths.size());
+    assert(audioObjects[0].size() == windowSize);
     Tools::zeroVector(bFormatTransferBuffer);
-    
     for(unsigned i = 0; i < audioObjects.size(); ++i)
     {
         calculateFurseMalhamCoefs(Tools::toRadians(azimuths[i]));
@@ -209,7 +210,6 @@ void BFormatBuffer::calculateFurseMalhamCoefs(float azimuth)
 
 void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
 {
-    // check data.size() == 2 && data[0].size() >= windowLength && nSamples == WindowLength
     Tools::zeroVector(transferBuffer);
     buffers[0]->read(&transferBuffer[0], nSamples);
     //memcpy();

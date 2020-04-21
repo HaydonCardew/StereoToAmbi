@@ -1,7 +1,7 @@
 #include "Histogram.h"
 #include <numeric>
 #include <math.h>
-
+#include "Tools.hpp"
 #include <iostream>
 
 Histogram::Histogram(unsigned nBins) : nBins(nBins)
@@ -13,8 +13,9 @@ Histogram::Histogram(unsigned nBins) : nBins(nBins)
 
 void Histogram::loadData(const vector<float>& data, unsigned start, unsigned end)
 {
-    // check start and end are valid
-    std::fill(bins.begin(), bins.end(), 0);
+    assert(data.size() >= end);
+    assert(end > start);
+    Tools::zeroVector(bins);
     maxValue = *std::max_element(data.begin() + start, data.begin() + end);
     increment = maxValue / float(nBins - 1);
     int nValues = end-start;
