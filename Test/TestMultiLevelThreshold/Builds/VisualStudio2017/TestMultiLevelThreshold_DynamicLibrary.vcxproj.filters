@@ -427,6 +427,9 @@
     <ClCompile Include="..\..\..\..\Core\Source\PluginProcessor.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Core\Source\TestPluginProcessor.cpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>

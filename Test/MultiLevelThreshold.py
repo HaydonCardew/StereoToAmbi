@@ -21,17 +21,10 @@ class StereoToAmbiAudioProcessor(object):
     def write(self, left, right, nSamples):
         self.lib.STAAP_write(self.obj, np.ascontiguousarray(left, dtype=np.float32), np.ascontiguousarray(right, dtype=np.float32), nSamples)
 
-    def read(self, left, right, nSamples, azimuths, width):
-        left = np.ascontiguousarray(left, dtype=np.float32)
-        right = np.ascontiguousarray(right, dtype=np.float32)
-        azimuths = np.ascontiguousarray(azimuths, dtype=np.float32)
-        nRead = self.lib.STAAP_read(self.obj, left, right, nSamples, azimuths, width)
-        return left, right, nRead, azimuths
-
-    def multiRead(self, buffer, nSamples, azimuths, width):
+    def multiRead(self, buffer, nSamples, azimuths, width, sr):
         buffer = np.ascontiguousarray(buffer, dtype=np.float32)
         azimuths = np.ascontiguousarray(azimuths, dtype=np.float32)
-        nRead = self.lib.STAAP_multi_read(self.obj, buffer, nSamples, azimuths, width)
+        nRead = self.lib.STAAP_multi_read(self.obj, buffer, nSamples, azimuths, width, sr)
         return buffer, nRead, azimuths
 
     def getHisto(self, bins, probs, size):
@@ -47,7 +40,6 @@ class StereoToAmbiAudioProcessor(object):
     def _decorateFunctions(self):
         self._setTypes(self.lib.STAAP_new, ctypes.c_void_p, [ctypes.c_int32])
         self._setTypes(self.lib.STAAP_write, None, [ctypes.c_void_p, _c_ndfloat, _c_ndfloat, ctypes.c_int32])
-        self._setTypes(self.lib.STAAP_read, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat, _c_ndfloat, ctypes.c_int32, _c_ndfloat, ctypes.c_float])
         self._setTypes(self.lib.STAAP_multi_read, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat, ctypes.c_int32, _c_ndfloat, ctypes.c_float])
         self._setTypes(self.lib.STAAP_getLastHisto, None, [ctypes.c_void_p, _c_ndfloat, _c_ndint, ctypes.c_int32])
         self._setTypes(self.lib.STAAP_delete, None, [ctypes.c_void_p])
@@ -95,7 +87,7 @@ progress = percentageJump
 for block in sf.blocks(filename, blocksize=blockSize, overlap=0, dtype='float32'):
     x.write(block[:,0], block[:,1], blockSize)
     nTotalWritten = nTotalWritten + blockSize
-    outTmp, nRead, azimuthsTmp = x.multiRead(outTmp, blockSize, azimuthsTmp, width)
+    outTmp, nRead, azimuthsTmp = x.multiRead(outTmp, blockSize, azimuthsTmp, width, samplerate)
     if(nRead != 0):
         #histoBins, histoProbs = x.getHisto(histoBins, histoProbs, histoSize)
         azimuths[azimuthCount,:] = azimuthsTmp

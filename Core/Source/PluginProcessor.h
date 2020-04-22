@@ -59,8 +59,7 @@ public:
 
     // Test
 	void testProcessBlockWrite(float* left, float* right, int nSamples);
-	int testProcessBlockRead(float* left, float* right, int nSamples, float* azimuths, float width);
-    int testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width);
+    int testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate);
     void getLastHisto(float* probs, int* bins, int nSize);
     
 private:
@@ -80,6 +79,9 @@ private:
 	MultiLevelThreshold multiLevelThreshold;
 	std::vector<MultiLevelThreshold::ComplexFft> extractedFfts;
 	std::vector<float> sourceAzimuths;
+    
+    // test and should be private - initialise after window length though
+    MultiChannelWindowedFIFOBuffer extractedAudio;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessor)
 };

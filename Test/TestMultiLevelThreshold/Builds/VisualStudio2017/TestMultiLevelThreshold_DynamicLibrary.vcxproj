@@ -142,6 +142,7 @@
     <ClCompile Include="..\..\..\..\Core\Source\MultiLevelThreshold.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\PluginProcessor.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\TestPluginProcessor.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.cpp"/>
     <ClCompile Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
