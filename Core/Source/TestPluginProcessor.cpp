@@ -15,7 +15,6 @@ extern "C" {
     StereoToAmbiAudioProcessor* STAAP_new(int nThresholds) { return new StereoToAmbiAudioProcessor(nThresholds); }
     void STAAP_write(StereoToAmbiAudioProcessor* ST, float* left, float* right, int nSamples) { return ST->testProcessBlockWrite(left, right, nSamples); }
     int STAAP_multi_read(StereoToAmbiAudioProcessor* ST, float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate) { return ST->testProcessBlockMultiRead(buffer, nSamples, azimuths, width, sampleRate); }
-    void STAAP_getLastHisto(StereoToAmbiAudioProcessor* ST, float* probs, int* bins, int size) { return ST->getLastHisto(probs, bins, size); }
     void STAAP_delete(StereoToAmbiAudioProcessor* ST) { delete ST; }
 }
 
@@ -71,23 +70,4 @@ int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSa
     }
     
     return 0;
-}
-
-void StereoToAmbiAudioProcessor::getLastHisto(float* probs, int* bins, int nSize)
-{
-    
-    vector<float> thisProbs;
-    vector<int> thisBins;
-    multiLevelThreshold.getLastHisto(thisBins, thisProbs);
-    if (nSize < thisBins.size())
-    {
-        cout << "Fucked histo bins pointer sizes" << endl;
-        return;
-    }
-    for(int i = 0; i < thisBins.size(); ++i)
-    {
-        probs[i] = thisProbs[i];
-        bins[i] = thisBins[i];
-    }
-    return;
 }

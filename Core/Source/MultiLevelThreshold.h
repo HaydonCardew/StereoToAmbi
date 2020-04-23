@@ -53,8 +53,4 @@ public:
 	unsigned getNumberOfExtractedSources() { return totalNumberOfSources; };
     
     void offsetAngles(vector<float>& azimuths, const int offset);
-    
-    // test
-    void getLastHisto(vector<int>& leftBin, vector<float>& leftProb);
-    void testMultiLevelThreshold(float* data, int nDataPoints, float* thresholds, int nThresholds, int nBins);
 };
