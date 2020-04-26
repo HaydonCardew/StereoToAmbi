@@ -19,7 +19,7 @@ void Histogram::loadData(const vector<float>& data, unsigned start, unsigned end
     maxValue = *std::max_element(data.begin() + start, data.begin() + end);
     increment = maxValue / float(nBins - 1);
     int nValues = end-start;
-    if (maxValue == 0)
+    if (maxValue == 0.f)
     {
         //bins[0] = (unsigned)distance(start, end);
         bins[0] = (unsigned)nValues;
@@ -34,7 +34,8 @@ void Histogram::loadData(const vector<float>& data, unsigned start, unsigned end
                 //continue;
             }
             // for linear
-            int index = floor(data[i] / increment);
+            assert(increment > 0);
+            int index = floor(data[i] / increment); // what is increment is zero?!
             //cout << "It : " << data[i] << " Bin : " << index << endl;
             // for non linear
             //float tmp = pow(panMap[channel][i] / histogram.maxValue[channel], 1) * histogram.maxValue[channel];

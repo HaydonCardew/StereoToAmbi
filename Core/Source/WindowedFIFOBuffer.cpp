@@ -5,7 +5,9 @@ WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize)
 : windowSize(windowSize),
 window(windowSize, dsp::WindowingFunction<float>::hann),
 overlap(0.5f)
-{}
+{
+    assert(windowSize > 0);
+}
 
 unsigned WindowedFIFOBuffer::write(const float *data, unsigned nSamples)
 {
@@ -52,12 +54,9 @@ bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
 	return true;
 }
 
-bool WindowedFIFOBuffer::sendProcessedWindow(vector<float>& buffer)
+bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 {
-	if (buffer.size() != windowSize)
-    {
-		return false;
-	}
+    assert(buffer.size() == windowSize);
 	unsigned overlapBorder = overlap * windowSize;
 	if (outputBuffer.size() < overlapBorder)
     {
@@ -155,6 +154,7 @@ void MultiChannelWindowedFIFOBuffer::clear()
 BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {
+    assert(windowSize > 0);
     bFormatTransferBuffer.resize(nAmbiChannels, vector<float>(windowSize, 0));
     transferBuffer.resize(windowSize, 0);
     furseMalhamCoefs.resize(nAmbiChannels, 0);
@@ -162,6 +162,7 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
 
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
 {
+    assert(bFormatTransferBuffer[0].size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
     Tools::zeroVector(bFormatTransferBuffer);
@@ -210,6 +211,10 @@ void BFormatBuffer::calculateFurseMalhamCoefs(float azimuth)
 
 void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
 {
+    if(transferBuffer.size() < nSamples)
+    {
+        transferBuffer.resize(nSamples, 0); // a little hacky here..
+    }
     Tools::zeroVector(transferBuffer);
     buffers[0]->read(&transferBuffer[0], nSamples);
     //memcpy();
