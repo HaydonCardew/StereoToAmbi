@@ -4,7 +4,7 @@
 #include "Tools.hpp"
 #include <iostream>
 
-Histogram::Histogram(unsigned nBins) : nBins(nBins)
+Histogram::Histogram(unsigned nBins) : nBins(nBins), increment(0.f), maxValue(0.f)
 {
     bins.resize(nBins);
     probabilityBins.resize(nBins);
@@ -16,30 +16,21 @@ void Histogram::loadData(const vector<float>& data, unsigned start, unsigned end
     assert(data.size() >= end);
     assert(end > start);
     Tools::zeroVector(bins);
-    maxValue = *std::max_element(data.begin() + start, data.begin() + end);
-    increment = maxValue / float(nBins - 1);
-    int nValues = end-start;
+    auto startIter = data.begin() + start;
+    auto endIter = data.begin() + end;
+    maxValue = *std::max_element(startIter, endIter);
+    assert(!isinf(maxValue));
     if (maxValue == 0.f)
     {
-        //bins[0] = (unsigned)distance(start, end);
-        bins[0] = (unsigned)nValues;
+        bins[0] = end - start;
     }
     else
     {
-        //for (vector<float>::iterator it = start; it !=end; ++it)
-        for (int i = 0; i < nValues; ++i)
+        increment = maxValue / float(nBins - 1);
+        for(auto value = startIter; value != (endIter+1); ++value)
         {
-            if(data[i] == 0.0)
-            {
-                //continue;
-            }
-            // for linear
             assert(increment > 0);
-            int index = floor(data[i] / increment); // what is increment is zero?!
-            //cout << "It : " << data[i] << " Bin : " << index << endl;
-            // for non linear
-            //float tmp = pow(panMap[channel][i] / histogram.maxValue[channel], 1) * histogram.maxValue[channel];
-            //int index = floor(tmp / histogram.increment[channel]);
+            int index = floor(*value / increment);
             if (index >= nBins)
             {
                 index = nBins - 1;
@@ -50,6 +41,7 @@ void Histogram::loadData(const vector<float>& data, unsigned start, unsigned end
             }
             bins[index]++;
         }
+        assert(!isinf(increment));
     }
     calculateProbabilityBins();
 }
