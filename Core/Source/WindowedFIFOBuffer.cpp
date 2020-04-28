@@ -249,23 +249,28 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
         transferBuffer.resize(nSamples, 0); // a little hacky here..
     }
     Tools::zeroVector(transferBuffer);
-    buffers[0]->read(&transferBuffer[0], nSamples);
-    //memcpy();
+    buffers[0]->read(&transferBuffer[0], nSamples); // W
     for(unsigned i = 0; i < nSamples; ++i)
     {
         left[i] = transferBuffer[i];
         right[i] = transferBuffer[i];
     }
-    buffers[1]->read(&transferBuffer[0], nSamples); // [1] sounds wank [2] sounds worse. best heard with fft = 16. defo delay and stop/starty sounds
-    // maybe sounds better now but out of time with each other?
-    //memcpy();
+    
+    buffers[1]->read(&transferBuffer[0], nSamples); // X F<->B
+    for(unsigned i = 0; i < nSamples; ++i)
+    {
+        left[i] += 0.6 * transferBuffer[i];
+        right[i] += 0.6 * transferBuffer[i];
+    }
+    
+    buffers[2]->read(&transferBuffer[0], nSamples); // Y L<->R
     for(unsigned i = 0; i < nSamples; ++i)
     {
         left[i] += transferBuffer[i];
         right[i] -= transferBuffer[i];
     }
     // clear the rest...
-    for(int i = 2; i < buffers.size(); ++i)
+    for(int i = 3; i < buffers.size(); ++i)
     {
         buffers[i]->read(&transferBuffer[0], nSamples);
     }
