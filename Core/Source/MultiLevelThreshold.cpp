@@ -280,12 +280,17 @@ void MultiLevelThreshold::generatePanMap()
     Tools::zeroVector(panMap);
     for (int i = 0; i < magnitude[LEFT].size(); i++)
     {
-        if (magnitude[RIGHT][i] == 0.0)
+        if (magnitude[RIGHT][i] == 0.f)
         {
-			magnitude[RIGHT][i] = 1e-7;
-		} //small enough?
-        double tmp = 20*log(magnitude[LEFT][i] / magnitude[RIGHT][i]);
-
+            magnitude[RIGHT][i] = 1e-7; // is this a good value?
+		}
+        float tmp = 0;
+        if(magnitude[LEFT][i] != 0.f)
+        {
+            tmp = 20*log(magnitude[LEFT][i] / magnitude[RIGHT][i]);
+        }
+        //assert(!isinf(tmp));
+        //assert(!isnan(tmp));
         if (tmp >= 0)
         {
 			panMap[LEFT][i] = tmp;
@@ -304,7 +309,6 @@ void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
     float freqStep = float(fftSize) / float(fs);
     int kMin = freqStep * minFreq;
     int kMax = freqStep * maxFreq;
-    
     leftHistogram.loadData(panMap[LEFT], kMin, kMax);
     rightHistogram.loadData(panMap[RIGHT], kMin, kMax);
 }
