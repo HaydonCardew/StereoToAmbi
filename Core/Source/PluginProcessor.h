@@ -63,7 +63,7 @@ public:
     void getLastHisto(float* probs, int* bins, int nSize);
     
 private:
-    unsigned fftOrder = 15; // this controls fftSize and windowLength
+    unsigned fftOrder = 16; // this controls fftSize and windowLength
     unsigned fftSize;
 	unsigned windowLength;
 

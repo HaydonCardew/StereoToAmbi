@@ -91,6 +91,16 @@ unsigned WindowedFIFOBuffer::outputSamplesAvailable()
 	return outputBuffer.size() - (windowSize*overlap);
 }
 
+unsigned WindowedFIFOBuffer::inputBufferSize()
+{
+    return (unsigned)inputBuffer.size();
+}
+
+unsigned WindowedFIFOBuffer::outputBufferSize()
+{
+    return (unsigned)outputBuffer.size();
+}
+
 void WindowedFIFOBuffer::clear()
 {
     inputBuffer.clear();
@@ -151,6 +161,27 @@ void MultiChannelWindowedFIFOBuffer::clear()
     }
 }
 
+// should only be inside an assert
+bool MultiChannelWindowedFIFOBuffer::sanityCheck()
+{
+    unsigned nBuffers = (unsigned)buffers.size();
+    if(nBuffers == 0)
+    {
+        return false;
+    }
+    unsigned inputBufferSize = buffers[0]->inputBufferSize();
+    unsigned outputBufferSize = buffers[0]->outputBufferSize();
+    for(unsigned i = 1; i < nBuffers; ++i)
+    {
+        if( buffers[i]->inputBufferSize() != inputBufferSize ||
+           buffers[i]->outputBufferSize() != outputBufferSize)
+        {
+            return false;
+        }
+    }
+    return true;
+}
+
 BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {
@@ -181,6 +212,7 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     {
         buffers[i]->sendProcessedWindow(bFormatTransferBuffer[i]);
     }
+    assert(sanityCheck());
 }
 
 void BFormatBuffer::calculateFurseMalhamCoefs(float azimuth)
@@ -211,6 +243,7 @@ void BFormatBuffer::calculateFurseMalhamCoefs(float azimuth)
 
 void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
 {
+    assert(sanityCheck());
     if(transferBuffer.size() < nSamples)
     {
         transferBuffer.resize(nSamples, 0); // a little hacky here..
@@ -223,7 +256,8 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
         left[i] = transferBuffer[i];
         right[i] = transferBuffer[i];
     }
-    buffers[1]->read(&transferBuffer[0], nSamples);
+    buffers[1]->read(&transferBuffer[0], nSamples); // [1] sounds wank [2] sounds worse. best heard with fft = 16. defo delay and stop/starty sounds
+    // maybe sounds better now but out of time with each other?
     //memcpy();
     for(unsigned i = 0; i < nSamples; ++i)
     {
@@ -231,6 +265,8 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
         right[i] -= transferBuffer[i];
     }
     // clear the rest...
-    buffers[2]->read(&transferBuffer[0], nSamples);
-    buffers[3]->read(&transferBuffer[0], nSamples);
+    for(int i = 2; i < buffers.size(); ++i)
+    {
+        buffers[i]->read(&transferBuffer[0], nSamples);
+    }
 }

@@ -18,6 +18,9 @@ public:
 	unsigned outputSamplesAvailable();
 	bool getWindowedAudio(vector<float>& buffer);
 	bool sendProcessedWindow(const vector<float>& buffer);
+    
+    unsigned inputBufferSize();
+    unsigned outputBufferSize();
     void clear();
 
 private:
@@ -40,6 +43,9 @@ public:
     
 protected:
     vector<shared_ptr<WindowedFIFOBuffer>> buffers;
+    
+    //for debug
+    bool sanityCheck();
 };
 
 class BFormatBuffer : public MultiChannelWindowedFIFOBuffer
