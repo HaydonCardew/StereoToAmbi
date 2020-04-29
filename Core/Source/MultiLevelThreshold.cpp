@@ -75,8 +75,8 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 		if (panMap[LEFT][i] == panMap[RIGHT][i])
         {
             assert( panMap[LEFT][i] == 0.f );
-			ambiFfts[0][i] = leftFft[i].real() + rightFft[i].real();
-			ambiFfts[0][i] = leftFft[i].imag() + rightFft[i].imag();
+			ambiFfts[0][i].real(leftFft[i].real() + rightFft[i].real());
+            ambiFfts[0][i].imag(leftFft[i].imag() + rightFft[i].imag());
 			leftSourceMagnitudes[LEFT][0] += magnitude[LEFT][i];
 			leftSourceMagnitudes[RIGHT][0] += magnitude[RIGHT][i];
             //nonZeroBinsInSource[LEFT][0]++;
@@ -282,7 +282,7 @@ void MultiLevelThreshold::generatePanMap()
     {
         if (magnitude[RIGHT][i] == 0.f)
         {
-            magnitude[RIGHT][i] = 1e-7; // is this a good value?
+            magnitude[RIGHT][i] = 1e-7;
 		}
         float tmp = 0;
         if(magnitude[LEFT][i] != 0.f)
