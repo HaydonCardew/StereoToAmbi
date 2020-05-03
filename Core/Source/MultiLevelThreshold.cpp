@@ -132,9 +132,8 @@ float MultiLevelThreshold::estimateScaledAngle(float leftMagnitude, float rightM
     {
         return 0.f;
     }
-    float angleInRads = asin(rightMagnitude / totalSourceMagnitude); // returns a scale 0 - pi/2
+    float angleInRads = asin(leftMagnitude / totalSourceMagnitude); // returns a scale 0 - pi/2
     const float quarterPi = 0.78539816339;
-    //cout << "Left Mag: " << leftMagnitude << " Right Mag: " << rightMagnitude << " Angle : " << (angleInRads/quarterPi) - 1 << endl;
     return (angleInRads/quarterPi) - 1.f;
 }
 
