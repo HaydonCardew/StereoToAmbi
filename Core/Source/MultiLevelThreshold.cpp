@@ -305,3 +305,13 @@ void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
     leftHistogram.loadData(panMap[LEFT], kMin, kMax);
     rightHistogram.loadData(panMap[RIGHT], kMin, kMax);
 }
+
+vector<float> MultiLevelThreshold::getTotalSourceMagnitudes()
+{
+    vector<float> totalSourceMagnitudes(totalNumberOfSources);
+    for (int i = 0; i < sourcesPerChannel; i++)
+    {
+        totalSourceMagnitudes[i] = leftSourceMagnitudes[LEFT][i] + leftSourceMagnitudes[RIGHT][i];
+        totalSourceMagnitudes[i + sourcesPerChannel] = rightSourceMagnitudes[LEFT][i] + rightSourceMagnitudes[RIGHT][i];
+    }
+}
