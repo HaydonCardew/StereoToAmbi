@@ -28,7 +28,6 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	Sl.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
 	Pr.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
 	Sr.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
-	azimuth.resize(STEREO, vector<float>(sourcesPerChannel, 0));
 }
 
 // width 0 -> 360
@@ -46,7 +45,8 @@ void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const Co
 	generatePanMap();
 	calcHistogram(100, 4000, fs);
 	fastMultiLevelthreshold(); // still not fast enough
-	extractAudioSources(leftFft, rightFft, ambiFfts, azimuths, width);
+	extractAudioSources(leftFft, rightFft, ambiFfts);
+    calculateAzimuths(azimuths, width);
     offsetAngles(azimuths, offset);
 }
 
@@ -61,7 +61,7 @@ void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, int offset)
     }
 }
 
-void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, int width)
+void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts)
 {
 	//set thresholds to have an extra 'threshold' which is the max
     Tools::zeroVector(leftSourceMagnitudes);
@@ -105,27 +105,21 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 			}
 		}
 	}
-    
-    Tools::zeroVector(azimuth);
-    
-    width /= 2; // right is positive and left is negative so this works
-	for (int i = 0; i < sourcesPerChannel; i++)
-    {
-        azimuth[LEFT][i] = estimateScaledAngle(leftSourceMagnitudes[LEFT][i], leftSourceMagnitudes[RIGHT][i]);
-        azimuth[LEFT][i] *= width;
-        azimuth[RIGHT][i] = estimateScaledAngle(rightSourceMagnitudes[LEFT][i], rightSourceMagnitudes[RIGHT][i]);
-        azimuth[RIGHT][i] *= width;
-	}
+}
 
-	for (int i = 0; i < sourcesPerChannel; i++)
+void MultiLevelThreshold::calculateAzimuths(vector<float>& azimuths, int width)
+{
+    assert(azimuths.size() == totalNumberOfSources);
+    width /= 2; // right is positive and left is negative so this works
+    for (int i = 0; i < sourcesPerChannel; i++)
     {
-		azimuths[i] = azimuth[LEFT][i];
-		azimuths[i + sourcesPerChannel] = azimuth[RIGHT][i];
-	}
+        azimuths[i] = estimateScaledAngle(leftSourceMagnitudes[LEFT][i], leftSourceMagnitudes[RIGHT][i]) * width;
+        azimuths[i + sourcesPerChannel] = estimateScaledAngle(rightSourceMagnitudes[LEFT][i], rightSourceMagnitudes[RIGHT][i]) * width;
+    }
 }
 
 // returns a scaling of -1 <-> 1
-float MultiLevelThreshold::estimateScaledAngle(float leftMagnitude, float rightMagnitude)
+float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const float rightMagnitude)
 {
     float totalSourceMagnitude = sqrt( pow(leftMagnitude,2) + pow(rightMagnitude,2) );
     if(totalSourceMagnitude == 0.f)

@@ -23,7 +23,6 @@ private:
 	int noOfThresholds;
 	int fftSize;
 
-	vector< vector<float> > azimuth;
 	int width;
 	const int sourcesPerChannel;
 	const int totalNumberOfSources;
@@ -40,13 +39,14 @@ public:
 	MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize);
 
 	void calcMagnitudeVectors(const ComplexFft& leftFft, const ComplexFft& rightFft);
-	void extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const int width);
+	void extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts);
 	void generatePanMap();
 	void calcHistogram(float minFreq, float maxFreq, int fs);
 	void fastMultiLevelthreshold();
 
+    void calculateAzimuths(vector<float>& azimuths, const int width);
     // returns a scaling of -1 <-> 1
-    float estimateScaledAngle(float leftMagnitude, float rightMagnitude);
+    float estimateScaledAngle(const float leftMagnitude, const float rightMagnitude);
     
 	void stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs);
 
