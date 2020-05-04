@@ -21,8 +21,8 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	panMap.resize(STEREO, vector<float>(fftSize,0));
 	magnitude.resize(STEREO, vector<float>(fftSize, 0));
 
-	leftSourceMagnitudes.resize(STEREO, vector<float>(fftSize, 0));
-	rightSourceMagnitudes.resize(STEREO, vector<float>(fftSize, 0));
+	leftSourceMagnitudes.resize(STEREO, vector<float>(sourcesPerChannel, 0));
+	rightSourceMagnitudes.resize(STEREO, vector<float>(sourcesPerChannel, 0));
 
 	Pl.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
 	Sl.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
