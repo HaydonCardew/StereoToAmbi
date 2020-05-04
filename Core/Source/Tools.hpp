@@ -33,6 +33,20 @@ void zeroVector(vector<vector<T>>& input)
 }
 
 template<typename T>
+unsigned numberOfNonZeros(const vector<T>& input)
+{
+    unsigned nnz = 0;
+    for(auto & i : input)
+    {
+        if(i != 0)
+        {
+            nnz++;
+        }
+    }
+    return nnz;
+}
+
+template<typename T>
 float toRadians(T degs)
 {
     return (degs*3.14159265) / 180.f;
