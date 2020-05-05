@@ -273,24 +273,25 @@ void MultiLevelThreshold::generatePanMap()
     Tools::zeroVector(panMap);
     for (int i = 0; i < magnitude[LEFT].size(); i++)
     {
-        if (magnitude[RIGHT][i] == 0.f)
+        float rightMag = magnitude[RIGHT][i];
+        if (rightMag == 0.f)
         {
-            magnitude[RIGHT][i] = 1e-7;
+            rightMag = 1e-7; // do this to not change the actual magnitude vector!
 		}
-        float tmp = 0;
+        float powerDiff = 0;
         if(magnitude[LEFT][i] != 0.f)
         {
-            tmp = 20*log(magnitude[LEFT][i] / magnitude[RIGHT][i]);
+            powerDiff = 20*log(magnitude[LEFT][i] / rightMag);
         }
         //assert(!isinf(tmp));
         //assert(!isnan(tmp));
-        if (tmp >= 0)
+        if (powerDiff >= 0)
         {
-			panMap[LEFT][i] = tmp;
+			panMap[LEFT][i] = powerDiff;
         }
         else
         {
-			panMap[RIGHT][i] = -1 * tmp;
+			panMap[RIGHT][i] = -1 * powerDiff;
         }
     }
 }
@@ -308,10 +309,16 @@ void MultiLevelThreshold::calcHistogram(float minFreq, float maxFreq, int fs)
 
 vector<float> MultiLevelThreshold::getTotalSourceMagnitudes()
 {
-    vector<float> totalSourceMagnitudes(totalNumberOfSources);
+    vector<float> totalSourceMagnitudes(totalNumberOfSources + 1, 0);
     for (int i = 0; i < sourcesPerChannel; i++)
     {
         totalSourceMagnitudes[i] = leftSourceMagnitudes[LEFT][i] + leftSourceMagnitudes[RIGHT][i];
         totalSourceMagnitudes[i + sourcesPerChannel] = rightSourceMagnitudes[LEFT][i] + rightSourceMagnitudes[RIGHT][i];
     }
+    totalSourceMagnitudes[totalNumberOfSources + 1] = *std::max_element(totalSourceMagnitudes.begin(), totalSourceMagnitudes.end());
+    for(int i = 0; i < totalSourceMagnitudes.size(); ++i)
+    {
+        totalSourceMagnitudes[i] /= totalSourceMagnitudes[totalNumberOfSources + 1];
+    }
+    return totalSourceMagnitudes;
 }
