@@ -1,10 +1,15 @@
-- Left/Right wrong way around?
 - Full left/right is too quiet? when azimuth is +/-180. -180 should be the same as zero... when centre azimuth is 0. at 100% right azimuth is -3.14
-- Crackles on playback of 'true' songs. Not on Sine wave...
-silence leads to azimuths [-180, 0, 0, 0, 0, 0] ? sometimes..?
-centre pan audio leads to [0, 0, 0, 0, 0, 0]
 
-far right audio leads to [-180, 0, 0, 0, 0, 0]
+
+- Crackles on playback of 'true' songs. Not on Sine wave...
+- make the F-M coefs 1,0,0,0,etc and the crackles go away??
+- crackles on 1st order still.
+- 1st and 2nd bformat channels are fooooocked
+- is the window functin tending to zero?
+  -> thesis  = hanning with 75% overlap & 0.180ms stft
+  -> current = hamming with 50% overlap
+   "The difference between them is that the Hanning window touches zero at both ends, removing any discontinuity. The Hamming window stops just shy of zero, meaning that the signal will still have a slight discontinuity"
+   there you go...
 
 far left?
 Azimuth [0] : 171.354

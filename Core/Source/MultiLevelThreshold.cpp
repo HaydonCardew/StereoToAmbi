@@ -68,8 +68,6 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
     Tools::zeroVector(rightSourceMagnitudes);
     Tools::zeroVector(ambiFfts);
 
-    //vector<vector<int>> nonZeroBinsInSource(STEREO, vector<int>(sourcesPerChannel, 0));
-
 	for (int i = 0; i < fftSize; i++)
     {
 		if (panMap[LEFT][i] == panMap[RIGHT][i])
@@ -79,7 +77,6 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
             ambiFfts[0][i].imag(leftFft[i].imag() + rightFft[i].imag());
 			leftSourceMagnitudes[LEFT][0] += magnitude[LEFT][i];
 			leftSourceMagnitudes[RIGHT][0] += magnitude[RIGHT][i];
-            //nonZeroBinsInSource[LEFT][0]++;
 		}
 		else
         {
@@ -90,7 +87,6 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 					ambiFfts[j][i].imag(leftFft[i].imag() + rightFft[i].imag());
 					leftSourceMagnitudes[LEFT][j] += magnitude[LEFT][i];
 					leftSourceMagnitudes[RIGHT][j] += magnitude[RIGHT][i];
-                    //nonZeroBinsInSource[LEFT][j]++;
 					break;
 				}
 				if ((panMap[RIGHT][i] != 0) && (panMap[RIGHT][i] <= thresholds[RIGHT][j]))
@@ -99,7 +95,6 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 					ambiFfts[j + sourcesPerChannel][i].imag(leftFft[i].imag() + rightFft[i].imag());
 					rightSourceMagnitudes[LEFT][j] += magnitude[LEFT][i];
 					rightSourceMagnitudes[RIGHT][j] += magnitude[RIGHT][i];
-                    //nonZeroBinsInSource[RIGHT][j]++;
 					break;
 				}
 			}
@@ -253,7 +248,6 @@ void MultiLevelThreshold::fastMultiLevelthreshold()
 	}
 	for (int i = 0; i < noOfThresholds; i++) {
         // for linear
-        
 		thresholds[LEFT][i] *= leftHistogram.getIncrement();
 		thresholds[RIGHT][i] *= rightHistogram.getIncrement();
         
