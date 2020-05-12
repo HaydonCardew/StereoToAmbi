@@ -35,7 +35,7 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 {
 	extractedFfts.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());
-	transferBuffer.resize((nThresholds+1)*2, vector<float>(windowLength));
+	transferBuffer.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<float>(windowLength));
 	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<dsp::Complex<float>>(fftSize, 0));
 	leftFreqBuffer.resize(fftSize);
 	leftTimeBuffer.resize(fftSize);
