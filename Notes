@@ -7,9 +7,9 @@
 - 1st and 2nd bformat channels are fooooocked
 - is the window functin tending to zero?
   -> thesis  = hanning with 75% overlap & 0.180ms stft
-  -> current = hamming with 50% overlap
+  -> current = hamming? with 50% overlap
    "The difference between them is that the Hanning window touches zero at both ends, removing any discontinuity. The Hamming window stops just shy of zero, meaning that the signal will still have a slight discontinuity"
-   there you go...
+
 
 far left?
 Azimuth [0] : 171.354
@@ -22,3 +22,53 @@ Azimuth [5] : -86.9282
 far right and left are different? what?
 
 add power function for debugging?
+
+added a dezipper and it makes no f'in difference to the crackles?
+
+crackles..
+- dont happen in silence
+- dont happen on W channel. Do happen on Y/X channel. Only difference is azimuth is moving on them?
+- But dezipper did f'all?
+- Different fft sizes has what effect? lower fft size = faster clicks. So related to fft, shockingly
+- Apply a gain of 0.01 makes no difference to the cracks (not a clipping thing)
+- still there with 1st order
+- still there is azimuths remain constant
+- doesnt happen if FM coefs are constant?
+    furseMalhamCoefs[0] = 0.7071;
+    furseMalhamCoefs[1] = 0.2;//cos(azimuth);
+    furseMalhamCoefs[2] = -0.2;//sin(azimuth);
+    furseMalhamCoefs[3] = 0; // elev only
+extracted sources size and transfer buffer size not the same?
+
+it must be in: addAudioOjectsAsBFormat ??
+
+0 : 0.7071
+1 : -0.431141
+2 : 0.902285
+3 : 0
+
+0 : 0.7071
+1 : -0.865239
+2 : 0.50136
+3 : 0
+
+0 : 0.7071
+1 : 0.98873
+2 : -0.149708
+3 : 0
+
+0 : 0.7071
+1 : 0.737159
+2 : -0.675719
+3 : 0
+
+do this and clips are still there..
+sourceAzimuths[0] = 14.71;
+sourceAzimuths[1] = 40.64;
+sourceAzimuths[2] = 115.54;
+sourceAzimuths[3] = 149.91;
+sourceAzimuths[4] = -8.61;
+sourceAzimuths[5] = -42.51;
+sourceAzimuths[6] = -100.04;
+sourceAzimuths[7] = -128.77;
+ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths);
