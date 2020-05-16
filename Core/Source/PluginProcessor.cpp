@@ -10,6 +10,7 @@
 
 #define STEREO_DECODER
 #define MAX_AMBI_ORDER 3
+#define STEREO 2
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
@@ -17,7 +18,7 @@
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
-	: fftSize(pow(2,fftOrder)), windowLength(fftSize/2), fft(fftOrder), stereoAudio(2, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*2, windowLength)
+	: fftSize(pow(2,fftOrder)), windowLength(fftSize/2), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*STEREO, windowLength)
 #ifndef JucePlugin_PreferredChannelConfigurations
      , AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -36,11 +37,9 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 	extractedFfts.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());
 	transferBuffer.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<float>(windowLength));
-	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<dsp::Complex<float>>(fftSize, 0));
-	leftFreqBuffer.resize(fftSize);
-	leftTimeBuffer.resize(fftSize);
-	rightFreqBuffer.resize(fftSize);
-	rightTimeBuffer.resize(fftSize);
+	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
+    stereoFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
+    stereoTimeBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
 }
 
 StereoToAmbiAudioProcessor::~StereoToAmbiAudioProcessor()
@@ -181,27 +180,25 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
     while (stereoAudio.windowedAudioAvailable())
     {
         Tools::zeroVector(transferBuffer);
-        Tools::zeroVector(leftTimeBuffer);
-        Tools::zeroVector(leftFreqBuffer);
-        Tools::zeroVector(rightTimeBuffer);
-        Tools::zeroVector(rightFreqBuffer);
+        Tools::zeroVector(stereoTimeBuffer);
+        Tools::zeroVector(stereoFreqBuffer);
         
-        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer[0]);
-        stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer[1]);
-		for (int i = 0; i < windowLength; i++)
+        for(unsigned channel = 0; channel < STEREO; ++channel)
         {
-            leftTimeBuffer[i] = transferBuffer[0][i];
-            rightTimeBuffer[i] = transferBuffer[1][i];
-		}
-		fft.perform(leftTimeBuffer.data(), leftFreqBuffer.data(), false);
-        fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
+            stereoAudio.getChannel(channel)->getWindowedAudio(transferBuffer[channel]);
+            for (unsigned i = 0; i < windowLength; i++)
+            {
+                stereoTimeBuffer[channel][i] = transferBuffer[channel][i];
+            }
+            fft.perform(stereoTimeBuffer[channel].data(), stereoFreqBuffer[channel].data(), false);
+        }
 
 		// Perform Stereo to Ambi processing
         unsigned width = 360;
         unsigned offset = 0;
-		multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
+		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
         
-		for (int i = 0; i < extractedSources.size(); i++)
+		for (unsigned i = 0; i < extractedSources.size(); i++)
         {
 			fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
 			for (int j = 0; j < windowLength; j++)
@@ -218,7 +215,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         ambiAudio.readAsStereo(buffer.getWritePointer(0), buffer.getWritePointer(1), nSamples);
     #else
         unsigned nChannelsToWrite = min(totalNumOutputChannels, ambiAudio.size());
-        for(int i = 0; i < nChannelsToWrite; ++i)
+        for(unsigned i = 0; i < nChannelsToWrite; ++i)
         {
             ambiAudio.getChannel(i)->read(buffer.getWritePointer(i), nSamples);
         }

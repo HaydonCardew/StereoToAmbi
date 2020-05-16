@@ -68,17 +68,14 @@ private:
 	unsigned windowLength;
 
 	dsp::FFT fft;
-	vector<vector<float>> transferBuffer;
-	std::vector<vector<dsp::Complex<float>>> extractedSources;
-	std::vector<dsp::Complex<float>> leftFreqBuffer, leftTimeBuffer, rightFreqBuffer, rightTimeBuffer;
-	//WindowedFIFOBuffer leftChan, rightChan;
     MultiChannelWindowedFIFOBuffer stereoAudio;
     BFormatBuffer ambiAudio;
-	//std::vector<unique_ptr<WindowedFIFOBuffer>> ambiAudio;
 
 	MultiLevelThreshold multiLevelThreshold;
-	std::vector<MultiLevelThreshold::ComplexFft> extractedFfts;
-	std::vector<float> sourceAzimuths;
+    //MultiLevelThreshold::ComplexFft leftFreqBuffer, leftTimeBuffer, rightFreqBuffer, rightTimeBuffer;
+    vector<MultiLevelThreshold::ComplexFft> extractedFfts, extractedSources, stereoTimeBuffer, stereoFreqBuffer;
+	vector<float> sourceAzimuths;
+    vector<vector<float>> transferBuffer;
     
     // test and should be private - initialise after window length though
     MultiChannelWindowedFIFOBuffer extractedAudio;

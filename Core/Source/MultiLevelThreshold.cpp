@@ -31,21 +31,21 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 }
 
 // width 0 -> 360
-void MultiLevelThreshold::stereoFftToAmbiFft(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs)
+void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs)
 {
 	if (ambiFfts[0].size() < fftSize
-		|| leftFft.size() < fftSize
-		|| rightFft.size() < fftSize
+        || stereoFft.size() != 2
+		|| stereoFft[0].size() < fftSize
 		|| ambiFfts.size() < totalNumberOfSources
 		|| azimuths.size() < totalNumberOfSources)
     {
 		return;
 	}
-    calcMagnitudeVectors(leftFft, rightFft);
+    calcMagnitudeVectors(stereoFft);
 	generatePanMap();
 	calcHistogram(100, 4000, fs);
 	fastMultiLevelthreshold(); // still not fast enough
-	extractAudioSources(leftFft, rightFft, ambiFfts);
+	extractAudioSources(stereoFft[LEFT], stereoFft[RIGHT], ambiFfts);
     calculateAzimuths(azimuths, width);
     offsetAngles(azimuths, offset);
 }
@@ -126,13 +126,15 @@ float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const 
     return (angleInRads/quarterPi) - 1.f;
 }
 
-void MultiLevelThreshold::calcMagnitudeVectors(const ComplexFft& leftFft, const ComplexFft& rightFft)
+void MultiLevelThreshold::calcMagnitudeVectors(const vector<ComplexFft>& stereoFft)
 {
-	for (int i = 0; i < magnitude[LEFT].size(); i++)
+    for (unsigned channel = 0; channel < STEREO; ++channel)
     {
-        magnitude[LEFT][i] = abs(leftFft[i]);
-        magnitude[RIGHT][i] = abs(rightFft[i]);
-	}
+        for (int i = 0; i < magnitude[0].size(); i++)
+        {
+            magnitude[channel][i] = abs(stereoFft[channel][i]);
+        }
+    }
 }
 
 void MultiLevelThreshold::fastMultiLevelthreshold()
