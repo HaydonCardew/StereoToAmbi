@@ -134,7 +134,7 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
         #ifdef STEREO_DECODER
     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         #else
-    && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER)
+    && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
         #endif
         return false;
 
