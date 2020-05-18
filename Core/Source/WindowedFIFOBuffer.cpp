@@ -186,31 +186,27 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {
     assert(windowSize > 0);
-    bFormatTransferBuffer.resize(nAmbiChannels, vector<float>(windowSize, 0));
     transferBuffer.resize(windowSize, 0);
     furseMalhamCoefs.resize(nAmbiChannels, 0);
 }
 
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
 {
-    assert(bFormatTransferBuffer[0].size() == windowSize);
+    assert(transferBuffer.size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
-    Tools::zeroVector(bFormatTransferBuffer);
-    for(unsigned i = 0; i < audioObjects.size(); ++i)
+    Tools::zeroVector(transferBuffer);
+    for(unsigned channel = 0; channel < nAmbiChannels; ++channel)
     {
-        calculateFurseMalhamCoefs(Tools::toRadians(azimuths[i]));
-        for(unsigned j = 0; j < windowSize; ++j)
+        for(unsigned object = 0; object < audioObjects.size(); ++object)
         {
-            for(unsigned channel = 0; channel < nAmbiChannels; ++channel)
+            calculateFurseMalhamCoefs(Tools::toRadians(azimuths[object]));
+            for(unsigned j = 0; j < windowSize; ++j)
             {
-                bFormatTransferBuffer[channel][j] += audioObjects[i][j] * furseMalhamCoefs[channel];
+                    transferBuffer[j] += audioObjects[object][j] * furseMalhamCoefs[channel];
             }
         }
-    }
-    for(unsigned i = 0; i < nAmbiChannels; ++i)
-    {
-        buffers[i]->sendProcessedWindow(bFormatTransferBuffer[i]);
+        buffers[channel]->sendProcessedWindow(transferBuffer);
     }
     assert(sanityCheck());
 }
