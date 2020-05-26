@@ -72,3 +72,6 @@ sourceAzimuths[5] = -42.51;
 sourceAzimuths[6] = -100.04;
 sourceAzimuths[7] = -128.77;
 ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths);
+
+
+SanityCheck fails when adding vst to 2 chan and swapping to 16 chan? Strange...
