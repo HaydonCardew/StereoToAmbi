@@ -29,15 +29,50 @@ crackles..
 - dont happen in silence
 - dont happen on W channel. Do happen on Y/X channel. Only difference is azimuth is moving on them?
 - But dezipper did f'all?
-- Different fft sizes has what effect? lower fft size = faster clicks. So related to fft, shockingly
+- Different fft sizes has what effect? lower fft size = faster clicks. So related to fft
 - Apply a gain of 0.01 makes no difference to the cracks (not a clipping thing)
 - still there with 1st order
 - still there is azimuths remain constant
-- doesnt happen if FM coefs are constant?
+- doesnt happen if FM coefs are constant? ( for all sources )
     furseMalhamCoefs[0] = 0.7071;
     furseMalhamCoefs[1] = 0.2;//cos(azimuth);
     furseMalhamCoefs[2] = -0.2;//sin(azimuth);
     furseMalhamCoefs[3] = 0; // elev only
+- Does happen if coefs are constant but different between sources
+
+- its in the sources.
+switch(n)
+    {
+        case 0:
+            furseMalhamCoefs[1] = -0.431141;
+            furseMalhamCoefs[2] = 0.902285;
+            break;
+        case 1:
+            furseMalhamCoefs[1] = -0.865239;//-0.865239;
+            furseMalhamCoefs[2] = 0.50136;//0.50136;
+            break;
+        case 2:
+            furseMalhamCoefs[1] = -0.431141;//0.98873;
+            furseMalhamCoefs[2] = 0.902285;//-0.149708;
+            break;
+        case 3:
+            furseMalhamCoefs[1] = -0.865239;;//0.737159;
+            furseMalhamCoefs[2] = 0.50136;//-0.675719;
+            break;
+        case 4:
+            furseMalhamCoefs[1] = -0.431141;//0.52;
+            furseMalhamCoefs[2] = 0.902285;//0.85;
+            break;
+        case 5:
+            furseMalhamCoefs[1] = -0.865239;//0.52;
+            furseMalhamCoefs[2] = 0.50136;//-0.85;
+            break;
+    }
+
+    produces much louder noise on the left side than the right...
+
+-if you only play audio from a few sources onthe W track the crackles are still there. Meaning it is in the separate tracks but disappears upon summation.
+
 extracted sources size and transfer buffer size not the same?
 
 it must be in: addAudioOjectsAsBFormat ??
