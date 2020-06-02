@@ -29,24 +29,23 @@ int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSa
     while (stereoAudio.windowedAudioAvailable())
     {
         Tools::zeroVector(transferBuffer);
-        Tools::zeroVector(leftTimeBuffer);
-        Tools::zeroVector(leftFreqBuffer);
-        Tools::zeroVector(rightTimeBuffer);
-        Tools::zeroVector(rightFreqBuffer);
+        Tools::zeroVector(stereoTimeBuffer);
+        Tools::zeroVector(stereoFreqBuffer);
         
-        stereoAudio.getChannel(0)->getWindowedAudio(transferBuffer[0]);
-        stereoAudio.getChannel(1)->getWindowedAudio(transferBuffer[1]);
-        for (int i = 0; i < windowLength; i++)
+        for(unsigned channel = 0; channel < STEREO; ++channel)
         {
-            leftTimeBuffer[i] = transferBuffer[0][i];
-            rightTimeBuffer[i] = transferBuffer[1][i];
+            stereoAudio.getChannel(channel)->getWindowedAudio(transferBuffer[channel]);
+            for (unsigned i = 0; i < windowLength; i++)
+            {
+                stereoTimeBuffer[channel][i] = transferBuffer[channel][i];
+            }
+            fft.perform(stereoTimeBuffer[channel].data(), stereoFreqBuffer[channel].data(), false);
         }
-        fft.perform(leftTimeBuffer.data(), leftFreqBuffer.data(), false);
-        fft.perform(rightTimeBuffer.data(), rightFreqBuffer.data(), false);
 
         // Perform Stereo to Ambi processing
+        unsigned width = 360;
         unsigned offset = 0;
-        multiLevelThreshold.stereoFftToAmbiFft(leftFreqBuffer, rightFreqBuffer, extractedFfts, sourceAzimuths, width, offset, sampleRate);
+        multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, width, offset, sampleRate);
         
         for (int i = 0; i < extractedSources.size(); i++)
         {

@@ -41,7 +41,7 @@ class StereoToAmbiAudioProcessor(object):
         self._setTypes(self.lib.STAAP_new, ctypes.c_void_p, [ctypes.c_int32])
         self._setTypes(self.lib.STAAP_write, None, [ctypes.c_void_p, _c_ndfloat, _c_ndfloat, ctypes.c_int32])
         self._setTypes(self.lib.STAAP_multi_read, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat, ctypes.c_int32, _c_ndfloat, ctypes.c_float])
-        self._setTypes(self.lib.STAAP_getLastHisto, None, [ctypes.c_void_p, _c_ndfloat, _c_ndint, ctypes.c_int32])
+        #self._setTypes(self.lib.STAAP_getLastHisto, None, [ctypes.c_void_p, _c_ndfloat, _c_ndint, ctypes.c_int32])
         self._setTypes(self.lib.STAAP_delete, None, [ctypes.c_void_p])
 
 '''
@@ -62,8 +62,8 @@ nSources = (nThresholds+1)*2
 
 x = StereoToAmbiAudioProcessor(nThresholds)
 
-#filename = 'TestAudio/PannedSources.wav'
-filename = 'TestAudio/Test.wav'
+filename = 'TestAudio/PannedSources.wav'
+#filename = 'TestAudio/Test.wav'
 # get audio size
 f = sf.SoundFile(filename)
 samplerate = f.samplerate

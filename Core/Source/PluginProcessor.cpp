@@ -8,10 +8,6 @@
   ==============================================================================
 */
 
-#define STEREO_DECODER
-#define MAX_AMBI_ORDER 3
-#define STEREO 2
-
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Tools.hpp"
