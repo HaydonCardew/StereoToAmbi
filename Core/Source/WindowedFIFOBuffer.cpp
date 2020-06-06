@@ -195,9 +195,9 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     assert(transferBuffer.size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
-    Tools::zeroVector(transferBuffer);
     for(unsigned channel = 0; channel < nAmbiChannels; ++channel)
     {
+        Tools::zeroVector(transferBuffer);
         for(unsigned object = 0; object < audioObjects.size(); ++object)
         {
             calculateFurseMalhamCoefs(Tools::toRadians(azimuths[object]));
