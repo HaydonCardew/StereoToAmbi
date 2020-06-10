@@ -10,6 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
+#include "Assets.h"
 
 //==============================================================================
 
@@ -25,7 +26,7 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
 
 	channelFormatSelect.setBounds(350, 80, 200, 30);
 	addAndMakeVisible(channelFormatSelect);
-
+	
 	setSize(600, 300);
 }
 
@@ -37,8 +38,9 @@ StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
 //==============================================================================
 void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 {
-	g.setColour(Colours::dimgrey);
-	g.fillAll();
+    Image background = ImageCache::getFromMemory(Assets::Background_png,
+                                                      Assets::Background_pngSize);
+    g.drawImageAt(background.rescaled(396, 134), 194, 181);
 }
 
 /*void StereoToAmbiAudioProcessorEditor::resized() override
