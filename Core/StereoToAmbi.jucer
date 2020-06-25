@@ -3,6 +3,10 @@
 <JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" jucerVersion="5.4.7">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
+      <FILE id="CxRkO6" name="StoALookAndFeel.cpp" compile="1" resource="0"
+            file="Source/StoALookAndFeel.cpp"/>
+      <FILE id="M1QcYU" name="StoALookAndFeel.h" compile="0" resource="0"
+            file="Source/StoALookAndFeel.h"/>
       <FILE id="y61IM5" name="Tools.hpp" compile="0" resource="0" file="Source/Tools.hpp"/>
       <FILE id="QXCcqw" name="Assets.cpp" compile="1" resource="0" file="Source/Assets.cpp"/>
       <FILE id="oRzJEB" name="Histogram.h" compile="0" resource="0" file="Source/Histogram.h"/>
@@ -96,7 +100,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="0" continuousRebuildEnabled="1"/>
-    <OSX/>
+    <OSX buildEnabled="0"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
 </JUCERPROJECT>

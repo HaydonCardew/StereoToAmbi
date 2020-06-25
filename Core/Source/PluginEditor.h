@@ -12,6 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
+#include "StoALookAndFeel.h"
 
 #include <vector>
 #include <string>
@@ -511,22 +512,34 @@ class OrderSelect : public Component
 class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor
 {
 public:
+    StoALookAndFeel laf;
 	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
     ~StereoToAmbiAudioProcessorEditor();
 
     //==============================================================================
 	void paint(Graphics& g) override;
-	void resized() override {};
+	//void resized() override {};
+    void resized() override
+    {
+        int morphySize = getWidth()*0.6f;
+        int listenerSize = morphySize * 0.2f;
+        int listenerPosition = (morphySize/2.0f) - (listenerSize/2.0f);
 
+        listener.setBounds(listenerPosition, listenerPosition, listenerSize, listenerSize);
+        angleShown.setBounds(150, 100, morphySize, morphySize);
+
+        azimuthControl.setBounds(getWidth()*0.6f, getHeight()*0.2f, getWidth()*0.2f, getHeight()*0.6f);
+        centreControl.setBounds(getWidth()*0.8f, getHeight()*0.2f, getWidth()*0.2f, getHeight()*0.6f);
+    }
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     StereoToAmbiAudioProcessor& processor;
-	AzimuthControl aziControl;
-	const std::vector<std::string> orders{ "1", "2", "3" };
-	RowOfButtons orderSelect;
-	std::vector<std::string> channelFormats = {"FuMa", "ACN"};
-	RowOfButtons channelFormatSelect;
+    Slider azimuthControl;
+    Slider centreControl;
+    AzimuthView angleShown;
+    Human listener;
+    Image background;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
 };
 

@@ -15,32 +15,54 @@
 //==============================================================================
 
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), orderSelect(orders), channelFormatSelect(channelFormats)
+    : AudioProcessorEditor (&p), processor (p)//, orderSelect(orders), channelFormatSelect(channelFormats)
 {
 	
-	aziControl.setBounds(30, 30, 300, 300);
+	/*aziControl.setBounds(30, 30, 300, 300);
 	addAndMakeVisible(aziControl);
 
 	orderSelect.setBounds(350, 40, 200, 30);
 	addAndMakeVisible(orderSelect);
 
 	channelFormatSelect.setBounds(350, 80, 200, 30);
-	addAndMakeVisible(channelFormatSelect);
+	addAndMakeVisible(channelFormatSelect);*/
 	
-	setSize(600, 300);
+    setLookAndFeel(&laf);
+    
+    background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);
+    
+    setSize(background.getWidth(), background.getHeight());
+    
+    azimuthControl.setRange(0.0f, 3.1416f);
+    azimuthControl.onValueChange = [this] {angleShown.changeAzimuth(azimuthControl.getValue()); };
+    azimuthControl.setSliderStyle(juce::Slider::LinearVertical);
+    azimuthControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+
+    centreControl.setRange(0.0f, 3.1416f * 2.0f);
+    centreControl.onValueChange = [this] {
+        listener.rotateBy(centreControl.getValue());
+        angleShown.changeCentrePosition(centreControl.getValue());
+    };
+    
+    centreControl.setSliderStyle(juce::Slider::LinearVertical);
+    centreControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+
+    resized();
+    addAndMakeVisible(angleShown);
+    addAndMakeVisible(azimuthControl);
+    addAndMakeVisible(centreControl);
+    getLookAndFeel().setColour(Slider::trackColourId, Colours::darkgrey);
 }
 
 StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
 {
-    
+    setLookAndFeel(nullptr);
 }
 
 //==============================================================================
 void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 {
-    Image background = ImageCache::getFromMemory(Assets::Background_png,
-                                                      Assets::Background_pngSize);
-    g.drawImageAt(background.rescaled(396, 134), 194, 181);
+    g.drawImageAt(background, 0, 0);
 }
 
 /*void StereoToAmbiAudioProcessorEditor::resized() override

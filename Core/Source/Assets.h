@@ -5,12 +5,12 @@
 namespace Assets
 {
     extern const char*  Knob_png;
-    const int           Knob_pngSize = 58279;
+    const int           Knob_pngSize = 4785;
 
     extern const char*  Background_png;
-    const int           Background_pngSize = 439150;
+    const int           Background_pngSize = 75598;
 
     extern const char*  Dial_png;
-    const int           Dial_pngSize = 30891;
+    const int           Dial_pngSize = 2201;
 
 }
