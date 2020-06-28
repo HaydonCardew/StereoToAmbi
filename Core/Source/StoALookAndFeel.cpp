@@ -24,9 +24,11 @@ void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, in
 }
 
 void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
-{
-    g.drawImage(rotaryKnob, 0, 0, rotaryKnob.getWidth(), rotaryKnob.getHeight(),
-    0, 0, rotaryKnob.getWidth(), rotaryKnob.getHeight());
+{   
+    float angle = sliderPosProportional * 2 * 3.141;
+    //g.drawImageTransformed(rotaryKnob, 0, 0, rotaryKnob.getWidth(), rotaryKnob.getHeight(),
+    //0, 0, rotaryKnob.getWidth(), rotaryKnob.getHeight());
+    g.drawImageTransformed(rotaryKnob, AffineTransform::rotation(angle, rotaryKnob.getWidth()/2, rotaryKnob.getHeight()/2));
 }
 
 /*
