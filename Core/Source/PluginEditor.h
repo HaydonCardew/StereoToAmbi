@@ -512,34 +512,16 @@ class OrderSelect : public Component
 class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor
 {
 public:
-    StoALookAndFeel laf;
 	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
     ~StereoToAmbiAudioProcessorEditor();
 
     //==============================================================================
 	void paint(Graphics& g) override;
-	//void resized() override {};
-    void resized() override
-    {
-        int morphySize = getWidth()*0.6f;
-        int listenerSize = morphySize * 0.2f;
-        int listenerPosition = (morphySize/2.0f) - (listenerSize/2.0f);
-
-        listener.setBounds(listenerPosition, listenerPosition, listenerSize, listenerSize);
-        angleShown.setBounds(150, 100, morphySize, morphySize);
-
-        azimuthControl.setBounds(getWidth()*0.6f, getHeight()*0.2f, getWidth()*0.2f, getHeight()*0.6f);
-        centreControl.setBounds(getWidth()*0.8f, getHeight()*0.2f, getWidth()*0.2f, getHeight()*0.6f);
-    }
+    void resized() override;
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     StereoToAmbiAudioProcessor& processor;
-    Slider azimuthControl;
-    Slider centreControl;
-    AzimuthView angleShown;
-    Human listener;
-    Image background;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
 };
 
@@ -547,26 +529,21 @@ private:
 class MainContentComponent   : public Component
 {
 public:
-    MainContentComponent()
-    {
-		aziControl.setBounds(0, 0, 300, 300);
-		addAndMakeVisible(aziControl);
-		orderSelect.setBounds(350, 40, 200, 30);
-		addAndMakeVisible(orderSelect);
-        setSize (600, 600);
-    }
-    ~MainContentComponent() {}
+    MainContentComponent();
+    ~MainContentComponent();
 
-	AzimuthControl aziControl;
-	OrderSelect orderSelect;
+	StoALookAndFeel laf;
 
-    void paint (Graphics& g) override {
-		g.setColour(Colours::lightgrey);
-		g.fillAll();
-    }
+    void paint (Graphics& g) override;
 
-	void resized() override {};
+	void resized() override;
 
+	Slider azimuthControl;
+    Slider centreControl;
+    AzimuthView angleShown;
+    Human listener;
+    Image background;
+	
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)

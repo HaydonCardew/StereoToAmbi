@@ -14,12 +14,19 @@
 StoALookAndFeel::StoALookAndFeel()
 {
     dial = ImageCache::getFromMemory (Assets::Dial_png, Assets::Dial_pngSize);
+    rotaryKnob = ImageCache::getFromMemory (Assets::Knob_png, Assets::Knob_pngSize);
 }
 
-void StoALookAndFeel::drawLinearSlider (Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider & slider)
+void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider & slider)
 {
     g.drawImage(dial, 0, sliderPos, dial.getWidth(), dial.getHeight(),
                 0, 0, dial.getWidth(), dial.getHeight());
+}
+
+void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
+{
+    g.drawImage(rotaryKnob, 0, 0, rotaryKnob.getWidth(), rotaryKnob.getHeight(),
+    0, 0, rotaryKnob.getWidth(), rotaryKnob.getHeight());
 }
 
 /*

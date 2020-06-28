@@ -17,16 +17,23 @@
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)//, orderSelect(orders), channelFormatSelect(channelFormats)
 {
-	
-	/*aziControl.setBounds(30, 30, 300, 300);
-	addAndMakeVisible(aziControl);
+}
 
-	orderSelect.setBounds(350, 40, 200, 30);
-	addAndMakeVisible(orderSelect);
+void StereoToAmbiAudioProcessorEditor::resized()
+{
+}
 
-	channelFormatSelect.setBounds(350, 80, 200, 30);
-	addAndMakeVisible(channelFormatSelect);*/
-	
+StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
+{
+}
+
+//==============================================================================
+void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
+{
+}
+
+MainContentComponent::MainContentComponent()
+{
     setLookAndFeel(&laf);
     
     background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);
@@ -51,23 +58,29 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     addAndMakeVisible(angleShown);
     addAndMakeVisible(azimuthControl);
     addAndMakeVisible(centreControl);
+    centreControl.setSliderStyle(Slider::Rotary);
     getLookAndFeel().setColour(Slider::trackColourId, Colours::darkgrey);
 }
 
-StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
+void MainContentComponent::resized()
+{
+    int morphySize = getWidth()*0.6f;
+    int listenerSize = morphySize * 0.2f;
+    int listenerPosition = (morphySize/2.0f) - (listenerSize/2.0f);
+
+    listener.setBounds(listenerPosition, listenerPosition, listenerSize, listenerSize);
+    angleShown.setBounds(getWidth()*0.27f, getHeight()*0.16f, getWidth()*0.8f, getHeight()*0.8f);
+
+    azimuthControl.setBounds(getWidth()*0.14f, getHeight()*0.3f, getWidth()*0.2f, getHeight()*0.6f);
+    centreControl.setBounds(getWidth()*0.1f, getHeight()*0.1f, getWidth()*0.3f, getHeight()*0.3f);
+}
+
+void MainContentComponent::paint(Graphics& g)
+{
+     g.drawImageAt(background, 0, 0);
+}
+
+MainContentComponent::~MainContentComponent()
 {
     setLookAndFeel(nullptr);
-}
-
-//==============================================================================
-void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
-{
-    g.drawImageAt(background, 0, 0);
-}
-
-/*void StereoToAmbiAudioProcessorEditor::resized() override
-{
-    // This is generally where you'll want to lay out the positions of any
-    // subcomponents in your editor..
-}*/
-
+} 
