@@ -15,12 +15,15 @@
 //==============================================================================
 
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p)//, orderSelect(orders), channelFormatSelect(channelFormats)
+    : AudioProcessorEditor (&p), processor (p)
 {
+    setSize(600, 346);
+    addAndMakeVisible(mainContentComponent);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
 {
+    mainContentComponent.setBounds(0, 0, 600, 346);
 }
 
 StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
@@ -54,25 +57,25 @@ MainContentComponent::MainContentComponent()
     centreControl.setSliderStyle(juce::Slider::LinearVertical);
     centreControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
 
-    resized();
     addAndMakeVisible(angleShown);
     addAndMakeVisible(azimuthControl);
     addAndMakeVisible(centreControl);
     centreControl.setSliderStyle(Slider::Rotary);
     getLookAndFeel().setColour(Slider::trackColourId, Colours::darkgrey);
+    
+    addAndMakeVisible(orderSelect);
+    addAndMakeVisible(listener);
+    
+    resized();
 }
 
 void MainContentComponent::resized()
 {
-    int morphySize = getWidth()*0.6f;
-    int listenerSize = morphySize * 0.2f;
-    int listenerPosition = (morphySize/2.0f) - (listenerSize/2.0f);
-
-    listener.setBounds(listenerPosition, listenerPosition, listenerSize, listenerSize);
-    angleShown.setBounds(getWidth()*0.27f, getHeight()*0.16f, getWidth()*0.8f, getHeight()*0.8f);
-
-    azimuthControl.setBounds(getWidth()*0.14f, getHeight()*0.3f, getWidth()*0.2f, getHeight()*0.6f);
-    centreControl.setBounds(getWidth()*0.1f, getHeight()*0.1f, getWidth()*0.3f, getHeight()*0.3f);
+    listener.setBoundsRelative(0.27f, 0.16f, 0.2f, 0.2f);
+    angleShown.setBoundsRelative(0.27f, 0.16f, 0.8f, 0.8f);
+    azimuthControl.setBoundsRelative(0.14f, 0.3f, 0.2f, 0.6f);
+    centreControl.setBoundsRelative(0.1f, 0.1f, 0.3f, 0.3f);
+    orderSelect.setBoundsRelative(0.75f, 0.17f, 0.2f, 0.1f);
 }
 
 void MainContentComponent::paint(Graphics& g)
