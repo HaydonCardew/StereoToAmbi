@@ -506,26 +506,6 @@ class OrderSelect : public Component
 	}
 };
 
-//==============================================================================
-/**
-*/
-class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor
-{
-public:
-	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
-    ~StereoToAmbiAudioProcessorEditor();
-
-    //==============================================================================
-	void paint(Graphics& g) override;
-    void resized() override;
-private:
-    // This reference is provided as a quick way for your editor to
-    // access the processor object that created it.
-    StereoToAmbiAudioProcessor& processor;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
-};
-
-//==============================================================================
 class MainContentComponent   : public Component
 {
 public:
@@ -542,9 +522,37 @@ public:
     Slider centreControl;
     AzimuthView angleShown;
     Human listener;
+    OrderSelect orderSelect;
     Image background;
+    /*
+        listener.setBoundsRelative();
+    listener.setBounds(getWidth()*0.27f, getHeight()*0.16f, getWidth()*0.2f, getHeight()*0.2f);
+    angleShown.setBounds(getWidth()*0.27f, getHeight()*0.16f, getWidth()*0.8f, getHeight()*0.8f);
+    azimuthControl.setBounds(getWidth()*0.14f, getHeight()*0.3f, getWidth()*0.2f, getHeight()*0.6f);
+    centreControl.setBounds(getWidth()*0.1f, getHeight()*0.1f, getWidth()*0.3f, getHeight()*0.3f);
+    orderSelect.setBounds(getWidth()*0.75f, getHeight()*0.17f, getWidth()*0.2f, getHeight()*0.1f);
+}
+    */
 	
 private:
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
+};
+
+class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor
+{
+public:
+	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
+    ~StereoToAmbiAudioProcessorEditor();
+
+    //==============================================================================
+	void paint(Graphics& g) override;
+    void resized() override;
+    
+    MainContentComponent mainContentComponent;
+private:
+    // This reference is provided as a quick way for your editor to
+    // access the processor object that created it.
+    StereoToAmbiAudioProcessor& processor;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
 };

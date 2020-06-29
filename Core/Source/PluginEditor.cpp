@@ -43,25 +43,23 @@ MainContentComponent::MainContentComponent()
     
     setSize(background.getWidth(), background.getHeight());
     
+    addAndMakeVisible(angleShown);
+    
+    addAndMakeVisible(azimuthControl);
     azimuthControl.setRange(0.0f, 3.1416f);
     azimuthControl.onValueChange = [this] {angleShown.changeAzimuth(azimuthControl.getValue()); };
     azimuthControl.setSliderStyle(juce::Slider::LinearVertical);
     azimuthControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
-
+    
+    addAndMakeVisible(centreControl);
+    centreControl.setSliderStyle(Slider::Rotary);
     centreControl.setRange(0.0f, 3.1416f * 2.0f);
     centreControl.onValueChange = [this] {
         listener.rotateBy(centreControl.getValue());
         angleShown.changeCentrePosition(centreControl.getValue());
     };
-    
-    centreControl.setSliderStyle(juce::Slider::LinearVertical);
+    centreControl.setRotaryParameters(0.f, 6.282f, false);
     centreControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
-
-    addAndMakeVisible(angleShown);
-    addAndMakeVisible(azimuthControl);
-    addAndMakeVisible(centreControl);
-    centreControl.setSliderStyle(Slider::Rotary);
-    getLookAndFeel().setColour(Slider::trackColourId, Colours::darkgrey);
     
     addAndMakeVisible(orderSelect);
     addAndMakeVisible(listener);
