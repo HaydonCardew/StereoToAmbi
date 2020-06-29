@@ -518,8 +518,8 @@ public:
 
 	void resized() override;
 
-	Slider azimuthControl;
-    Slider centreControl;
+	Slider direction;
+    Slider spread;
     AzimuthView angleShown;
     Human listener;
     OrderSelect orderSelect;

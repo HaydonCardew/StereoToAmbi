@@ -45,21 +45,23 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(angleShown);
     
-    addAndMakeVisible(azimuthControl);
-    azimuthControl.setRange(0.0f, 3.1416f);
-    azimuthControl.onValueChange = [this] {angleShown.changeAzimuth(azimuthControl.getValue()); };
-    azimuthControl.setSliderStyle(juce::Slider::LinearVertical);
-    azimuthControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
-    
-    addAndMakeVisible(centreControl);
-    centreControl.setSliderStyle(Slider::Rotary);
-    centreControl.setRange(0.0f, 3.1416f * 2.0f);
-    centreControl.onValueChange = [this] {
-        listener.rotateBy(centreControl.getValue());
-        angleShown.changeCentrePosition(centreControl.getValue());
+    addAndMakeVisible(direction);
+    direction.setRange(0.0f, 3.1416f);
+    direction.onValueChange = [this] {
+        angleShown.changeAzimuth(direction.getValue()); 
     };
-    centreControl.setRotaryParameters(0.f, 6.282f, false);
-    centreControl.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    direction.setSliderStyle(juce::Slider::LinearVertical);
+    direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    
+    addAndMakeVisible(spread);
+    spread.setSliderStyle(Slider::Rotary);
+    spread.setRange(0.0f, 3.1416f * 2.0f);
+    spread.onValueChange = [this] {
+        listener.rotateBy(spread.getValue());
+        angleShown.changeCentrePosition(spread.getValue());
+    };
+    spread.setRotaryParameters(0.f, 6.282f, false);
+    spread.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
     
     addAndMakeVisible(orderSelect);
     addAndMakeVisible(listener);
@@ -71,8 +73,8 @@ void MainContentComponent::resized()
 {
     listener.setBoundsRelative(0.27f, 0.16f, 0.2f, 0.2f);
     angleShown.setBoundsRelative(0.27f, 0.16f, 0.8f, 0.8f);
-    azimuthControl.setBoundsRelative(0.14f, 0.3f, 0.2f, 0.6f);
-    centreControl.setBoundsRelative(0.1f, 0.1f, 0.3f, 0.3f);
+    direction.setBoundsRelative(0.14f, 0.3f, 0.2f, 0.6f);
+    spread.setBoundsRelative(0.1f, 0.1f, 0.3f, 0.3f);
     orderSelect.setBoundsRelative(0.75f, 0.17f, 0.2f, 0.1f);
 }
 
