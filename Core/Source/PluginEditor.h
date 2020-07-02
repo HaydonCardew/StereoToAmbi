@@ -524,15 +524,6 @@ public:
     Human listener;
     OrderSelect orderSelect;
     Image background;
-    /*
-        listener.setBoundsRelative();
-    listener.setBounds(getWidth()*0.27f, getHeight()*0.16f, getWidth()*0.2f, getHeight()*0.2f);
-    angleShown.setBounds(getWidth()*0.27f, getHeight()*0.16f, getWidth()*0.8f, getHeight()*0.8f);
-    azimuthControl.setBounds(getWidth()*0.14f, getHeight()*0.3f, getWidth()*0.2f, getHeight()*0.6f);
-    centreControl.setBounds(getWidth()*0.1f, getHeight()*0.1f, getWidth()*0.3f, getHeight()*0.3f);
-    orderSelect.setBounds(getWidth()*0.75f, getHeight()*0.17f, getWidth()*0.2f, getHeight()*0.1f);
-}
-    */
 	
 private:
     //==============================================================================

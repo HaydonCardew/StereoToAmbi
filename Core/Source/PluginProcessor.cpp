@@ -11,6 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Tools.hpp"
+#include <algorithm>
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
@@ -146,6 +147,16 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
+void StereoToAmbiAudioProcessor::setWidth(unsigned w) 
+{
+    width = min(max(360U, w), 0U);
+}
+
+void StereoToAmbiAudioProcessor::setOffset(unsigned o)
+{ 
+    offset = min(max(360U, o), 0U);
+}
+
 void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
@@ -190,8 +201,6 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         }
 
 		// Perform Stereo to Ambi processing
-        unsigned width = 360;
-        unsigned offset = 0;
 		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
         
 		for (unsigned i = 0; i < extractedSources.size(); i++)

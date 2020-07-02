@@ -61,6 +61,10 @@ public:
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
 
+    // Controls ====================================================================
+    void setWidth(unsigned w);
+    void setOffset(unsigned o);
+    
     // Test
 	void testProcessBlockWrite(float* left, float* right, int nSamples);
     int testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate);
@@ -71,6 +75,9 @@ private:
     unsigned fftSize;
 	unsigned windowLength;
 
+	unsigned width = 360;
+    unsigned offset = 0;
+	
 	dsp::FFT fft;
     MultiChannelWindowedFIFOBuffer stereoAudio;
     BFormatBuffer ambiAudio;
