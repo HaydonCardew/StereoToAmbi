@@ -17,6 +17,7 @@ class StoALookAndFeel : public LookAndFeel_V3
 private:
     Image dial;
     Image rotaryKnob;
+    Image shadow;
     
 public:
     StoALookAndFeel();

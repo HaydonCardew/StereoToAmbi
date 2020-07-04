@@ -13,19 +13,21 @@
 
 StoALookAndFeel::StoALookAndFeel()
 {
-    dial = ImageCache::getFromMemory (Assets::Dial_png, Assets::Dial_pngSize);
-    rotaryKnob = ImageCache::getFromMemory (Assets::Knob_png, Assets::Knob_pngSize);
+    dial = ImageCache::getFromMemory (Assets::Slider_png, Assets::Slider_pngSize);
+    rotaryKnob = ImageCache::getFromMemory (Assets::Dial_png, Assets::Dial_pngSize);
+    shadow = ImageCache::getFromMemory (Assets::Shadow_png, Assets::Shadow_pngSize);
 }
 
 void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider & slider)
 {
-    
-    g.drawImage(dial, 0, sliderPos, dial.getWidth(), dial.getHeight(),
-                0, 0, dial.getWidth(), dial.getHeight());
+    float newMaxSliderPos = maxSliderPos - dial.getHeight();
+    float scale = newMaxSliderPos / maxSliderPos;
+    g.drawImageAt(dial, 0, sliderPos*scale);
 }
 
 void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
 {   
+    g.drawImageAt(shadow, 0, 0);
     float angle = sliderPosProportional * 2 * 3.141;
     g.drawImageTransformed(rotaryKnob, AffineTransform::rotation(angle, rotaryKnob.getWidth()/2, rotaryKnob.getHeight()/2));
 }

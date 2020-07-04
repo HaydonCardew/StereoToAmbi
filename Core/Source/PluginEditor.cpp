@@ -17,13 +17,13 @@
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    setSize(600, 346);
+    setSize(600, 432);
     addAndMakeVisible(mainContentComponent);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
 {
-    mainContentComponent.setBounds(0, 0, 600, 346);
+    mainContentComponent.setBounds(0, 0, 600, 432);
 }
 
 StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
@@ -72,13 +72,18 @@ MainContentComponent::MainContentComponent()
 void MainContentComponent::resized()
 {
     float listenerSize = 0.14764f;
-    listener.setBoundsRelative(0.452, 0.43927, listenerSize, listenerSize);
-    float angleShownSize = 0.762392f;
-    angleShown.setBoundsRelative(0.278609, 0.120073, angleShownSize, angleShownSize);
     
-    direction.setBoundsRelative(0.0965741f, 0.0915974f, 0.155535f, 0.306973f);
-    spread.setBoundsRelative(0.137192f, 0.382995f, 0.3f, 0.52f);
-    orderSelect.setBoundsRelative(0.76f, 0.165f, 0.2, 0.1f);
+    listener.setBoundsRelative(0.604094, 0.418284, listenerSize, listenerSize);
+    
+    float angleShownSize = 0.762392f;
+    
+    angleShown.setBoundsRelative(0.376265, 0.103658, angleShownSize, angleShownSize);
+    
+    direction.setBoundsRelative(0.073095f, 0.01181f, 0.366223f, 0.241731f);
+    
+    spread.setBoundsRelative(0.130751f, 0.29635f, 0.0841174f, 0.467847f);
+    
+    orderSelect.setBoundsRelative(0.0847174f, 0.724134f, 0.22805, 0.1f);
 }
 
 void MainContentComponent::paint(Graphics& g)
