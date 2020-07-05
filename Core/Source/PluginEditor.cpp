@@ -73,11 +73,11 @@ void MainContentComponent::resized()
 {
     float listenerSize = 0.14764f;
     
-    listener.setBoundsRelative(0.604094, 0.418284, listenerSize, listenerSize);
+    listener.setBoundsRelative(0.60, 0.413713, listenerSize, listenerSize);
     
     float angleShownSize = 0.762392f;
     
-    angleShown.setBoundsRelative(0.376265, 0.103658, angleShownSize, angleShownSize);
+    angleShown.setBoundsRelative(0.379, 0.11, angleShownSize, angleShownSize);
     
     direction.setBoundsRelative(0.073095f, 0.01181f, 0.366223f, 0.241731f);
     

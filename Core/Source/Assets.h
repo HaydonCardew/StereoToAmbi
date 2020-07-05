@@ -26,9 +26,12 @@ namespace Assets
     const int           Background_pngSize = 153954;
 
     extern const char*  Dial_png;
-    const int           Dial_pngSize = 7647;
+    const int           Dial_pngSize = 7386;
 
     extern const char*  Shadow_png;
     const int           Shadow_pngSize = 3722;
+
+    extern const char*  Dial_copy_png;
+    const int           Dial_copy_pngSize = 7745;
 
 }

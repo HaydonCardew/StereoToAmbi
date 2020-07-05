@@ -7,10 +7,9 @@
             file="Source/StoALookAndFeel.cpp"/>
       <FILE id="M1QcYU" name="StoALookAndFeel.h" compile="0" resource="0"
             file="Source/StoALookAndFeel.h"/>
-      <FILE id="y61IM5" name="Tools.hpp" compile="0" resource="0" file="Source/Tools.hpp"/>
+      <FILE id="Fc8mpV" name="Assets.h" compile="0" resource="0" file="Source/Assets.h"/>
       <FILE id="QXCcqw" name="Assets.cpp" compile="1" resource="0" file="Source/Assets.cpp"/>
       <FILE id="oRzJEB" name="Histogram.h" compile="0" resource="0" file="Source/Histogram.h"/>
-      <FILE id="Fc8mpV" name="Assets.h" compile="0" resource="0" file="Source/Assets.h"/>
       <FILE id="Q7hs8l" name="Histogram.cpp" compile="1" resource="0" file="Source/Histogram.cpp"/>
       <FILE id="ykVx9p" name="WindowedFIFOBuffer.h" compile="0" resource="0"
             file="Source/WindowedFIFOBuffer.h"/>
@@ -27,6 +26,7 @@
             file="Source/MultiLevelThreshold.cpp"/>
       <FILE id="WN70uN" name="MultiLevelThreshold.h" compile="0" resource="0"
             file="Source/MultiLevelThreshold.h"/>
+      <FILE id="y61IM5" name="Tools.hpp" compile="0" resource="0" file="Source/Tools.hpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
