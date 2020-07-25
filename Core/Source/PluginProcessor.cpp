@@ -28,7 +28,12 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
                        .withOutput ("Output", AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
                         #endif
                      #endif
-                       )
+                       ),
+valueTree(*this, nullptr, "ValueTree",
+{
+    std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME, 0.0f, 360.f, 90.0f),
+    std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f)
+})
 #endif
 {
 	extractedFfts.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
@@ -201,6 +206,8 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         }
 
 		// Perform Stereo to Ambi processing
+        width = *valueTree.getRawParameterValue(WIDTH_ID);
+        offset = *valueTree.getRawParameterValue(OFFSET_ID);
 		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
         
 		for (unsigned i = 0; i < extractedSources.size(); i++)

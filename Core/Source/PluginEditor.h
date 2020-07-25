@@ -100,48 +100,61 @@ class Human : public Component {
     }
 };
 
-class AzimuthView : public Component {
+class AzimuthView : public Component
+{
 public:
-	AzimuthView(float startAzi = 1.0f, float startCentreRads = 0) {
-		rads = startAzi;
-		centreRads = startCentreRads;
-		drawPie();
-	};
+    AzimuthView() : rads(0), offset(0)
+    {
+        drawPie();
+    };
 
-	float rads;
-	float centreRads;
-	Path segment;
+    void changeAzimuth(float azi)
+    {
+        azi /= 2;
+        if (rads != azi && 6.282 >= azi && azi >= 0.f)
+        {
+            rads = azi;
+            drawPie();
+        }
+    }
 
-	void drawPie() {
-		segment.clear();
-		int size = getSquareSize();
-		segment.addPieSegment(0.0f, 0.0f, size, size, -rads+centreRads, rads+centreRads, 0.0f);
-		repaint();
-	}
+    void changeOffset(float azi)
+    {
+        if (offset != azi && 6.282 >= azi && azi >= 0.f)
+        {
+            offset = azi;
+            drawPie();
+        }
+    }
 
-	void changeAzimuth(float azi) {
-		rads = azi;
-		drawPie();
-	}
+    void paint(Graphics& g) override
+    {
+        g.setColour(juce::Colour (0, 255, 255).withAlpha(0.5f));
+        g.fillPath(segment);
+    }
 
-	void changeCentrePosition(float azi) {
-		centreRads = azi;
-		drawPie();
-	}
+    void resized() override
+    {
+        drawPie();
+    }
+    
+private:
+    float rads;
+    float offset;
+    Path segment;
 
-	void paint(Graphics& g) override
-	{
-		g.setColour(juce::Colour (0, 255, 255).withAlpha(0.5f));
-		g.fillPath(segment);
-	}
-
-	int getSquareSize() {
-		return getWidth() > getHeight() ? getHeight(): getWidth();
-	}
-
-	void resized() override {
-		drawPie();
-	}
+    void drawPie()
+    {
+        segment.clear();
+        int size = getSquareSize();
+        segment.addPieSegment(0.0f, 0.0f, size, size, -rads+offset, rads+offset, 0.0f);
+        repaint();
+    }
+    
+    int getSquareSize()
+    {
+        return getWidth() > getHeight() ? getHeight(): getWidth();
+    }
 };
 
 class RowOfButtons : public Component
@@ -262,5 +275,7 @@ private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
     StereoToAmbiAudioProcessor& processor;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> widthValue;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> offsetValue;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
 };

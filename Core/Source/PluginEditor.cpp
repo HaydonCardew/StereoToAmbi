@@ -11,6 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Assets.h"
+#include "Tools.hpp"
 
 //==============================================================================
 
@@ -19,6 +20,8 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
 {
     setSize(600, 432);
     addAndMakeVisible(mainContentComponent);
+    widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, mainContentComponent.spread); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
+    offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, mainContentComponent.direction);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
@@ -46,19 +49,19 @@ MainContentComponent::MainContentComponent()
     addAndMakeVisible(angleShown);
     
     addAndMakeVisible(spread);
-    spread.setRange(0.0f, 3.1416f);
+    //spread.setRange(0.0f, 3.1416f);
     spread.onValueChange = [this] {
-        angleShown.changeAzimuth(spread.getValue()); 
+        angleShown.changeAzimuth(Tools::toRadians(spread.getValue()));
     };
     spread.setSliderStyle(juce::Slider::LinearVertical);
     spread.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
     
     addAndMakeVisible(direction);
     direction.setSliderStyle(Slider::Rotary);
-    direction.setRange(0.0f, 3.1416f * 2.0f);
+    //direction.setRange(0.0f, 3.1416f * 2.0f);
     direction.onValueChange = [this] {
-        listener.rotateBy(direction.getValue());
-        angleShown.changeCentrePosition(direction.getValue());
+        listener.rotateBy(Tools::toRadians(direction.getValue()));
+        angleShown.changeOffset(Tools::toRadians(direction.getValue()));
     };
     direction.setRotaryParameters(0.f, 6.282f, false);
     direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);

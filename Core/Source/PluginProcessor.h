@@ -18,6 +18,11 @@
 #define MAX_AMBI_ORDER 3
 #define STEREO 2
 
+#define WIDTH_NAME "Width"
+#define WIDTH_ID "width"
+#define OFFSET_NAME "Offset"
+#define OFFSET_ID "offset"
+
 //==============================================================================
 /**
 */
@@ -70,7 +75,11 @@ public:
     int testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate);
     void getLastHisto(float* probs, int* bins, int nSize);
     
+    AudioProcessorValueTreeState valueTree;
+    
 private:
+    
+    
     unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
     unsigned fftSize;
 	unsigned windowLength;
