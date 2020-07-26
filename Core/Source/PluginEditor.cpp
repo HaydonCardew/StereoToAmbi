@@ -39,6 +39,7 @@ void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 }
 
 MainContentComponent::MainContentComponent()
+//: channelOrder({"FuMa", "AmbiX"})
 {
     setLookAndFeel(&laf);
     
@@ -66,7 +67,7 @@ MainContentComponent::MainContentComponent()
     direction.setRotaryParameters(0.f, 6.282f, false);
     direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
     
-    addAndMakeVisible(orderSelect);
+    //addAndMakeVisible(channelOrder);
     addAndMakeVisible(listener);
     
     resized();
@@ -86,7 +87,7 @@ void MainContentComponent::resized()
     
     spread.setBoundsRelative(0.130751f, 0.29635f, 0.0841174f, 0.467847f);
     
-    orderSelect.setBoundsRelative(0.0847174f, 0.724134f, 0.22805, 0.1f);
+    //channelOrder.setBoundsRelative(0.0847174f, 0.724134f, 0.22805, 0.1f);
 }
 
 void MainContentComponent::paint(Graphics& g)

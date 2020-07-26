@@ -160,9 +160,10 @@ private:
 class RowOfButtons : public Component
 {
 public:
-	RowOfButtons(std::vector<std::string> buttons, int radioGroupID=12345) {
-		numberOfButtons = buttons.size();
-		for (int i = 0; i < numberOfButtons; ++i)
+	RowOfButtons(std::vector<std::string> buttons, int radioGroupID=12345)
+    : nButtons((unsigned)buttons.size())
+    {
+        for (int i = 0; i < nButtons; ++i)
 		{
 			auto* tb = addToList(new TextButton(buttons[i]));
 
@@ -172,61 +173,26 @@ public:
 			tb->setColour(TextButton::textColourOnId, Colours::black);
 			tb->setColour(TextButton::buttonColourId, Colours::darkgrey);
 			tb->setColour(TextButton::buttonOnColourId, Colours::purple);
-			tb->setConnectedEdges(((i != 0) ? Button::ConnectedOnLeft : 0) | ((i != (numberOfButtons - 1)) ? Button::ConnectedOnRight : 0));
+			tb->setConnectedEdges(((i != 0) ? Button::ConnectedOnLeft : 0) | ((i != (nButtons - 1)) ? Button::ConnectedOnRight : 0));
 
-			if (i == 0) {
+			if (i == 0)
+            {
 				tb->setToggleState(true, dontSendNotification);
 			}
 		}
 	}
-	void resized() {
-		int buttonWidth = getWidth() / numberOfButtons;
-		for (int i = 0; i < components.size(); i++) {
+    
+	void resized()
+    {
+		int buttonWidth = getWidth() / nButtons;
+		for (int i = 0; i < components.size(); i++)
+        {
 			components[i]->setBounds(0 + (i*buttonWidth), 0, buttonWidth, getHeight());
 		}
 	}
-	int numberOfButtons = 3;
-	//static const std::vector<std::string> defaultButtons = {"1", "2", "3"};
-	// This little function avoids a bit of code-duplication by adding a component to
-	// our list as well as calling addAndMakeVisible on it..
-	OwnedArray<Component> components;
-	template <typename ComponentType>ComponentType* addToList(ComponentType* newComp)
-	{
-		components.add(newComp);
-		addAndMakeVisible(newComp);
-		return newComp;
-	}
-};
-
-class OrderSelect : public Component
-{
-	public:
-	OrderSelect() {
-		for (int i = 0; i < noOfOrders; ++i)
-		{
-			auto* tb = addToList(new TextButton(String(i + 1)));
-
-			tb->setClickingTogglesState(true);
-			tb->setRadioGroupId(34567);
-			tb->setColour(TextButton::textColourOffId, Colours::black);
-			tb->setColour(TextButton::textColourOnId, Colours::black);
-			tb->setColour(TextButton::buttonColourId, Colours::darkgrey);
-			tb->setColour(TextButton::buttonOnColourId, juce::Colour (0, 255, 255));
-			tb->setConnectedEdges(((i != 0) ? Button::ConnectedOnLeft : 0) | ((i != (noOfOrders - 1)) ? Button::ConnectedOnRight : 0));
-
-			if (i == 0)
-				tb->setToggleState(true, dontSendNotification);
-		}
-	}
-	void resized() {
-		int buttonWidth = getWidth() / noOfOrders;
-		for (int i = 0; i < components.size(); i++) {
-			components[i]->setBounds(0 + (i*buttonWidth), 0, buttonWidth, getHeight());
-		}
-	}
-	const int noOfOrders = 3;
-	// This little function avoids a bit of code-duplication by adding a component to
-	// our list as well as calling addAndMakeVisible on it..
+private:
+	int nButtons;
+    
 	OwnedArray<Component> components;
 	template <typename ComponentType>ComponentType* addToList(ComponentType* newComp)
 	{
@@ -252,7 +218,7 @@ public:
     Slider spread;
     AzimuthView angleShown;
     Human listener;
-    OrderSelect orderSelect;
+    //RowOfButtons channelOrder;
     Image background;
 	
 private:
