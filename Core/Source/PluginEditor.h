@@ -202,7 +202,7 @@ private:
 	}
 };
 
-class MainContentComponent   : public Component
+class MainContentComponent : public Component
 {
 public:
     MainContentComponent();

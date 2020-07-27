@@ -152,16 +152,6 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 }
 #endif
 
-void StereoToAmbiAudioProcessor::setWidth(unsigned w) 
-{
-    width = min(max(360U, w), 0U);
-}
-
-void StereoToAmbiAudioProcessor::setOffset(unsigned o)
-{ 
-    offset = min(max(360U, o), 0U);
-}
-
 void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
@@ -195,7 +185,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         Tools::zeroVector(stereoTimeBuffer);
         Tools::zeroVector(stereoFreqBuffer);
         
-        for(unsigned channel = 0; channel < STEREO; ++channel)
+        for (unsigned channel = 0; channel < STEREO; ++channel)
         {
             stereoAudio.getChannel(channel)->getWindowedAudio(transferBuffer[channel]);
             for (unsigned i = 0; i < windowLength; i++)
@@ -227,7 +217,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         ambiAudio.readAsStereo(buffer.getWritePointer(0), buffer.getWritePointer(1), nSamples);
     #else
         unsigned nChannelsToWrite = min(totalNumOutputChannels, ambiAudio.size());
-        for(unsigned i = 0; i < nChannelsToWrite; ++i)
+        for (unsigned i = 0; i < nChannelsToWrite; ++i)
         {
             ambiAudio.getChannel(i)->read(buffer.getWritePointer(i), nSamples);
         }

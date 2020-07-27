@@ -65,10 +65,6 @@ public:
     //==============================================================================
     void getStateInformation (MemoryBlock& destData) override;
     void setStateInformation (const void* data, int sizeInBytes) override;
-
-    // Controls ====================================================================
-    void setWidth(unsigned w);
-    void setOffset(unsigned o);
     
     // Test
 	void testProcessBlockWrite(float* left, float* right, int nSamples);

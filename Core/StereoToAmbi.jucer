@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" jucerVersion="5.4.7">
+<JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" jucerVersion="5.4.7"
+              companyName="HaydonCardew">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
       <FILE id="CxRkO6" name="StoALookAndFeel.cpp" compile="1" resource="0"
