@@ -52,7 +52,7 @@ public:
 
 	unsigned getNumberOfExtractedSources() { return totalNumberOfSources; };
     
-    void offsetAngles(vector<float>& azimuths, const int offset);
+    void offsetAngles(vector<float>& azimuths, unsigned offset);
     
     vector<float> getTotalSourceMagnitudes();
 };

@@ -30,7 +30,7 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	Sr.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
 }
 
-// width 0 -> 360
+// width 0 -> 360 // offset -180 -> 180?
 void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs)
 {
 	if (ambiFfts[0].size() < fftSize
@@ -50,14 +50,18 @@ void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft
     offsetAngles(azimuths, offset);
 }
 
-// Shift where centre is. Input -180 -> 180.
-void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, int offset)
+// Shift where centre is. Input 0 -> 360. Output -180 -> 180.
+// THIS NEEDS TO BE SORTED CORRECTLY
+void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, unsigned offset)
 {
-    offset = min(180, offset);
-    offset = max(-180, offset);
+    int shift = min(360U, offset);
+    if (shift > 180)
+    {
+        shift -= 360;
+    }
     for(auto & azimuth : azimuths)
     {
-        azimuth += offset;
+        azimuth += shift;
     }
 }
 
