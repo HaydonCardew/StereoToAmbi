@@ -52,7 +52,10 @@ class BFormatBuffer : public MultiChannelWindowedFIFOBuffer
 {
 public:
     BFormatBuffer(unsigned maxOrder, unsigned windowSize);
-    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths);
+    
+    enum ChannelOrder { ACN, FuMa };
+    
+    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=FuMa);
     
     // simple stereo decoder for sanity checking
     void readAsStereo(float* left, float* right, unsigned nSamples);
@@ -62,6 +65,6 @@ private:
     unsigned nAmbiChannels;
     const unsigned windowSize;
     vector<float> transferBuffer;
-    void calculateFurseMalhamCoefs(float sourceAzimuth);
-    vector<float> furseMalhamCoefs;
+    void calculateAmbiCoefs(float sourceAzimuth, ChannelOrder channelOrder);
+    vector<float> ambiCoefs;
 };

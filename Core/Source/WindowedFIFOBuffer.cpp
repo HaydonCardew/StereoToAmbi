@@ -187,10 +187,10 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
 {
     assert(windowSize > 0);
     transferBuffer.resize(windowSize, 0);
-    furseMalhamCoefs.resize(nAmbiChannels, 0);
+    ambiCoefs.resize(nAmbiChannels, 0);
 }
 
-void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths)
+void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
 {
     assert(transferBuffer.size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
@@ -200,10 +200,10 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
         Tools::zeroVector(transferBuffer);
         for(unsigned object = 0; object < audioObjects.size(); ++object)
         {
-            calculateFurseMalhamCoefs(Tools::toRadians(azimuths[object]));
+            calculateAmbiCoefs(Tools::toRadians(azimuths[object]), channelOrder);
             for(unsigned j = 0; j < windowSize; ++j)
             {
-                    transferBuffer[j] += audioObjects[object][j] * furseMalhamCoefs[channel];
+                    transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
             }
         }
         buffers[channel]->sendProcessedWindow(transferBuffer);
@@ -211,29 +211,29 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     assert(sanityCheck());
 }
 
-void BFormatBuffer::calculateFurseMalhamCoefs(float azimuth)
+void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
 {
-    furseMalhamCoefs[0] = 0.7071;
-    furseMalhamCoefs[1] = cos(azimuth);
-    furseMalhamCoefs[2] = sin(azimuth);
-    furseMalhamCoefs[3] = 0; // elev only
+    ambiCoefs[0] = 0.7071;
+    ambiCoefs[1] = cos(azimuth);
+    ambiCoefs[2] = sin(azimuth);
+    ambiCoefs[3] = 0; // elev only
     if(maxAmbiOrder > 1)
     {
-        furseMalhamCoefs[4] = -0.5;
-        furseMalhamCoefs[5] = 0;
-        furseMalhamCoefs[6] = 0;
-        furseMalhamCoefs[7] = cos(2*azimuth);
-        furseMalhamCoefs[8] = sin(2*azimuth);
+        ambiCoefs[4] = -0.5;
+        ambiCoefs[5] = 0;
+        ambiCoefs[6] = 0;
+        ambiCoefs[7] = cos(2*azimuth);
+        ambiCoefs[8] = sin(2*azimuth);
     }
     if(maxAmbiOrder > 2)
     {
-        furseMalhamCoefs[9] = 0;
-        furseMalhamCoefs[10] = -0.7262 * cos(azimuth);
-        furseMalhamCoefs[11] = -0.7262 * sin(azimuth);
-        furseMalhamCoefs[12] = 0;
-        furseMalhamCoefs[13] = 0;
-        furseMalhamCoefs[14] = cos(3 * azimuth);
-        furseMalhamCoefs[15] = sin(3 * azimuth);
+        ambiCoefs[9] = 0;
+        ambiCoefs[10] = -0.7262 * cos(azimuth);
+        ambiCoefs[11] = -0.7262 * sin(azimuth);
+        ambiCoefs[12] = 0;
+        ambiCoefs[13] = 0;
+        ambiCoefs[14] = cos(3 * azimuth);
+        ambiCoefs[15] = sin(3 * azimuth);
     }
 }
 
