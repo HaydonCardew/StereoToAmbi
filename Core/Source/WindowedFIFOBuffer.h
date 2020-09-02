@@ -55,7 +55,7 @@ public:
     
     enum ChannelOrder { ACN, FuMa };
     
-    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=FuMa);
+    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=ACN);
     
     // simple stereo decoder for sanity checking
     void readAsStereo(float* left, float* right, unsigned nSamples);

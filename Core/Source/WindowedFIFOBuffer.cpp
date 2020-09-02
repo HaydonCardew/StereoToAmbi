@@ -213,27 +213,56 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
 
 void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
 {
-    ambiCoefs[0] = 0.7071;
-    ambiCoefs[1] = cos(azimuth);
-    ambiCoefs[2] = sin(azimuth);
-    ambiCoefs[3] = 0; // elev only
-    if(maxAmbiOrder > 1)
+    switch (channelOrder)
     {
-        ambiCoefs[4] = -0.5;
-        ambiCoefs[5] = 0;
-        ambiCoefs[6] = 0;
-        ambiCoefs[7] = cos(2*azimuth);
-        ambiCoefs[8] = sin(2*azimuth);
-    }
-    if(maxAmbiOrder > 2)
-    {
-        ambiCoefs[9] = 0;
-        ambiCoefs[10] = -0.7262 * cos(azimuth);
-        ambiCoefs[11] = -0.7262 * sin(azimuth);
-        ambiCoefs[12] = 0;
-        ambiCoefs[13] = 0;
-        ambiCoefs[14] = cos(3 * azimuth);
-        ambiCoefs[15] = sin(3 * azimuth);
+        case FuMa:
+            ambiCoefs[0] = 0.7071;
+            ambiCoefs[1] = cos(azimuth);
+            ambiCoefs[2] = sin(azimuth);
+            ambiCoefs[3] = 0; // elev only
+            if(maxAmbiOrder > 1)
+            {
+                ambiCoefs[4] = -0.5;
+                ambiCoefs[5] = 0;
+                ambiCoefs[6] = 0;
+                ambiCoefs[7] = cos(2*azimuth);
+                ambiCoefs[8] = sin(2*azimuth);
+            }
+            if(maxAmbiOrder > 2)
+            {
+                ambiCoefs[9] = 0;
+                ambiCoefs[10] = -0.7262 * cos(azimuth);
+                ambiCoefs[11] = -0.7262 * sin(azimuth);
+                ambiCoefs[12] = 0;
+                ambiCoefs[13] = 0;
+                ambiCoefs[14] = cos(3 * azimuth);
+                ambiCoefs[15] = sin(3 * azimuth);
+            }
+            break;
+        case ACN:
+            ambiCoefs[0] = 0.7071;
+            ambiCoefs[3] = cos(azimuth);
+            ambiCoefs[1] = sin(azimuth);
+            ambiCoefs[2] = 0; // elev only
+            if(maxAmbiOrder > 1)
+            {
+                ambiCoefs[8] = -0.5;
+                ambiCoefs[6] = 0;
+                ambiCoefs[4] = 0;
+                ambiCoefs[5] = cos(2*azimuth);
+                ambiCoefs[7] = sin(2*azimuth);
+            }
+            if(maxAmbiOrder > 2)
+            {
+                ambiCoefs[15] = 0;
+                ambiCoefs[13] = -0.7262 * cos(azimuth);
+                ambiCoefs[11] = -0.7262 * sin(azimuth);
+                ambiCoefs[9] = 0;
+                ambiCoefs[10] = 0;
+                ambiCoefs[12] = cos(3 * azimuth);
+                ambiCoefs[14] = sin(3 * azimuth);
+            }
+            break;
     }
 }
 

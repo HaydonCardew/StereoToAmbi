@@ -22,6 +22,8 @@
 #define WIDTH_ID "width"
 #define OFFSET_NAME "Offset"
 #define OFFSET_ID "offset"
+#define FORMAT_NAME "Format"
+#define FORMAT_ID "format"
 
 //==============================================================================
 /**
