@@ -77,14 +77,13 @@ public:
     
 private:
     
-    
     unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
     unsigned fftSize;
 	unsigned windowLength;
 
-	unsigned width = 360;
-    unsigned offset = 0;
-	
+	atomic<float>* width;
+    atomic<float>* offset;
+    
 	dsp::FFT fft;
     MultiChannelWindowedFIFOBuffer stereoAudio;
     BFormatBuffer ambiAudio;

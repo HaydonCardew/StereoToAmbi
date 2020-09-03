@@ -44,6 +44,8 @@ valueTree(*this, nullptr, "ValueTree",
     stereoFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     stereoTimeBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     
+    width = valueTree.getRawParameterValue(WIDTH_ID);
+    offset = valueTree.getRawParameterValue(OFFSET_ID);
 }
 
 StereoToAmbiAudioProcessor::~StereoToAmbiAudioProcessor()
@@ -198,11 +200,8 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         }
 
 		// Perform Stereo to Ambi processing
-        width = *valueTree.getRawParameterValue(WIDTH_ID);
-        offset = *valueTree.getRawParameterValue(OFFSET_ID);
-        float choice = *valueTree.getRawParameterValue(FORMAT_ID);
-        cout << "Choice : " << choice << endl;
-		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, width, offset, getSampleRate());
+        // stop casting you dick
+		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, (unsigned)*width, (unsigned)*offset, getSampleRate());
         
 		for (unsigned i = 0; i < extractedSources.size(); i++)
         {

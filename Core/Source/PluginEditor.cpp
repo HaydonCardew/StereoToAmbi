@@ -40,7 +40,6 @@ void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 }
 
 MainContentComponent::MainContentComponent()
-//: channelOrder({"FuMa", "AmbiX"})
 {
     setLookAndFeel(&laf);
     
@@ -70,6 +69,7 @@ MainContentComponent::MainContentComponent()
     
     channelFormat.addItem("ACN", 1);
     channelFormat.addItem("FuMa", 2);
+    channelFormat.setJustificationType (Justification::centred);
     
     addAndMakeVisible(channelFormat);
     addAndMakeVisible(listener);
