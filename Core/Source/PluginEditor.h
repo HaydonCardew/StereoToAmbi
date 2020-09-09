@@ -216,7 +216,6 @@ public:
 
 	Slider direction;
     Slider spread;
-    ComboBox channelFormat;
     AzimuthView angleShown;
     Human listener;
     Image background;
@@ -243,6 +242,5 @@ private:
     StereoToAmbiAudioProcessor& processor;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> widthValue;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> offsetValue;
-    std::unique_ptr<AudioProcessorValueTreeState::ComboBoxAttachment> channelFormat;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
 };

@@ -15,15 +15,13 @@
 #include "WindowedFIFOBuffer.h"
 
 #define STEREO_DECODER
-#define MAX_AMBI_ORDER 3
+#define MAX_AMBI_ORDER 1
 #define STEREO 2
 
 #define WIDTH_NAME "Width"
 #define WIDTH_ID "width"
 #define OFFSET_NAME "Offset"
 #define OFFSET_ID "offset"
-#define FORMAT_NAME "Format"
-#define FORMAT_ID "format"
 
 //==============================================================================
 /**

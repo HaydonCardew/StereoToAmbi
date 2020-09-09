@@ -30,8 +30,8 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	Sr.resize(nHistogramBins, vector<float>(nHistogramBins, 0));
 }
 
-// width 0 -> 360 // offset -180 -> 180?
-void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs)
+// width 0 -> 360 // offset 0 -> 360 (anti-clockwise)
+void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const float width, const float offset, const unsigned fs)
 {
 	if (ambiFfts[0].size() < fftSize
         || stereoFft.size() != 2
@@ -50,18 +50,21 @@ void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft
     offsetAngles(azimuths, offset);
 }
 
-// Shift where centre is. Input 0 -> 360. Output -180 -> 180.
-// THIS NEEDS TO BE SORTED CORRECTLY
-void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, unsigned offset)
+void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, float offset)
 {
-    int shift = min(360U, offset);
-    if (shift > 180)
-    {
-        shift -= 360;
-    }
+    int shift = min(360.f, max(offset, 0.f));
+    
     for(auto & azimuth : azimuths)
     {
-        azimuth += shift;
+        azimuth -= shift; // ambisonics is anticlockwise...
+        if (azimuth > 360.f)
+        {
+            azimuth -= 360.f;
+        }
+        if (azimuth < 0.f)
+        {
+            azimuth += 360.f;
+        }
     }
 }
 
@@ -106,10 +109,15 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 	}
 }
 
-void MultiLevelThreshold::calculateAzimuths(vector<float>& azimuths, int width)
+/*
+This needs to take in width in degrees, get a scaled angle between -1 & 1
+and returns the angle between -width/2 & width/2
+
+*/
+void MultiLevelThreshold::calculateAzimuths(vector<float>& azimuths, float width)
 {
     assert(azimuths.size() == totalNumberOfSources);
-    width /= 2; // right is positive and left is negative so this works
+    width /= -2; // this inverts the estiamed scaled angle as ambisonics is retarded and goes anti-clockwise
     for (int i = 0; i < sourcesPerChannel; i++)
     {
         azimuths[i] = estimateScaledAngle(leftSourceMagnitudes[LEFT][i], leftSourceMagnitudes[RIGHT][i]) * width;

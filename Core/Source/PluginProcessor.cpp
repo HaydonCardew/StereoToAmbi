@@ -32,8 +32,7 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 valueTree(*this, nullptr, "ValueTree",
 {
     std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME, 0.0f, 360.f, 90.0f),
-    std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f),
-    std::make_unique<AudioParameterFloat>(FORMAT_ID, FORMAT_NAME, NormalisableRange<float>(0, 1), 0)
+    std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f)
 })
 #endif
 {
@@ -200,8 +199,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         }
 
 		// Perform Stereo to Ambi processing
-        // stop casting you dick
-		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, (unsigned)*width, (unsigned)*offset, getSampleRate());
+		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, *width, *offset, getSampleRate());
         
 		for (unsigned i = 0; i < extractedSources.size(); i++)
         {

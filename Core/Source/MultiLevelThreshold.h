@@ -44,15 +44,15 @@ public:
 	void calcHistogram(float minFreq, float maxFreq, int fs);
 	void fastMultiLevelthreshold();
 
-    void calculateAzimuths(vector<float>& azimuths, const int width);
+    void calculateAzimuths(vector<float>& azimuths, float width);
     // returns a scaling of -1 <-> 1
     float estimateScaledAngle(const float leftMagnitude, const float rightMagnitude);
     
-	void stereoFftToAmbiFft(const vector<ComplexFft>& stereoFfts, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const unsigned width, const unsigned offset, const unsigned fs);
+	void stereoFftToAmbiFft(const vector<ComplexFft>& stereoFfts, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const float width, const float offset, const unsigned fs);
 
 	unsigned getNumberOfExtractedSources() { return totalNumberOfSources; };
     
-    void offsetAngles(vector<float>& azimuths, unsigned offset);
+    void offsetAngles(vector<float>& azimuths, float offset);
     
     vector<float> getTotalSourceMagnitudes();
 };

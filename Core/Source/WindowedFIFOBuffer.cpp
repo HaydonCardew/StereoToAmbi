@@ -190,6 +190,7 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     ambiCoefs.resize(nAmbiChannels, 0);
 }
 
+/* For some crazy reason azimuths are recorded anti-clockwise */
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
 {
     assert(transferBuffer.size() == windowSize);
@@ -203,7 +204,7 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
             calculateAmbiCoefs(Tools::toRadians(azimuths[object]), channelOrder);
             for(unsigned j = 0; j < windowSize; ++j)
             {
-                    transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
+                transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
             }
         }
         buffers[channel]->sendProcessedWindow(transferBuffer);
@@ -211,6 +212,7 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     assert(sanityCheck());
 }
 
+/* For some crazy reason azimuths are recorded anti-clockwise */
 void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
 {
     switch (channelOrder)
@@ -239,11 +241,11 @@ void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
                 ambiCoefs[15] = sin(3 * azimuth);
             }
             break;
-        case ACN:
-            ambiCoefs[0] = 0.7071;
-            ambiCoefs[3] = cos(azimuth);
+        case SN3D: // https://www.blueripplesound.com/b-format - double check these
+            ambiCoefs[0] = 1;
             ambiCoefs[1] = sin(azimuth);
             ambiCoefs[2] = 0; // elev only
+            ambiCoefs[3] = cos(azimuth);
             if(maxAmbiOrder > 1)
             {
                 ambiCoefs[8] = -0.5;
@@ -266,7 +268,7 @@ void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
     }
 }
 
-void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
+void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples, ChannelOrder channelOrder)
 {
     assert(sanityCheck());
     if(transferBuffer.size() < nSamples)
@@ -280,23 +282,48 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples)
         left[i] = transferBuffer[i];
         right[i] = transferBuffer[i];
     }
-    
-    buffers[1]->read(&transferBuffer[0], nSamples); // X F<->B
-    for(unsigned i = 0; i < nSamples; ++i)
+    switch (channelOrder)
     {
-        left[i] += 0.6 * transferBuffer[i];
-        right[i] += 0.6 * transferBuffer[i];
-    }
-    
-    buffers[2]->read(&transferBuffer[0], nSamples); // Y L<->R
-    for(unsigned i = 0; i < nSamples; ++i)
-    {
-        left[i] += transferBuffer[i];
-        right[i] -= transferBuffer[i];
-    }
-    // clear the rest...
-    for(int i = 3; i < buffers.size(); ++i)
-    {
-        buffers[i]->read(&transferBuffer[0], nSamples);
+        case FuMa:
+            buffers[1]->read(&transferBuffer[0], nSamples); // X F<->B
+            for(unsigned i = 0; i < nSamples; ++i)
+            {
+                left[i] += 0.6 * transferBuffer[i];
+                right[i] += 0.6 * transferBuffer[i];
+            }
+            
+            buffers[2]->read(&transferBuffer[0], nSamples); // Y L<->R
+            for(unsigned i = 0; i < nSamples; ++i)
+            {
+                left[i] += transferBuffer[i];
+                right[i] -= transferBuffer[i];
+            }
+            // clear the rest...
+            for(int i = 3; i < buffers.size(); ++i)
+            {
+                buffers[i]->read(&transferBuffer[0], nSamples);
+            }
+            break;
+        case SN3D:
+            buffers[3]->read(&transferBuffer[0], nSamples); // X F<->B
+            for(unsigned i = 0; i < nSamples; ++i)
+            {
+                left[i] += 0.6 * transferBuffer[i];
+                right[i] += 0.6 * transferBuffer[i];
+            }
+            
+            buffers[1]->read(&transferBuffer[0], nSamples); // Y L<->R
+            for(unsigned i = 0; i < nSamples; ++i)
+            {
+                left[i] += transferBuffer[i];
+                right[i] -= transferBuffer[i];
+            }
+            // clear the rest...
+            buffers[2]->read(&transferBuffer[0], nSamples);
+            for(int i = 4; i < buffers.size(); ++i)
+            {
+                buffers[i]->read(&transferBuffer[0], nSamples);
+            }
+            break;
     }
 }

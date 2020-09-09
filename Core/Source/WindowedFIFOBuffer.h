@@ -53,12 +53,12 @@ class BFormatBuffer : public MultiChannelWindowedFIFOBuffer
 public:
     BFormatBuffer(unsigned maxOrder, unsigned windowSize);
     
-    enum ChannelOrder { ACN, FuMa };
+    enum ChannelOrder { SN3D, FuMa };
     
-    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=ACN);
+    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=SN3D);
     
     // simple stereo decoder for sanity checking
-    void readAsStereo(float* left, float* right, unsigned nSamples);
+    void readAsStereo(float* left, float* right, unsigned nSamples, ChannelOrder channelOrder=SN3D);
     
 private:
     unsigned maxAmbiOrder;

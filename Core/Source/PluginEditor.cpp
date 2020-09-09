@@ -22,7 +22,6 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     addAndMakeVisible(mainContentComponent);
     widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, mainContentComponent.spread); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
     offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, mainContentComponent.direction);
-    channelFormat = make_unique<AudioProcessorValueTreeState::ComboBoxAttachment> (processor.valueTree, FORMAT_ID, mainContentComponent.channelFormat);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
@@ -66,12 +65,7 @@ MainContentComponent::MainContentComponent()
     };
     direction.setRotaryParameters(0.f, 6.282f, false);
     direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
-    
-    channelFormat.addItem("ACN", 1);
-    channelFormat.addItem("FuMa", 2);
-    channelFormat.setJustificationType (Justification::centred);
-    
-    addAndMakeVisible(channelFormat);
+
     addAndMakeVisible(listener);
     
     resized();
@@ -90,8 +84,6 @@ void MainContentComponent::resized()
     direction.setBoundsRelative(0.073095f, 0.01181f, 0.366223f, 0.241731f);
     
     spread.setBoundsRelative(0.130751f, 0.29635f, 0.0841174f, 0.467847f);
-    
-    channelFormat.setBoundsRelative(0.0847174f, 0.724134f, 0.22805, 0.1f);
 }
 
 void MainContentComponent::paint(Graphics& g)
