@@ -4,6 +4,8 @@
               jucerVersion="5.4.7">
   <MAINGROUP id="l5DJT6" name="TestMultiLevelThreshold">
     <GROUP id="{40B1F5E3-14F8-5007-F277-D7ED203EC41E}" name="Source"/>
+    <FILE id="tbM23k" name="Assets.cpp" compile="1" resource="0" file="../../Core/Source/Assets.cpp"/>
+    <FILE id="ki07nQ" name="Assets.h" compile="0" resource="0" file="../../Core/Source/Assets.h"/>
     <FILE id="TfqT0t" name="Histogram.cpp" compile="1" resource="0" file="../../Core/Source/Histogram.cpp"/>
     <FILE id="YUQMNx" name="Histogram.h" compile="0" resource="0" file="../../Core/Source/Histogram.h"/>
     <FILE id="e0UoaJ" name="MultiLevelThreshold.cpp" compile="1" resource="0"
@@ -17,6 +19,10 @@
           file="../../Core/Source/PluginProcessor.cpp"/>
     <FILE id="PYMmFi" name="PluginProcessor.h" compile="0" resource="0"
           file="../../Core/Source/PluginProcessor.h"/>
+    <FILE id="YKqL6T" name="StoALookAndFeel.cpp" compile="1" resource="0"
+          file="../../Core/Source/StoALookAndFeel.cpp"/>
+    <FILE id="ym1j8N" name="StoALookAndFeel.h" compile="0" resource="0"
+          file="../../Core/Source/StoALookAndFeel.h"/>
     <FILE id="t7ZHS7" name="TestPluginProcessor.cpp" compile="1" resource="0"
           file="../../Core/Source/TestPluginProcessor.cpp"/>
     <FILE id="wXhhcn" name="Tools.hpp" compile="0" resource="0" file="../../Core/Source/Tools.hpp"/>

@@ -4,7 +4,7 @@
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize)
 : windowSize(windowSize),
 window(windowSize, dsp::WindowingFunction<float>::hann),
-overlap(0.5f)
+overlap(0.75f)
 {
     assert(windowSize > 0);
 }
