@@ -179,8 +179,8 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 
 	//buffer.clear(1, 0, nSamples);
 
-    stereoAudio.getChannel(0)->write(buffer.getReadPointer(0), nSamples);
-	stereoAudio.getChannel(1)->write(buffer.getReadPointer(1), nSamples);
+    stereoAudio.getChannel(0)->write(buffer.getReadPointer(0), nSamples, 0.25); // this gains seems to be write.. I can understand 0.5.. not this?
+    stereoAudio.getChannel(1)->write(buffer.getReadPointer(1), nSamples, 0.25);
 
     while (stereoAudio.windowedAudioAvailable())
     {

@@ -1,36 +1,41 @@
 #include "WindowedFIFOBuffer.h"
 #include "Tools.hpp"
 
-WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize)
+WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)
 : windowSize(windowSize),
 window(windowSize, dsp::WindowingFunction<float>::hann),
-overlap(0.75f)
+overlap(overlap)
 {
     assert(windowSize > 0);
+    cout << "Window Size : " << windowSize << " Overlap : " << overlap << endl;
 }
 
-unsigned WindowedFIFOBuffer::write(const float *data, unsigned nSamples)
+unsigned WindowedFIFOBuffer::write(const float *data, unsigned nSamples, const float gain)
 {
 	for (unsigned i = 0; i < nSamples; ++i)
     {
-		inputBuffer.push_back(data[i]);
+		inputBuffer.push_back(data[i] * gain); // pre-allocate?
 	}
 	return nSamples;
 }
 
-unsigned WindowedFIFOBuffer::read(float *data, unsigned nSamples)
+unsigned WindowedFIFOBuffer::read(float *data, unsigned nSamples, bool acceptLess)
 {
 	// don't read the last overlap*windowSize, this needs to be added with another window to be valid
     assert(outputBuffer.size() >= (windowSize*overlap));
 	unsigned effectiveOutputBufferSize = outputBuffer.size() - (windowSize*overlap);
-	unsigned nRead = (nSamples > effectiveOutputBufferSize) ? effectiveOutputBufferSize : nSamples;
-	for (unsigned i = 0; i < nRead; ++i)
+    if ( effectiveOutputBufferSize < nSamples)
     {
-		// halve the output as the Hanning windowws cause's +6dB?
+        nSamples = acceptLess ? effectiveOutputBufferSize : 0;
+    }
+	for (unsigned i = 0; i < nSamples; ++i)
+    {
+		// halve the output as the Hanning windows cause's +6dB?
+        //if (abs(outputBuffer[0]) > 1) { cout << "Clipped [2] : " << outputBuffer[0] << endl; }
 		data[i] = outputBuffer[0] * 0.5;
 		outputBuffer.pop_front();
 	}
-	return nRead;
+	return nSamples;
 }
 
 bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
@@ -56,6 +61,7 @@ bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
 
 bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 {
+    // could be off by one?
     assert(buffer.size() == windowSize);
 	unsigned overlapBorder = overlap * windowSize;
 	if (outputBuffer.size() < overlapBorder)
@@ -66,10 +72,13 @@ bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 	for (unsigned i = 0; i < overlapBorder; ++i)
     {
 		outputBuffer[ptr] = outputBuffer[ptr] + buffer[i];
+        //if ( abs(outputBuffer[ptr]) > 1 ) { cout << "Clipped [On Input When Adding]" << endl; }
 		ptr++;
 	}
 	for (unsigned i = overlapBorder; i < windowSize; ++i)
     {
+
+        //if ( abs(buffer[i]) > 1 ) { cout << "Clipped [On Input]" << endl; }
 		outputBuffer.push_back(buffer[i]);
 	}
 	return true;
@@ -193,6 +202,17 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
 /* For some crazy reason azimuths are recorded anti-clockwise */
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
 {
+    auto hasClipped = [&]
+    {
+        for (auto & sample : transferBuffer)
+        {
+            if (abs(sample) > 1)
+            {
+                return true;
+            }
+        }
+        return false;
+    };
     assert(transferBuffer.size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
@@ -207,6 +227,7 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
                 transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
             }
         }
+        //assert(!hasClipped()); // is clipping here
         buffers[channel]->sendProcessedWindow(transferBuffer);
     }
     assert(sanityCheck());

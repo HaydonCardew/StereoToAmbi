@@ -25,6 +25,8 @@
           file="../../Core/Source/StoALookAndFeel.h"/>
     <FILE id="t7ZHS7" name="TestPluginProcessor.cpp" compile="1" resource="0"
           file="../../Core/Source/TestPluginProcessor.cpp"/>
+    <FILE id="pIZ5LH" name="TestWindowedFIFOBuffer.cpp" compile="1" resource="0"
+          file="../../Core/Source/TestWindowedFIFOBuffer.cpp"/>
     <FILE id="wXhhcn" name="Tools.hpp" compile="0" resource="0" file="../../Core/Source/Tools.hpp"/>
     <FILE id="JJZMiF" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
           file="../../Core/Source/WindowedFIFOBuffer.cpp"/>

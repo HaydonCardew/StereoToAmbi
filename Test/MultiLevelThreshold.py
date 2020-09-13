@@ -64,6 +64,7 @@ x = StereoToAmbiAudioProcessor(nThresholds)
 
 filename = 'TestAudio/PannedSources.wav'
 #filename = 'TestAudio/Test.wav'
+filename = 'TestAudio/2L.flac'
 # get audio size
 f = sf.SoundFile(filename)
 samplerate = f.samplerate

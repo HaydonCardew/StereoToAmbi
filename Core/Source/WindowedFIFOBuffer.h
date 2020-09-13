@@ -9,10 +9,10 @@ using namespace std;
 class WindowedFIFOBuffer
 {
 public:
-	WindowedFIFOBuffer(const unsigned windowSize);
+    WindowedFIFOBuffer(const unsigned windowSize, const float overlap = 0.75f);
 
-	unsigned write(const float *data, unsigned nSamples);
-	unsigned read(float *data, unsigned nSamples);
+    unsigned write(const float *data, unsigned nSamples, const float gain = 1.f);
+	unsigned read(float *data, unsigned nSamples, bool acceptLess = true);
 
 	bool windowedAudioAvailable();
 	unsigned outputSamplesAvailable();
@@ -23,6 +23,10 @@ public:
     unsigned outputBufferSize();
     void clear();
 
+    // test
+    int getWindowedAudio(float *data);
+    void sendProcessedWindow(float *data);
+    
 private:
     deque<float> inputBuffer;
     deque<float> outputBuffer;
