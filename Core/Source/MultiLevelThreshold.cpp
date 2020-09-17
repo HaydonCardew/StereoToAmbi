@@ -140,11 +140,13 @@ float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const 
 
 void MultiLevelThreshold::calcMagnitudeVectors(const vector<ComplexFft>& stereoFft)
 {
+    assert(stereoFft[LEFT].size() == magnitude[LEFT].size());
     for (unsigned channel = 0; channel < STEREO; ++channel)
     {
         for (int i = 0; i < magnitude[0].size(); i++)
         {
             magnitude[channel][i] = abs(stereoFft[channel][i]);
+            assert(magnitude[channel][i] >= 0.f);
         }
     }
 }
@@ -287,7 +289,7 @@ void MultiLevelThreshold::generatePanMap()
             rightMag = 1e-7; // do this to not change the actual magnitude vector!
 		}
         float powerDiff = 0;
-        if(magnitude[LEFT][i] != 0.f)
+        if(magnitude[LEFT][i] != 0.f) // if it is? why can't it be zero?
         {
             powerDiff = 20*log(magnitude[LEFT][i] / rightMag);
         }

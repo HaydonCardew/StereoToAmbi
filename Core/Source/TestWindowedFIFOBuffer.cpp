@@ -12,7 +12,7 @@
 
 extern "C" {
     WindowedFIFOBuffer* WFIFOB_new(int windowSize, float overlap) { return new WindowedFIFOBuffer(windowSize, overlap); }
-    unsigned WFIFOB_write(WindowedFIFOBuffer* WB, float *data, unsigned nSamples) { return WB->write(data, nSamples); }
+    unsigned WFIFOB_write(WindowedFIFOBuffer* WB, float *data, unsigned nSamples, float gain) { return WB->write(data, nSamples, gain); }
     unsigned WFIFOB_read(WindowedFIFOBuffer* WB, float *data, unsigned nSamples) { return WB->read(data, nSamples); }
     void WFIFOB_sendProcessedWindow(WindowedFIFOBuffer* WB, float* data) { return WB->sendProcessedWindow(data); }
     int WFIFOB_getWindowedAudio(WindowedFIFOBuffer* WB, float* data) { return WB->getWindowedAudio(data); }
