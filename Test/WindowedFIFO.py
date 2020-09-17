@@ -46,14 +46,17 @@ class WindowedFIFO(object):
         self._setTypes(self.lib.WFIFOB_getWindowedAudio, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat])
         self._setTypes(self.lib.WFIFOB_delete, None, [ctypes.c_void_p])
 
-windowSize = 4096 # what is used in stoa
+windowSize = 1024 # what is used in stoa
 overlap = 0.5
+# 0.5 = 1
+# 0.666666 = 2ish
+# 0.75 = 4
 x = WindowedFIFO(windowSize, overlap)
 
 # set up to print graph of 2nd read for any overlap and see how close to one it is
 inputBufferSize = windowSize * 3
 inputBuffer = np.ones( windowSize )
-x.write(inputBuffer, inputBufferSize, gain=0.9)
+x.write(inputBuffer, inputBufferSize)
 
 window = np.zeros(windowSize)
 window, nRead = x.getWindow(window)

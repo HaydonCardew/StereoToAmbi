@@ -1,13 +1,15 @@
 #include "WindowedFIFOBuffer.h"
 #include "Tools.hpp"
 
+#define PI 3.14159265359
+
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)
 : windowSize(windowSize),
-window(windowSize, dsp::WindowingFunction<float>::hann),
+window(windowSize, WindowType::hann), windowType(WindowType::hann),
 overlap(overlap)
 {
     assert(windowSize > 0);
-    cout << "Window Size : " << windowSize << " Overlap : " << overlap << endl;
+    inverseWindowGainFactor = 1/getWindowGain(windowType, overlap);
 }
 
 unsigned WindowedFIFOBuffer::write(const float *data, unsigned nSamples, const float gain)
@@ -32,7 +34,7 @@ unsigned WindowedFIFOBuffer::read(float *data, unsigned nSamples, bool acceptLes
     {
 		// halve the output as the Hanning windows cause's +6dB?
         //if (abs(outputBuffer[0]) > 1) { cout << "Clipped [2] : " << outputBuffer[0] << endl; }
-		data[i] = outputBuffer[0] * 0.5;
+        data[i] = outputBuffer[0] * inverseWindowGainFactor;
 		outputBuffer.pop_front();
 	}
 	return nSamples;
@@ -61,7 +63,6 @@ bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
 
 bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 {
-    // could be off by one?
     assert(buffer.size() == windowSize);
 	unsigned overlapBorder = overlap * windowSize;
 	if (outputBuffer.size() < overlapBorder)
@@ -114,6 +115,26 @@ void WindowedFIFOBuffer::clear()
 {
     inputBuffer.clear();
     outputBuffer.clear();
+}
+
+float WindowedFIFOBuffer::getWindowGain(WindowType windowType, float overlap)
+{
+    float gain = 1.f;
+    float hopSize = 1-overlap;
+    switch (windowType)
+    {
+        case WindowType::hann:
+            auto hannValue = [](auto point) { return 0.5 - (0.5 * cos(2*PI*(point))); };
+            gain = 0;
+            float step = hopSize;
+            while (step < 1.f)
+            {
+                gain += hannValue(step);
+                step += hopSize;
+            }
+            break;
+    }
+    return gain * 2; // Windowed in & out so the gain is applied twice
 }
 
 MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize)

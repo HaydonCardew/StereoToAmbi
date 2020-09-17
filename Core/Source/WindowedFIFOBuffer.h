@@ -8,6 +8,9 @@ using namespace std;
 
 class WindowedFIFOBuffer
 {
+    using WindowType = typename dsp::WindowingFunction<float>::WindowingMethod;
+    using WindowFunction = typename dsp::WindowingFunction<float>;
+    
 public:
     WindowedFIFOBuffer(const unsigned windowSize, const float overlap = 0.75f);
 
@@ -31,7 +34,12 @@ private:
     deque<float> inputBuffer;
     deque<float> outputBuffer;
     const unsigned windowSize;
-    dsp::WindowingFunction<float> window;
+    float inverseWindowGainFactor;
+    
+    float getWindowGain(WindowType windowType, float overlap);
+    
+    WindowFunction window;
+    WindowType windowType;
     const float overlap;
 };
 
