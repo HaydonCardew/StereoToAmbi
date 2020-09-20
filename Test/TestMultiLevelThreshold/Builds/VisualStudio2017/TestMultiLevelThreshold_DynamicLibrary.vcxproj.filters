@@ -415,6 +415,12 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Core\Source\Assets.cpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Core\Source\FastAudioBuffer.cpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\Core\Source\Histogram.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
@@ -427,7 +433,13 @@
     <ClCompile Include="..\..\..\..\Core\Source\PluginProcessor.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\..\..\Core\Source\StoALookAndFeel.cpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\..\..\Core\Source\TestPluginProcessor.cpp">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\..\..\Core\Source\TestWindowedFIFOBuffer.cpp">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClCompile>
     <ClCompile Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.cpp">
@@ -2346,6 +2358,12 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Core\Source\Assets.h">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Core\Source\FastAudioBuffer.h">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClInclude>
     <ClInclude Include="..\..\..\..\Core\Source\Histogram.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
@@ -2356,6 +2374,9 @@
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Core\Source\PluginProcessor.h">
+      <Filter>TestMultiLevelThreshold</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\..\..\Core\Source\StoALookAndFeel.h">
       <Filter>TestMultiLevelThreshold</Filter>
     </ClInclude>
     <ClInclude Include="..\..\..\..\Core\Source\Tools.hpp">

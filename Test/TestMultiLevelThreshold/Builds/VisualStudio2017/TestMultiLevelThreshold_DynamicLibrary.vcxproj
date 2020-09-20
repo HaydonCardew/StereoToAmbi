@@ -138,11 +138,15 @@
     <Lib/>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\..\..\Core\Source\Assets.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\FastAudioBuffer.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\Histogram.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\MultiLevelThreshold.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\PluginEditor.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\PluginProcessor.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\StoALookAndFeel.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\TestPluginProcessor.cpp"/>
+    <ClCompile Include="..\..\..\..\Core\Source\TestWindowedFIFOBuffer.cpp"/>
     <ClCompile Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.cpp"/>
     <ClCompile Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\buffers\juce_AudioChannelSet.cpp">
       <ExcludedFromBuild>true</ExcludedFromBuild>
@@ -1926,10 +1930,13 @@
     <ClCompile Include="..\..\JuceLibraryCode\include_juce_opengl.cpp"/>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\..\..\Core\Source\Assets.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\FastAudioBuffer.h"/>
     <ClInclude Include="..\..\..\..\Core\Source\Histogram.h"/>
     <ClInclude Include="..\..\..\..\Core\Source\MultiLevelThreshold.h"/>
     <ClInclude Include="..\..\..\..\Core\Source\PluginEditor.h"/>
     <ClInclude Include="..\..\..\..\Core\Source\PluginProcessor.h"/>
+    <ClInclude Include="..\..\..\..\Core\Source\StoALookAndFeel.h"/>
     <ClInclude Include="..\..\..\..\Core\Source\Tools.hpp"/>
     <ClInclude Include="..\..\..\..\Core\Source\WindowedFIFOBuffer.h"/>
     <ClInclude Include="..\..\..\Desktop\JUCE\modules\juce_audio_basics\audio_play_head\juce_AudioPlayHead.h"/>

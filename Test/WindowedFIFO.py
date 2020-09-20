@@ -55,12 +55,13 @@ x = WindowedFIFO(windowSize, overlap)
 
 # set up to print graph of 2nd read for any overlap and see how close to one it is
 inputBufferSize = windowSize * 3
-inputBuffer = np.ones( windowSize )
+inputBuffer = np.ones( inputBufferSize )
 x.write(inputBuffer, inputBufferSize)
 
 window = np.zeros(windowSize)
 window, nRead = x.getWindow(window)
-
+#plt.plot(window)
+#plt.show() // correct here
 for i in range(10):
     x.sendWindow(window)
 

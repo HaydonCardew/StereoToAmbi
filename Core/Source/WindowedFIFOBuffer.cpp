@@ -6,7 +6,7 @@
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)
 : windowSize(windowSize),
 window(windowSize, WindowType::hann), windowType(WindowType::hann),
-overlap(overlap)
+overlap(overlap), inputBuffer(10000), outputBuffer(10000)
 {
     assert(windowSize > 0);
     inverseWindowGainFactor = 1/getWindowGain(windowType, overlap);
@@ -14,9 +14,9 @@ overlap(overlap)
 
 unsigned WindowedFIFOBuffer::write(const float *data, unsigned nSamples, const float gain)
 {
-	for (unsigned i = 0; i < nSamples; ++i)
+ 	for (unsigned i = 0; i < nSamples; ++i)
     {
-		inputBuffer.push_back(data[i] * gain); // pre-allocate?
+		inputBuffer.push_back(data[i] * gain);
 	}
 	return nSamples;
 }
@@ -32,8 +32,6 @@ unsigned WindowedFIFOBuffer::read(float *data, unsigned nSamples, bool acceptLes
     }
 	for (unsigned i = 0; i < nSamples; ++i)
     {
-		// halve the output as the Hanning windows cause's +6dB?
-        //if (abs(outputBuffer[0]) > 1) { cout << "Clipped [2] : " << outputBuffer[0] << endl; }
         data[i] = outputBuffer[0] * inverseWindowGainFactor;
 		outputBuffer.pop_front();
 	}
@@ -65,21 +63,19 @@ bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 {
     assert(buffer.size() == windowSize);
 	unsigned overlapBorder = overlap * windowSize;
+    cout << "Size () = " << outputBuffer.size() << endl;
 	if (outputBuffer.size() < overlapBorder)
     {
-        overlapBorder = (unsigned)outputBuffer.size();
+        overlapBorder = outputBuffer.size();
     }
-	unsigned ptr = (unsigned)outputBuffer.size() - overlapBorder;
+	unsigned ptr = outputBuffer.size() - overlapBorder;
 	for (unsigned i = 0; i < overlapBorder; ++i)
     {
 		outputBuffer[ptr] = outputBuffer[ptr] + buffer[i];
-        //if ( abs(outputBuffer[ptr]) > 1 ) { cout << "Clipped [On Input When Adding]" << endl; }
 		ptr++;
 	}
 	for (unsigned i = overlapBorder; i < windowSize; ++i)
     {
-
-        //if ( abs(buffer[i]) > 1 ) { cout << "Clipped [On Input]" << endl; }
 		outputBuffer.push_back(buffer[i]);
 	}
 	return true;

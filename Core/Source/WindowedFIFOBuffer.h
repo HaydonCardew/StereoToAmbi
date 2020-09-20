@@ -1,7 +1,8 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include <deque>
+//#include <deque>
+#include "FastAudioBuffer.h"
 #include <vector>
 
 using namespace std;
@@ -31,8 +32,11 @@ public:
     void sendProcessedWindow(float *data);
     
 private:
-    deque<float> inputBuffer;
-    deque<float> outputBuffer;
+    //deque<float> inputBuffer;
+    //deque<float> outputBuffer;
+    FastAudioBuffer inputBuffer;
+    FastAudioBuffer outputBuffer;
+    
     const unsigned windowSize;
     float inverseWindowGainFactor;
     

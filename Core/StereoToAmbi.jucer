@@ -4,6 +4,10 @@
               companyName="HaydonCardew">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
+      <FILE id="HD8gLs" name="FastAudioBuffer.cpp" compile="1" resource="0"
+            file="Source/FastAudioBuffer.cpp"/>
+      <FILE id="aFL2bD" name="FastAudioBuffer.h" compile="0" resource="0"
+            file="Source/FastAudioBuffer.h"/>
       <FILE id="CxRkO6" name="StoALookAndFeel.cpp" compile="1" resource="0"
             file="Source/StoALookAndFeel.cpp"/>
       <FILE id="M1QcYU" name="StoALookAndFeel.h" compile="0" resource="0"
@@ -101,7 +105,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="0" continuousRebuildEnabled="1"/>
-    <OSX buildEnabled="1"/>
+    <OSX buildEnabled="0"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
 </JUCERPROJECT>

@@ -6,6 +6,10 @@
     <GROUP id="{40B1F5E3-14F8-5007-F277-D7ED203EC41E}" name="Source"/>
     <FILE id="tbM23k" name="Assets.cpp" compile="1" resource="0" file="../../Core/Source/Assets.cpp"/>
     <FILE id="ki07nQ" name="Assets.h" compile="0" resource="0" file="../../Core/Source/Assets.h"/>
+    <FILE id="alycpw" name="FastAudioBuffer.cpp" compile="1" resource="0"
+          file="../../Core/Source/FastAudioBuffer.cpp"/>
+    <FILE id="bCvb1O" name="FastAudioBuffer.h" compile="0" resource="0"
+          file="../../Core/Source/FastAudioBuffer.h"/>
     <FILE id="TfqT0t" name="Histogram.cpp" compile="1" resource="0" file="../../Core/Source/Histogram.cpp"/>
     <FILE id="YUQMNx" name="Histogram.h" compile="0" resource="0" file="../../Core/Source/Histogram.h"/>
     <FILE id="e0UoaJ" name="MultiLevelThreshold.cpp" compile="1" resource="0"
