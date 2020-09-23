@@ -40,7 +40,7 @@ class StereoToAmbiAudioProcessor(object):
     def _decorateFunctions(self):
         self._setTypes(self.lib.STAAP_new, ctypes.c_void_p, [ctypes.c_int32])
         self._setTypes(self.lib.STAAP_write, None, [ctypes.c_void_p, _c_ndfloat, _c_ndfloat, ctypes.c_int32])
-        self._setTypes(self.lib.STAAP_multi_read, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat, ctypes.c_int32, _c_ndfloat, ctypes.c_float])
+        self._setTypes(self.lib.STAAP_multi_read, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat, ctypes.c_int32, _c_ndfloat, ctypes.c_float, ctypes.c_int32])
         #self._setTypes(self.lib.STAAP_getLastHisto, None, [ctypes.c_void_p, _c_ndfloat, _c_ndint, ctypes.c_int32])
         self._setTypes(self.lib.STAAP_delete, None, [ctypes.c_void_p])
 
@@ -52,7 +52,7 @@ nfft = wlen + zeroPadSize - 1 = 34k;
 nfft = 2 ^ nextpow2(nfft) = ;
 '''
 
-width = 360
+width = 150
 blockSize = 512
 nTotalWritten = 0
 nTotalRead = 0
@@ -63,8 +63,10 @@ nSources = (nThresholds+1)*2
 x = StereoToAmbiAudioProcessor(nThresholds)
 
 filename = 'TestAudio/PannedSources.wav'
+filename = 'TestAudio/LoudReverbedPannedSources.wav'
 #filename = 'TestAudio/Test.wav'
-filename = 'TestAudio/2L.flac'
+#filename = 'TestAudio/2L.flac'
+filename = 'TestAudio/PannedSources-48k.wav'
 # get audio size
 f = sf.SoundFile(filename)
 samplerate = f.samplerate
@@ -125,6 +127,6 @@ for i in range(nSources):
     print(out)
 
 for i in range(nSources):
-    name = 'TestAudio/testOut{}.wav'.format(i)
+    name = f'TestAudio/testOut-48k-{format(i)}.wav'
     sf.write(name, outData[:,i], samplerate)
 print("Finito")

@@ -63,7 +63,6 @@ bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 {
     assert(buffer.size() == windowSize);
 	unsigned overlapBorder = overlap * windowSize;
-    cout << "Size () = " << outputBuffer.size() << endl;
 	if (outputBuffer.size() < overlapBorder)
     {
         overlapBorder = outputBuffer.size();

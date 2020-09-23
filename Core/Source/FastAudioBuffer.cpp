@@ -27,7 +27,7 @@ float& FastAudioBuffer::operator[] (int i)
     if ( i >= size())
     {
         cerr << "Access out of bounds" << endl;
-        std::runtime_error("Access out of bounds");
+        std::runtime_error("Access out of bounds"); // is this correct?
     }
     return buffer[(head + i) & mask];
 }

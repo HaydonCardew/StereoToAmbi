@@ -14,14 +14,14 @@
 extern "C" {
     StereoToAmbiAudioProcessor* STAAP_new(int nThresholds) { return new StereoToAmbiAudioProcessor(nThresholds); }
     void STAAP_write(StereoToAmbiAudioProcessor* ST, float* left, float* right, int nSamples) { return ST->testProcessBlockWrite(left, right, nSamples); }
-    int STAAP_multi_read(StereoToAmbiAudioProcessor* ST, float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate) { return ST->testProcessBlockMultiRead(buffer, nSamples, azimuths, width, sampleRate); }
+int STAAP_multi_read(StereoToAmbiAudioProcessor* ST, float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate) { return ST->testProcessBlockMultiRead(buffer, nSamples, azimuths, width, sampleRate); }
     void STAAP_delete(StereoToAmbiAudioProcessor* ST) { delete ST; }
 }
 
 void StereoToAmbiAudioProcessor::testProcessBlockWrite(float* left, float* right, int nSamples)
 {
-	stereoAudio.getChannel(0)->write(left, nSamples);
-	stereoAudio.getChannel(1)->write(right, nSamples);
+    stereoAudio.getChannel(0)->write(left, nSamples);
+    stereoAudio.getChannel(1)->write(right, nSamples);
 }
 
 int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate)
@@ -43,8 +43,7 @@ int StereoToAmbiAudioProcessor::testProcessBlockMultiRead(float* buffer, int nSa
         }
 
         // Perform Stereo to Ambi processing
-        unsigned width = 360;
-        unsigned offset = 0;
+        float offset = 0.f;
         multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, width, offset, sampleRate);
         
         for (int i = 0; i < extractedSources.size(); i++)
