@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<JUCERPROJECT id="ncYXdM" name="UnitTests" projectType="consoleapp" jucerVersion="5.4.7">
+  <MAINGROUP id="RHQ7sH" name="UnitTests">
+    <GROUP id="{583AA9CF-A0CF-1503-FC5B-2D407EEB1520}" name="Source">
+      <GROUP id="{753EFF30-34F2-CA8A-35C3-4339D4952F86}" name="googletest">
+        <GROUP id="{96E06E1A-1FFF-CE8B-35A2-1ECD8CDDA6FF}" name="include">
+          <GROUP id="{D64F3D2F-CDFD-136F-D9EA-FD45DEE4C1CF}" name="gtest">
+            <GROUP id="{0305C2AB-DD58-7F3C-C885-E739B48DFD30}" name="internal">
+              <GROUP id="{DA8794C1-22F1-EB26-7C26-CC81F9A2F80C}" name="custom">
+                <FILE id="wyr0IV" name="gtest-port.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/internal/custom/gtest-port.h"/>
+                <FILE id="qD39BG" name="gtest-printers.h" compile="0" resource="0"
+                      file="Source/GoogleTests/googletest/include/gtest/internal/custom/gtest-printers.h"/>
+                <FILE id="et0JKh" name="gtest.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/internal/custom/gtest.h"/>
+                <FILE id="dkIKGC" name="README.md" compile="0" resource="1" file="Source/GoogleTests/googletest/include/gtest/internal/custom/README.md"/>
+              </GROUP>
+              <FILE id="IS9I0b" name="gtest-death-test-internal.h" compile="0" resource="0"
+                    file="Source/GoogleTests/googletest/include/gtest/internal/gtest-death-test-internal.h"/>
+              <FILE id="pqa6kx" name="gtest-filepath.h" compile="0" resource="0"
+                    file="Source/GoogleTests/googletest/include/gtest/internal/gtest-filepath.h"/>
+              <FILE id="G2A9oU" name="gtest-internal.h" compile="0" resource="0"
+                    file="Source/GoogleTests/googletest/include/gtest/internal/gtest-internal.h"/>
+              <FILE id="lzaB5i" name="gtest-param-util.h" compile="0" resource="0"
+                    file="Source/GoogleTests/googletest/include/gtest/internal/gtest-param-util.h"/>
+              <FILE id="RwQzAR" name="gtest-port-arch.h" compile="0" resource="0"
+                    file="Source/GoogleTests/googletest/include/gtest/internal/gtest-port-arch.h"/>
+              <FILE id="kfD6Sv" name="gtest-port.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/internal/gtest-port.h"/>
+              <FILE id="U8B78o" name="gtest-string.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/internal/gtest-string.h"/>
+              <FILE id="qHKp5p" name="gtest-type-util.h" compile="0" resource="0"
+                    file="Source/GoogleTests/googletest/include/gtest/internal/gtest-type-util.h"/>
+            </GROUP>
+            <FILE id="VvO9Od" name="gtest-death-test.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest-death-test.h"/>
+            <FILE id="XtJD8g" name="gtest-matchers.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest-matchers.h"/>
+            <FILE id="HRUi4h" name="gtest-message.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/gtest-message.h"/>
+            <FILE id="T2gJiA" name="gtest-param-test.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest-param-test.h"/>
+            <FILE id="fA6QH2" name="gtest-printers.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest-printers.h"/>
+            <FILE id="bDlrUe" name="gtest-spi.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/gtest-spi.h"/>
+            <FILE id="AvYiXm" name="gtest-test-part.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest-test-part.h"/>
+            <FILE id="XP5G0S" name="gtest-typed-test.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest-typed-test.h"/>
+            <FILE id="ABAK5t" name="gtest.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/gtest.h"/>
+            <FILE id="fui5LM" name="gtest_pred_impl.h" compile="0" resource="0"
+                  file="Source/GoogleTests/googletest/include/gtest/gtest_pred_impl.h"/>
+            <FILE id="VzfZt9" name="gtest_prod.h" compile="0" resource="0" file="Source/GoogleTests/googletest/include/gtest/gtest_prod.h"/>
+          </GROUP>
+        </GROUP>
+        <GROUP id="{A2A7864B-D70C-8B79-C82F-5F1C9D957D3E}" name="src">
+          <FILE id="sQsbhq" name="gtest-all.cc" compile="0" resource="0" file="Source/GoogleTests/googletest/src/gtest-all.cc"/>
+          <FILE id="PEPL4y" name="gtest-death-test.cc" compile="1" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-death-test.cc"/>
+          <FILE id="VGfDEZ" name="gtest-filepath.cc" compile="1" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-filepath.cc"/>
+          <FILE id="xMIXhZ" name="gtest-internal-inl.h" compile="0" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-internal-inl.h"/>
+          <FILE id="A5EXk7" name="gtest-matchers.cc" compile="1" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-matchers.cc"/>
+          <FILE id="ATWy2V" name="gtest-port.cc" compile="1" resource="0" file="Source/GoogleTests/googletest/src/gtest-port.cc"/>
+          <FILE id="M8t22L" name="gtest-printers.cc" compile="1" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-printers.cc"/>
+          <FILE id="qlTpKK" name="gtest-test-part.cc" compile="1" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-test-part.cc"/>
+          <FILE id="eUGxlo" name="gtest-typed-test.cc" compile="1" resource="0"
+                file="Source/GoogleTests/googletest/src/gtest-typed-test.cc"/>
+          <FILE id="lu18F4" name="gtest.cc" compile="1" resource="0" file="Source/GoogleTests/googletest/src/gtest.cc"/>
+          <FILE id="GYyJ8F" name="gtest_main.cc" compile="0" resource="0" file="Source/GoogleTests/googletest/src/gtest_main.cc"/>
+        </GROUP>
+        <FILE id="lXU7be" name="CMakeLists.txt" compile="0" resource="1" file="Source/GoogleTests/googletest/CMakeLists.txt"/>
+        <FILE id="znUtcZ" name="CONTRIBUTORS" compile="0" resource="1" file="Source/GoogleTests/googletest/CONTRIBUTORS"/>
+        <FILE id="AtLrWr" name="LICENSE" compile="0" resource="1" file="Source/GoogleTests/googletest/LICENSE"/>
+        <FILE id="DYgMem" name="README.md" compile="0" resource="1" file="Source/GoogleTests/googletest/README.md"/>
+      </GROUP>
+      <FILE id="JJErG7" name="Main.cpp" compile="1" resource="0" file="Source/Main.cpp"/>
+    </GROUP>
+  </MAINGROUP>
+  <EXPORTFORMATS>
+    <XCODE_MAC targetFolder="Builds/MacOSX">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest/include&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest"/>
+        <CONFIGURATION isDebug="0" name="Release" headerPath="/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest/include&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_audio_basics" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_devices" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_formats" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_audio_processors" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_core" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_cryptography" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_data_structures" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_events" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_graphics" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_basics" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_gui_extra" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_opengl" path="../../../../Desktop/JUCE/modules"/>
+      </MODULEPATHS>
+    </XCODE_MAC>
+  </EXPORTFORMATS>
+  <MODULES>
+    <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_devices" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_formats" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_audio_processors" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_gui_extra" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_opengl" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+  </MODULES>
+  <LIVE_SETTINGS>
+    <OSX/>
+  </LIVE_SETTINGS>
+  <JUCEOPTIONS JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
+</JUCERPROJECT>
