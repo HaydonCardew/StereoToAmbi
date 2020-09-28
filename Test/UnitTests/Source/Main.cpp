@@ -10,11 +10,7 @@
 
 #include <JuceHeader.h>
 #include "gtest/gtest.h"
-
-TEST(FIRST, TEST)
-{
-    EXPECT_EQ(1,1);
-}
+#include "WindowedFIFOBuffer_UnitTest.h"
 
 //==============================================================================
 int main (int argc, char* argv[])

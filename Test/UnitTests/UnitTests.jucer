@@ -3,6 +3,23 @@
 <JUCERPROJECT id="ncYXdM" name="UnitTests" projectType="consoleapp" jucerVersion="5.4.7">
   <MAINGROUP id="RHQ7sH" name="UnitTests">
     <GROUP id="{583AA9CF-A0CF-1503-FC5B-2D407EEB1520}" name="Source">
+      <FILE id="fhvgPj" name="WindowedFIFOBuffer_UnitTest.h" compile="0"
+            resource="0" file="Source/WindowedFIFOBuffer_UnitTest.h"/>
+      <FILE id="nDB5ak" name="FastAudioBuffer.cpp" compile="1" resource="0"
+            file="../../Core/Source/FastAudioBuffer.cpp"/>
+      <FILE id="ZXh62i" name="FastAudioBuffer.h" compile="0" resource="0"
+            file="../../Core/Source/FastAudioBuffer.h"/>
+      <FILE id="r1z9wh" name="Histogram.cpp" compile="1" resource="0" file="../../Core/Source/Histogram.cpp"/>
+      <FILE id="QxnDLs" name="Histogram.h" compile="0" resource="0" file="../../Core/Source/Histogram.h"/>
+      <FILE id="lw4u9Z" name="MultiLevelThreshold.cpp" compile="1" resource="0"
+            file="../../Core/Source/MultiLevelThreshold.cpp"/>
+      <FILE id="hxlP8l" name="MultiLevelThreshold.h" compile="0" resource="0"
+            file="../../Core/Source/MultiLevelThreshold.h"/>
+      <FILE id="djQhfJ" name="Tools.hpp" compile="0" resource="0" file="../../Core/Source/Tools.hpp"/>
+      <FILE id="ouAvUk" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
+            file="../../Core/Source/WindowedFIFOBuffer.cpp"/>
+      <FILE id="p5IkT6" name="WindowedFIFOBuffer.h" compile="0" resource="0"
+            file="../../Core/Source/WindowedFIFOBuffer.h"/>
       <GROUP id="{753EFF30-34F2-CA8A-35C3-4339D4952F86}" name="googletest">
         <GROUP id="{96E06E1A-1FFF-CE8B-35A2-1ECD8CDDA6FF}" name="include">
           <GROUP id="{D64F3D2F-CDFD-136F-D9EA-FD45DEE4C1CF}" name="gtest">
@@ -78,10 +95,10 @@
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
-    <XCODE_MAC targetFolder="Builds/MacOSX">
+    <XCODE_MAC targetFolder="Builds/MacOSX" extraDefs="JUCE_DONT_DECLARE_PROJECTINFO">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" headerPath="/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest/include&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest"/>
-        <CONFIGURATION isDebug="0" name="Release" headerPath="/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest/include&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest"/>
+        <CONFIGURATION isDebug="1" name="Debug" headerPath="/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest/include&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Core/Source&#10;"/>
+        <CONFIGURATION isDebug="0" name="Release" headerPath="/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest/include&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source/GoogleTests/googletest&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Test/UnitTests/Source&#10;/Users/haydoncardew/Google\ Drive/StereoToAmbiPlugin/Core/Source&#10;"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../../Desktop/JUCE/modules"/>
@@ -96,6 +113,7 @@
         <MODULEPATH id="juce_gui_basics" path="../../../../Desktop/JUCE/modules"/>
         <MODULEPATH id="juce_gui_extra" path="../../../../Desktop/JUCE/modules"/>
         <MODULEPATH id="juce_opengl" path="../../../../Desktop/JUCE/modules"/>
+        <MODULEPATH id="juce_dsp" path="../../../../Desktop/JUCE/modules"/>
       </MODULEPATHS>
     </XCODE_MAC>
   </EXPORTFORMATS>
@@ -107,6 +125,7 @@
     <MODULE id="juce_core" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_cryptography" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_data_structures" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
+    <MODULE id="juce_dsp" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_events" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_graphics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
     <MODULE id="juce_gui_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="1"/>
