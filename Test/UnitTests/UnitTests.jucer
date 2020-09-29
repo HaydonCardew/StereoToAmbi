@@ -3,8 +3,12 @@
 <JUCERPROJECT id="ncYXdM" name="UnitTests" projectType="consoleapp" jucerVersion="5.4.7">
   <MAINGROUP id="RHQ7sH" name="UnitTests">
     <GROUP id="{583AA9CF-A0CF-1503-FC5B-2D407EEB1520}" name="Source">
+      <FILE id="B2cVi6" name="MultiLevelThreshold_UnitTest.h" compile="0"
+            resource="0" file="Source/MultiLevelThreshold_UnitTest.h"/>
       <FILE id="fhvgPj" name="WindowedFIFOBuffer_UnitTest.h" compile="0"
             resource="0" file="Source/WindowedFIFOBuffer_UnitTest.h"/>
+      <FILE id="f6ozYq" name="UnitTestTools.hpp" compile="1" resource="0"
+            file="Source/UnitTestTools.hpp"/>
       <FILE id="nDB5ak" name="FastAudioBuffer.cpp" compile="1" resource="0"
             file="../../Core/Source/FastAudioBuffer.cpp"/>
       <FILE id="ZXh62i" name="FastAudioBuffer.h" compile="0" resource="0"

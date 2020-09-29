@@ -11,6 +11,7 @@
 #include <JuceHeader.h>
 #include "gtest/gtest.h"
 #include "WindowedFIFOBuffer_UnitTest.h"
+#include "MultiLevelThreshold_UnitTest.h"
 
 //==============================================================================
 int main (int argc, char* argv[])

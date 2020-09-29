@@ -11,9 +11,10 @@
 #pragma once
 #include "WindowedFIFOBuffer.h"
 #include "gtest/gtest.h"
+#include "UnitTestTools.hpp"
 #include <vector>
-   
-TEST(WindowedFIFOBuffer, Create)
+
+TEST(WindowedFIFOBuffer, Write)
 {
     WindowedFIFOBuffer fifo(10);
     std::vector<float> data(10, 0);
