@@ -111,31 +111,39 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 
 /*
 This needs to take in width in degrees, get a scaled angle between -1 & 1
-and returns the angle between -width/2 & width/2
+and returns the angle between 0 <-> 360
 
 */
 void MultiLevelThreshold::calculateAzimuths(vector<float>& azimuths, float width)
 {
     assert(azimuths.size() == totalNumberOfSources);
-    width /= -2; // this inverts the estiamed scaled angle as ambisonics is retarded and goes anti-clockwise
+    //width /= 2; // this inverts the estiamed scaled angle as ambisonics is retarded and goes anti-clockwise
     for (int i = 0; i < sourcesPerChannel; i++)
     {
         azimuths[i] = estimateScaledAngle(leftSourceMagnitudes[LEFT][i], leftSourceMagnitudes[RIGHT][i]) * width;
+        cout << "L: " << leftSourceMagnitudes[LEFT][i] << "R: " << leftSourceMagnitudes[RIGHT][i] << endl;
         azimuths[i + sourcesPerChannel] = estimateScaledAngle(rightSourceMagnitudes[LEFT][i], rightSourceMagnitudes[RIGHT][i]) * width;
+        cout << "L: " << rightSourceMagnitudes[LEFT][i] << "R: " << rightSourceMagnitudes[RIGHT][i] << endl;
     }
 }
 
 // returns a scaling of -1 <-> 1
+// returns a scaling between 0 <-> 1
 float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const float rightMagnitude)
 {
-    float totalSourceMagnitude = sqrt( pow(leftMagnitude,2) + pow(rightMagnitude,2) );
+    /*float totalSourceMagnitude = sqrt( pow(leftMagnitude,2) + pow(rightMagnitude,2) );
     if(totalSourceMagnitude == 0.f)
     {
         return 0.f;
+    }*/
+    if (leftMagnitude == 0.f)
+    {
+        return 0.f;
     }
-    float angleInRads = asin(rightMagnitude / totalSourceMagnitude); // returns a scale 0 - pi/2
-    const float quarterPi = 0.78539816339;
-    return (angleInRads/quarterPi) - 1.f;
+    float angleInRads = atan(rightMagnitude / leftMagnitude); // returns a scale 0 - pi/2
+    const float quarterPi = 0.78539816339 * 2;
+    cout << "Scale : " << (angleInRads/quarterPi) << endl;
+    return (angleInRads/quarterPi);// - 1.f;
 }
 
 void MultiLevelThreshold::calcMagnitudeVectors(const vector<ComplexFft>& stereoFft)

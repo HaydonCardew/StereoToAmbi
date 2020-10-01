@@ -22,10 +22,10 @@ TEST(MultiLevelThreshold, AzimuthExtraction)
     int sr = 48000;
     
     // construct sine wave
-    vector<float> azimuths{ 0, 90, 180, 270 };
-    vector<float> freqs{ 200, 300, 700, 1700 };
+    vector<float> azimuths{ 270 };
+    vector<float> freqs{ 1100 };
     assert(azimuths.size() == azimuths.size());
-    assert(azimuths.size() % 2 == 0);
+    //assert(azimuths.size() % 2 == 0);
     vector<vector<float>> testSignal = Tools::constructStereoSineWaves(freqs, azimuths, sr, nSamples);
     
     // copy to ComplexFft
@@ -43,13 +43,32 @@ TEST(MultiLevelThreshold, AzimuthExtraction)
     fft.perform(stereoTimeBuffer[1].data(), stereoFreqBuffer[1].data(), false);
     
     // perform the magic
-    int nThresholds = static_cast<int>(azimuths.size()/2) - 1;
+    //int nThresholds = static_cast<int>(azimuths.size()/2) - 1;
+    int nThresholds = 1;
     int nExtractedSources = 2 * (nThresholds+1);
     int nHistogramBins = 100;
     vector<MultiLevelThreshold::ComplexFft> extractedFfts(nExtractedSources, MultiLevelThreshold::ComplexFft(fftSize, 0));
     MultiLevelThreshold mlt(nThresholds, fftSize, nHistogramBins);
     vector<float> extractedAzimuths(nExtractedSources, 0.f);
     mlt.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, extractedAzimuths, 360.f, 0.f, sr);
+    
+    for ( int i = 0; i < nExtractedSources; ++i )
+    {
+        cout << "Azimuth : " << extractedAzimuths[i] << " Power : " << Tools::getAverageMag(extractedFfts[i]) << endl;
+    }
+    
+    std::sort(azimuths.begin(), azimuths.end());
+    cout << "Azimuths: " << endl;
+    for ( auto &a : azimuths )
+    {
+        cout << a << endl;
+    }
+    std::sort(extractedAzimuths.begin(), extractedAzimuths.end());
+    cout << "Extracted Azimuths: " << endl;
+    for ( auto &a : extractedAzimuths )
+    {
+        cout << a << endl;
+    }
     
     EXPECT_TRUE(true);
 }
