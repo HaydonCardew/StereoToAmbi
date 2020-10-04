@@ -56,7 +56,7 @@ void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, float offset)
     
     for(auto & azimuth : azimuths)
     {
-        azimuth -= shift; // ambisonics is anticlockwise...
+        azimuth += shift;
         if (azimuth > 360.f)
         {
             azimuth -= 360.f;

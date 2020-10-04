@@ -50,8 +50,7 @@ TEST(MultiLevelThreshold, AzimuthExtraction)
     vector<MultiLevelThreshold::ComplexFft> extractedFfts(nExtractedSources, MultiLevelThreshold::ComplexFft(fftSize, 0));
     MultiLevelThreshold mlt(nThresholds, fftSize, nHistogramBins);
     vector<float> extractedAzimuths(nExtractedSources, 0.f);
-    mlt.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, extractedAzimuths, 360.f, 0.f, sr);
-    
+    mlt.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, extractedAzimuths, 360.f, 10.f, sr);
     for ( int i = 0; i < nExtractedSources; ++i )
     {
         cout << "Azimuth : " << extractedAzimuths[i] << " Power : " << Tools::getAverageMag(extractedFfts[i]) << endl;
