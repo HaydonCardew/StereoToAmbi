@@ -4,9 +4,9 @@
 #define PI 3.14159265359
 
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)
-: windowSize(windowSize),
+: overlap(overlap), windowSize(windowSize),
 window(windowSize, WindowType::hann), windowType(WindowType::hann),
-overlap(overlap), inputBuffer(10000), outputBuffer(10000)
+inputBuffer(10000), outputBuffer(10000)
 {
     assert(windowSize > 0);
     inverseWindowGainFactor = 1/getWindowGain(windowType, overlap);
@@ -218,17 +218,6 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
 /* For some crazy reason azimuths are recorded anti-clockwise */
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
 {
-    auto hasClipped = [&]
-    {
-        for (auto & sample : transferBuffer)
-        {
-            if (abs(sample) > 1)
-            {
-                return true;
-            }
-        }
-        return false;
-    };
     assert(transferBuffer.size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);

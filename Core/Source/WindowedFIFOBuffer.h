@@ -31,8 +31,7 @@ public:
     void sendProcessedWindow(float *data);
     
 private:
-    //deque<float> inputBuffer;
-    //deque<float> outputBuffer;
+    const float overlap;
     FastAudioBuffer inputBuffer;
     FastAudioBuffer outputBuffer;
     
@@ -43,7 +42,7 @@ private:
     
     WindowFunction window;
     WindowType windowType;
-    const float overlap;
+    
 };
 
 class MultiChannelWindowedFIFOBuffer

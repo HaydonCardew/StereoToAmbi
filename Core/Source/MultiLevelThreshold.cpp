@@ -16,8 +16,6 @@ using namespace std;
 MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize)
 	: leftHistogram(nHistogramBins), rightHistogram(nHistogramBins), noOfThresholds(noOfThresholds), fftSize(fftSize), sourcesPerChannel(noOfThresholds+1), totalNumberOfSources(sourcesPerChannel*STEREO), nHistogramBins(histogramSize)
 {
-	thresholds.resize(STEREO, vector<float>(noOfThresholds+1, 0)); // +1 for a maximum value
-
 	panMap.resize(STEREO, vector<float>(fftSize,0));
 	magnitude.resize(STEREO, vector<float>(fftSize, 0));
 
@@ -25,6 +23,8 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 	rightSourceMagnitudes.resize(STEREO, vector<float>(sourcesPerChannel, 0));
 
     histogram.resize(STEREO, Histogram(histogramSize, noOfThresholds));
+    
+    thresholds.resize(STEREO, vector<float>(noOfThresholds+1, 0)); // +1 for a maximum value
 }
 
 // width 0 -> 360 // offset 0 -> 360 (anti-clockwise)
@@ -50,7 +50,7 @@ void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, float offset)
 {
     int shift = min(360.f, max(offset, 0.f));
     
-    for(auto & azimuth : azimuths)
+    for ( auto & azimuth : azimuths )
     {
         azimuth += shift;
         if (azimuth > 360.f)
@@ -81,26 +81,24 @@ void MultiLevelThreshold::extractAudioSources(const ComplexFft& leftFft, const C
 		if (panMap[LEFT][i] == panMap[RIGHT][i])
         {
             assert( panMap[LEFT][i] == 0.f );
-			ambiFfts[0][i].real(leftFft[i].real() + rightFft[i].real()); // can these 2 be collapsed into one?
-            ambiFfts[0][i].imag(leftFft[i].imag() + rightFft[i].imag());
+            ambiFfts[0][i] = leftFft[i] + rightFft[i];
 			leftSourceMagnitudes[LEFT][0] += magnitude[LEFT][i];
 			leftSourceMagnitudes[RIGHT][0] += magnitude[RIGHT][i];
 		}
 		else
         {
-			for (int j = 0; j < sourcesPerChannel; j++) { // panmap == 0 for both?
+			for (int j = 0; j < sourcesPerChannel; j++)
+            { // panmap == 0 for both?
 				if ((panMap[LEFT][i] != 0) && (panMap[LEFT][i] <= thresholds[LEFT][j]))
                 { // right mag is bigger for all of these? - not sure
-					ambiFfts[j][i].real(leftFft[i].real() + rightFft[i].real());
-					ambiFfts[j][i].imag(leftFft[i].imag() + rightFft[i].imag());
+                    ambiFfts[j][i] = leftFft[i] + rightFft[i];
 					leftSourceMagnitudes[LEFT][j] += magnitude[LEFT][i];
 					leftSourceMagnitudes[RIGHT][j] += magnitude[RIGHT][i];
 					break;
 				}
 				if ((panMap[RIGHT][i] != 0) && (panMap[RIGHT][i] <= thresholds[RIGHT][j]))
                 {
-					ambiFfts[j + sourcesPerChannel][i].real(leftFft[i].real() + rightFft[i].real());
-					ambiFfts[j + sourcesPerChannel][i].imag(leftFft[i].imag() + rightFft[i].imag());
+                    ambiFfts[j + sourcesPerChannel][i] = leftFft[i] + rightFft[i];
 					rightSourceMagnitudes[LEFT][j] += magnitude[LEFT][i];
 					rightSourceMagnitudes[RIGHT][j] += magnitude[RIGHT][i];
 					break;

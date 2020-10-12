@@ -13,6 +13,8 @@ private:
 	vector< vector<float> > leftSourceMagnitudes;
 	vector< vector<float> > rightSourceMagnitudes;
 
+    vector<vector<float>> thresholds;
+    
     vector<Histogram> histogram;
     
 	int nHistogramBins;
@@ -22,8 +24,6 @@ private:
 	int width;
 	const int sourcesPerChannel;
 	const int totalNumberOfSources;
-
-	vector<vector<float>> thresholds;
     
     Histogram leftHistogram;
     Histogram rightHistogram;
