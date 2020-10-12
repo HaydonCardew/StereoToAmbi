@@ -8,7 +8,9 @@
   ==============================================================================
 */
 
-#pragma once
+#ifndef Tools_h
+#define Tools_h
+
 #include <vector>
 #include <cassert>
 
@@ -52,5 +54,10 @@ float toRadians(T degs)
     return (degs*3.14159265) / 180.f;
 }
 
+uint64_t factorial(int x);
+
+int nCombinations(int n, int k);
+
 }
 // debug assert
+#endif /* Tools_h */

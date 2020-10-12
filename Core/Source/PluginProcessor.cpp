@@ -10,7 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "Tools.hpp"
+#include "Tools.h"
 #include <algorithm>
 
 //==============================================================================

@@ -11,7 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "Assets.h"
-#include "Tools.hpp"
+#include "Tools.h"
 
 //==============================================================================
 

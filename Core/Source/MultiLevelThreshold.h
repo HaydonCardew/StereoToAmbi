@@ -10,15 +10,11 @@ class MultiLevelThreshold
 private:
 	vector< vector<float> > panMap;
 	vector< vector<float> > magnitude;
-
-	vector< vector<float> > Pl;
-	vector< vector<float> > Sl;
-	vector< vector<float> > Pr;
-	vector< vector<float> > Sr;
-
 	vector< vector<float> > leftSourceMagnitudes;
 	vector< vector<float> > rightSourceMagnitudes;
 
+    vector<Histogram> histogram;
+    
 	int nHistogramBins;
 	int noOfThresholds;
 	int fftSize;
@@ -41,9 +37,9 @@ public:
 	void calcMagnitudeVectors(const vector<ComplexFft>& stereoFft);
 	void extractAudioSources(const ComplexFft& leftFft, const ComplexFft& rightFft, vector<ComplexFft>& ambiFfts);
 	void generatePanMap();
-	void calcHistogram(float minFreq, float maxFreq, int fs);
+    void loadHistograms(float minFreq, float maxFreq, int fs);
 	void fastMultiLevelthreshold();
-
+    
     void calculateAzimuths(vector<float>& azimuths, float width);
     // returns a scaling of -1 <-> 1
     float estimateScaledAngle(const float leftMagnitude, const float rightMagnitude);

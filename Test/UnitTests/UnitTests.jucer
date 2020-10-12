@@ -19,7 +19,8 @@
             file="../../Core/Source/MultiLevelThreshold.cpp"/>
       <FILE id="hxlP8l" name="MultiLevelThreshold.h" compile="0" resource="0"
             file="../../Core/Source/MultiLevelThreshold.h"/>
-      <FILE id="djQhfJ" name="Tools.hpp" compile="0" resource="0" file="../../Core/Source/Tools.hpp"/>
+      <FILE id="djQhfJ" name="Tools.h" compile="0" resource="0" file="../../Core/Source/Tools.h"/>
+      <FILE id="k9KYZv" name="Tools.cpp" compile="1" resource="0" file="../../Core/Source/Tools.cpp"/>
       <FILE id="ouAvUk" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
             file="../../Core/Source/WindowedFIFOBuffer.cpp"/>
       <FILE id="p5IkT6" name="WindowedFIFOBuffer.h" compile="0" resource="0"

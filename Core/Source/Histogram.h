@@ -10,13 +10,14 @@ class Histogram
 {
 public:
     Histogram(unsigned nBins);
+    Histogram(unsigned nBins, unsigned nThresholds);
+    Histogram(vector<int> bins); // loading bins directly
     void loadData(const vector<float>& data, unsigned start, unsigned end);
-    vector<float>::iterator getFirstProbabilityBin();
-    vector<float>::iterator getLastProbabilityBin();
-    vector<float>::iterator getFirstWeightedProbabilityBin();
-    vector<float>::iterator getLastWeightedProbabilityBin();
+    void loadData(const vector<float>& data);
+    void setupMultiLevelThreshold(unsigned nThresholds);
     float getMaxValue();
-    float getIncrement();
+    vector<unsigned> getThresholdBins();
+    vector<float> getThresholdValues();
     
 private:
     void calculateProbabilityBins();
@@ -26,13 +27,11 @@ private:
     vector<float> weightedProbabilityBins;
     float increment;
     float maxValue;
-    /*
-     vector< vector<int> > bins;
-     vector< vector<float> > probabilityBins;
-     vector<float> increment;
-     vector<float> maxValue;
-     void calculateProbabilityBins();
-     */
+    unsigned nThresholds;
+    void createIndicesLookupTable(int nBins, int nThresholds);
+    vector<vector<unsigned>> lookupIndices;
+    vector<vector<float>> p;
+    vector<vector<float>> s;
 };
 
 #endif /* Histogram_h */

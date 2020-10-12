@@ -10,10 +10,11 @@
 
 #pragma once
 #include "MultiLevelThreshold.h"
+#include "Histogram.h"
 #include "gtest/gtest.h"
 #include "UnitTestTools.hpp"
 #include <cassert>
-
+/*
 TEST(MultiLevelThreshold, AzimuthExtraction)
 {
     int fftOrder = 12;
@@ -70,4 +71,28 @@ TEST(MultiLevelThreshold, AzimuthExtraction)
     }
     
     EXPECT_TRUE(true);
+}
+*/
+TEST(MultiLevelThreshold, MLT)
+{
+    auto printVector = [] (vector<unsigned> vec, string title)
+    {
+        cout << title << endl;
+        for (auto & v : vec)
+        {
+            cout << v << " ";
+        }
+        cout << endl;
+    };
+    vector<int> data {10, 4, 3, 2, 5, 3, 1, 11, 4, 5, 3, 6, 3, 5, 2, 3, 2, 7, 4, 6};
+    
+    Histogram histo1(data, 1);
+    Histogram histo2(data, 2);
+    Histogram histo3(data, 3);
+
+    EXPECT_TRUE (
+                 histo1.getThresholdBins() == vector<unsigned>({ 9 }) &&
+                 histo2.getThresholdBins() == vector<unsigned>({ 5, 12 }) &&
+                 histo3.getThresholdBins() ==  vector<unsigned>({ 4, 9, 14 })
+                 );
 }
