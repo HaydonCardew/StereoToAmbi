@@ -9,7 +9,7 @@
 */
 
 #include "PluginProcessor.h"
-#include "Tools.hpp"
+#include "Tools.h"
 
 extern "C" {
     StereoToAmbiAudioProcessor* STAAP_new(int nThresholds) { return new StereoToAmbiAudioProcessor(nThresholds); }

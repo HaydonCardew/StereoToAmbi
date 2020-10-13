@@ -132,8 +132,8 @@ float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const 
         return 0.f;
     }
     float angleInRads = atan(rightMagnitude / leftMagnitude); // returns a scale 0 - pi/2
-    const float quarterPi = 0.78539816339 * 2;
-    return (angleInRads/quarterPi);// - 1.f;
+    const float halfPi = 3.14159265 / 2;
+    return (angleInRads/halfPi);// - 1.f;
 }
 
 void MultiLevelThreshold::calcMagnitudeVectors(const vector<ComplexFft>& stereoFft)

@@ -232,7 +232,6 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
                 transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
             }
         }
-        //assert(!hasClipped()); // is clipping here
         buffers[channel]->sendProcessedWindow(transferBuffer);
     }
     assert(sanityCheck());
