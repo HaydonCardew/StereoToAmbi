@@ -226,7 +226,7 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
         Tools::zeroVector(transferBuffer);
         for(unsigned object = 0; object < audioObjects.size(); ++object)
         {
-            calculateAmbiCoefs(Tools::toRadians(azimuths[object]), channelOrder);
+            calculateAmbiCoefs(Tools::toRadians(azimuths[object]), channelOrder); // this could be optimised. Redo'ing this over and over for 1 coef each time?
             for(unsigned j = 0; j < windowSize; ++j)
             {
                 transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
