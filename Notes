@@ -4,3 +4,4 @@
 - Fix buffers to be owned not pointers
 - Initalisation of pointers?
 - Dislike the 'sanity check'!!
+- Only process bottom half of FFT

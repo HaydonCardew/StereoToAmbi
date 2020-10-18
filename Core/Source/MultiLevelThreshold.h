@@ -44,7 +44,7 @@ public:
     // returns a scaling of -1 <-> 1
     float estimateScaledAngle(const float leftMagnitude, const float rightMagnitude);
     
-	void stereoFftToAmbiFft(const vector<ComplexFft>& stereoFfts, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const float width, const float offset, const unsigned fs);
+	void stereoFftToAmbiFft(vector<ComplexFft>& stereoFfts, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const float width, const float offset, const unsigned fs);
 
 	unsigned getNumberOfExtractedSources() { return totalNumberOfSources; };
     

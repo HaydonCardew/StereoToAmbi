@@ -11,3 +11,10 @@ cubed does worse than square? Do inverse? [NOTE: 1/2 & 1/3 don't have the same e
 -- Width at 360 creates reasonable 0.5* expected answers.. Width at 180 fucks it totally?
 
 Just playing one source does have glitching..
+
+
+WINDOW AUDIO ON OUTPUT!!
+
+-3db for 0.75 crossover with windowing on output
+
+-6db for 0.75 crossover without windowing on output

@@ -89,7 +89,7 @@ void Histogram::createIndicesLookupTable(int nBins, int nThresholds)
         auto it = find(mask.begin(), mask.end(), flag);
         for ( auto & i : index )
         {
-            i = (unsigned)distance(mask.begin(), it);// - 1; // this will point to index in vector so must use -1
+            i = (unsigned)distance(mask.begin(), it); // - 1; // this will point to index in vector so must use -1
             it = find(next(it), mask.end(), flag);
         }
         lookupIndices.push_back(index);

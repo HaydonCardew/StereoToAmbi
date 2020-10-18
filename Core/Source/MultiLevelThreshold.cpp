@@ -28,7 +28,7 @@ MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int hi
 }
 
 // width 0 -> 360 // offset 0 -> 360 (anti-clockwise)
-void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const float width, const float offset, const unsigned fs)
+void MultiLevelThreshold::stereoFftToAmbiFft(vector<ComplexFft>& stereoFft, vector<ComplexFft>& ambiFfts, vector<float>& azimuths, const float width, const float offset, const unsigned fs)
 {
 	if (ambiFfts[0].size() < fftSize
         || stereoFft.size() != 2
@@ -38,6 +38,11 @@ void MultiLevelThreshold::stereoFftToAmbiFft(const vector<ComplexFft>& stereoFft
     {
 		return;
 	}
+    for ( int i = (fftSize/2); i < fftSize; ++i )
+    {
+        stereoFft[LEFT][i] = 0;
+        stereoFft[RIGHT][i] = 0;
+    }
     calcMagnitudeVectors(stereoFft);
 	generatePanMap();
 	loadHistograms(100, 4000, fs);
