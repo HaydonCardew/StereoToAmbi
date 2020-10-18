@@ -59,9 +59,12 @@ bool WindowedFIFOBuffer::getWindowedAudio(vector<float>& buffer)
 	return true;
 }
 
-bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
+bool WindowedFIFOBuffer::sendProcessedWindow(vector<float>& buffer)
 {
     assert(buffer.size() == windowSize);
+    
+    window.multiplyWithWindowingTable(&buffer[0], windowSize);
+    
 	unsigned overlapBorder = overlap * windowSize;
 	if (outputBuffer.size() < overlapBorder)
     {
@@ -75,7 +78,7 @@ bool WindowedFIFOBuffer::sendProcessedWindow(const vector<float>& buffer)
 	}
 	for (unsigned i = overlapBorder; i < windowSize; ++i)
     {
-		outputBuffer.push_back(buffer[i]);
+ 		outputBuffer.push_back(buffer[i]);
 	}
 	return true;
 }

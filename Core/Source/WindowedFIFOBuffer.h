@@ -20,7 +20,7 @@ public:
 	bool windowedAudioAvailable();
 	unsigned outputSamplesAvailable();
 	bool getWindowedAudio(vector<float>& buffer);
-	bool sendProcessedWindow(const vector<float>& buffer);
+	bool sendProcessedWindow(vector<float>& buffer);
     
     unsigned inputBufferSize();
     unsigned outputBufferSize();

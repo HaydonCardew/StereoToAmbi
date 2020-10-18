@@ -15,7 +15,7 @@
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
-	: fftSize(pow(2,fftOrder)), windowLength(fftSize/2), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*STEREO, windowLength)
+	: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*STEREO, windowLength)
 #ifndef JucePlugin_PreferredChannelConfigurations
      , AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -209,7 +209,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 				transferBuffer[i][j] = extractedSources[i][j].real();
 			}
         }
-        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths);
+        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths); // window audio again as a test
 	}
     
 	if (ambiAudio.outputSamplesAvailable() >= nSamples)
