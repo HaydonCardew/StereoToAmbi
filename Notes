@@ -1,4 +1,5 @@
-- Fix L/R
+- Fix number of channels break when loading uni reaper
+- Claps and kicks sound wrong in Avicii intro
 - Add tests
 - Add output windowing
 - Fix buffers to be owned not pointers
