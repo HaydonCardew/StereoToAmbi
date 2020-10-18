@@ -57,7 +57,7 @@ void MultiLevelThreshold::offsetAngles(vector<float>& azimuths, float offset)
     
     for ( auto & azimuth : azimuths )
     {
-        azimuth += shift;
+        azimuth -= shift; //  take off as ambisonics goes anti-clockwise
         if (azimuth > 360.f)
         {
             azimuth -= 360.f;
@@ -120,7 +120,7 @@ and returns the angle between 0 <-> 360
 void MultiLevelThreshold::calculateAzimuths(vector<float>& azimuths, float width)
 {
     assert(azimuths.size() == totalNumberOfSources);
-    //width /= 2; // this inverts the estiamed scaled angle as ambisonics is retarded and goes anti-clockwise
+    width = -(width/2); // this inverts the estimated scaled angle as ambisonics is retarded and goes anti-clockwise
     for (int i = 0; i < sourcesPerChannel; i++)
     {
         azimuths[i] = estimateScaledAngle(leftSourceMagnitudes[LEFT][i], leftSourceMagnitudes[RIGHT][i]) * width;
@@ -128,8 +128,7 @@ void MultiLevelThreshold::calculateAzimuths(vector<float>& azimuths, float width
     }
 }
 
-// returns a scaling of -1 <-> 1
-// returns a scaling between 0 <-> 1
+// returns a scaling between -1 <-> 1 (L <-> R)
 float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const float rightMagnitude)
 {
     if (leftMagnitude == 0.f)
@@ -137,8 +136,8 @@ float MultiLevelThreshold::estimateScaledAngle(const float leftMagnitude, const 
         return 0.f;
     }
     float angleInRads = atan(rightMagnitude / leftMagnitude); // returns a scale 0 - pi/2
-    const float halfPi = 3.14159265 / 2;
-    return (angleInRads/halfPi);// - 1.f;
+    const float quarterPi = 3.14159265 / 4;
+    return (angleInRads/quarterPi) - 1.0f;
 }
 
 void MultiLevelThreshold::calcMagnitudeVectors(const vector<ComplexFft>& stereoFft)
