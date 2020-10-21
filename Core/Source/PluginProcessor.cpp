@@ -210,10 +210,12 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         ambiAudio.readAsStereo(buffer.getWritePointer(0), buffer.getWritePointer(1), nSamples);
     #else
         unsigned nChannelsToWrite = min(totalNumOutputChannels, ambiAudio.size());
+        vector<float*> writePointers(nChannelsToWrite)
         for (unsigned i = 0; i < nChannelsToWrite; ++i)
         {
-            ambiAudio.getChannel(i)->read(buffer.getWritePointer(i), nSamples);
+            writePointers[i] = buffer.getWritePointer(i);
         }
+        ambiAudio.read(writePointers, nSamples);
     #endif
 	}
 }

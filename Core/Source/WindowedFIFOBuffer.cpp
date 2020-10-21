@@ -163,6 +163,16 @@ void MultiChannelWindowedFIFOBuffer::write(vector<const float*> readBuffers, uns
     }
 }
 
+void MultiChannelWindowedFIFOBuffer::read(vector<float*> writeBuffers, unsigned nSamples)
+{
+    assert(writeBuffers.size() >= buffers.size());
+    for (unsigned i = 0; i < buffers.size(); ++i)
+    {
+        assert(buffers[i]->outputSamplesAvailable() >= nSamples);
+        buffers[i]->read(writeBuffers[i], nSamples);
+    }
+}
+
 bool MultiChannelWindowedFIFOBuffer::windowedAudioAvailable()
 {
     for(auto & buffer : buffers)

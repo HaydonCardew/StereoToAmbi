@@ -52,6 +52,7 @@ public:
     shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
     bool windowedAudioAvailable();
     void write(vector<const float*> readBuffers, unsigned nSamples, float gain = 1.0);
+    void read(vector<float*> writeBuffers, unsigned nSamples);
     void getWindowedAudio(vector<vector<float>>& writeBuffers);
     unsigned outputSamplesAvailable();
     unsigned size();
