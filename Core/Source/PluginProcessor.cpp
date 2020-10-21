@@ -134,22 +134,15 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
     return true;
   #else
     // This is the place where you check if the layout is supported.
-    // In this template code we only support mono or stereo.
     if (layouts.getMainInputChannelSet() != AudioChannelSet::stereo()
         #ifdef STEREO_DECODER
     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         #else
     && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
         #endif
-        return false;
-
-    // This checks if the input layout matches the output layout
-/*
-   #if ! JucePlugin_IsSynth
-    if (layouts.getMainOutputChannelSet() != layouts.getMainInputChannelSet())
-        return false;
-   #endif
-*/
+    {
+        return false; // this isn't getting called...
+    }
     return true;
   #endif
 }
@@ -179,9 +172,8 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 
 	//buffer.clear(1, 0, nSamples);
 
-    stereoAudio.getChannel(0)->write(buffer.getReadPointer(0), nSamples, 0.5);
-    stereoAudio.getChannel(1)->write(buffer.getReadPointer(1), nSamples, 0.5); // Stereo source can collapse into one source so half the overall gain on input
-
+    stereoAudio.write({buffer.getReadPointer(0), buffer.getReadPointer(1)}, nSamples, 0.5);
+    
     while (stereoAudio.windowedAudioAvailable())
     {
         Tools::zeroVector(transferBuffer);

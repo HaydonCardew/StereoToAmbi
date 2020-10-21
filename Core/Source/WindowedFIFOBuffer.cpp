@@ -154,6 +154,15 @@ shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsign
     return buffers[channel];
 }
 
+void MultiChannelWindowedFIFOBuffer::write(vector<const float*> readBuffers, unsigned nSamples, float gain)
+{
+    assert(readBuffers.size() >= buffers.size());
+    for (unsigned i = 0; i < buffers.size(); ++i)
+    {
+        buffers[i]->write(readBuffers[i], nSamples, gain);
+    }
+}
+
 bool MultiChannelWindowedFIFOBuffer::windowedAudioAvailable()
 {
     for(auto & buffer : buffers)
@@ -169,7 +178,7 @@ bool MultiChannelWindowedFIFOBuffer::windowedAudioAvailable()
 unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
 {
     unsigned nSamplesAvailable = buffers[0]->outputSamplesAvailable();
-    for(vector<shared_ptr<WindowedFIFOBuffer>>::iterator buffer = (buffers.begin()+1); buffer != buffers.end(); ++buffer)
+    for ( vector<shared_ptr<WindowedFIFOBuffer>>::iterator buffer = (buffers.begin()+1); buffer != buffers.end(); ++buffer)
     {
         nSamplesAvailable = min(nSamplesAvailable, (*buffer)->outputSamplesAvailable());
     }
@@ -183,7 +192,7 @@ unsigned MultiChannelWindowedFIFOBuffer::size()
 
 void MultiChannelWindowedFIFOBuffer::clear()
 {
-    for(auto buffer : buffers)
+    for ( auto buffer : buffers )
     {
         buffer->clear();
     }
@@ -193,16 +202,16 @@ void MultiChannelWindowedFIFOBuffer::clear()
 bool MultiChannelWindowedFIFOBuffer::sanityCheck()
 {
     unsigned nBuffers = (unsigned)buffers.size();
-    if(nBuffers == 0)
+    if ( nBuffers == 0 )
     {
         return false;
     }
     unsigned inputBufferSize = buffers[0]->inputBufferSize();
     unsigned outputBufferSize = buffers[0]->outputBufferSize();
-    for(unsigned i = 1; i < nBuffers; ++i)
+    for ( unsigned i = 1; i < nBuffers; ++i )
     {
-        if( buffers[i]->inputBufferSize() != inputBufferSize ||
-           buffers[i]->outputBufferSize() != outputBufferSize)
+        if ( buffers[i]->inputBufferSize() != inputBufferSize ||
+           buffers[i]->outputBufferSize() != outputBufferSize )
         {
             return false;
         }
@@ -224,13 +233,13 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
     assert(transferBuffer.size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
-    for(unsigned channel = 0; channel < nAmbiChannels; ++channel)
+    for ( unsigned channel = 0; channel < nAmbiChannels; ++channel )
     {
         Tools::zeroVector(transferBuffer);
-        for(unsigned object = 0; object < audioObjects.size(); ++object)
+        for ( unsigned object = 0; object < audioObjects.size(); ++object )
         {
             calculateAmbiCoefs(Tools::toRadians(azimuths[object]), channelOrder); // this could be optimised. Redo'ing this over and over for 1 coef each time?
-            for(unsigned j = 0; j < windowSize; ++j)
+            for ( unsigned j = 0; j < windowSize; ++j)
             {
                 transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
             }
