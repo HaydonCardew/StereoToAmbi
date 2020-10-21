@@ -175,6 +175,16 @@ bool MultiChannelWindowedFIFOBuffer::windowedAudioAvailable()
     return true;
 }
 
+void MultiChannelWindowedFIFOBuffer::getWindowedAudio(vector<vector<float>>& writeBuffers)
+{
+    assert(writeBuffers.size() >= buffers.size());
+    for (unsigned i = 0; i < buffers.size(); ++i)
+    {
+        assert(buffers[i]->windowedAudioAvailable());
+        buffers[i]->getWindowedAudio(writeBuffers[i]);
+    }
+}
+
 unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
 {
     unsigned nSamplesAvailable = buffers[0]->outputSamplesAvailable();

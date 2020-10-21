@@ -180,9 +180,9 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         Tools::zeroVector(stereoTimeBuffer);
         Tools::zeroVector(stereoFreqBuffer);
         
+        stereoAudio.getWindowedAudio(transferBuffer);
         for (unsigned channel = 0; channel < STEREO; ++channel)
         {
-            stereoAudio.getChannel(channel)->getWindowedAudio(transferBuffer[channel]);
             for (unsigned i = 0; i < windowLength; i++)
             {
                 stereoTimeBuffer[channel][i] = transferBuffer[channel][i];
