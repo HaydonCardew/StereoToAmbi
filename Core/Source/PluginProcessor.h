@@ -14,8 +14,8 @@
 #include "MultiLevelThreshold.h"
 #include "WindowedFIFOBuffer.h"
 
-#define STEREO_DECODER
-#define MAX_AMBI_ORDER 1
+//#define STEREO_DECODER
+#define MAX_AMBI_ORDER 3
 #define STEREO 2
 
 #define WIDTH_NAME "Width"

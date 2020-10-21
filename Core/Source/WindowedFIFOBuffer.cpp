@@ -144,7 +144,7 @@ MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannel
     }
 }
 
-shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsigned channel)
+/*shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsigned channel)
 {
     assert(channel < buffers.size());
     if(channel > buffers.size())
@@ -152,7 +152,7 @@ shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsign
         return nullptr;
     }
     return buffers[channel];
-}
+}*/
 
 void MultiChannelWindowedFIFOBuffer::write(vector<const float*> readBuffers, unsigned nSamples, float gain)
 {
@@ -195,12 +195,21 @@ void MultiChannelWindowedFIFOBuffer::getWindowedAudio(vector<vector<float>>& wri
     }
 }
 
+void MultiChannelWindowedFIFOBuffer::sendProcessedWindows(vector<vector<float>>& readBuffers)
+{
+    assert(readBuffers.size() >= buffers.size());
+    for (unsigned i = 0; i < buffers.size(); ++i)
+    {
+        buffers[i]->sendProcessedWindow(readBuffers[i]);
+    }
+}
+
 unsigned MultiChannelWindowedFIFOBuffer::outputSamplesAvailable()
 {
     unsigned nSamplesAvailable = buffers[0]->outputSamplesAvailable();
-    for ( vector<shared_ptr<WindowedFIFOBuffer>>::iterator buffer = (buffers.begin()+1); buffer != buffers.end(); ++buffer)
+    for (auto & buffer : buffers)
     {
-        nSamplesAvailable = min(nSamplesAvailable, (*buffer)->outputSamplesAvailable());
+        nSamplesAvailable = min(nSamplesAvailable, buffer->outputSamplesAvailable());
     }
     return nSamplesAvailable;
 }
@@ -212,7 +221,7 @@ unsigned MultiChannelWindowedFIFOBuffer::size()
 
 void MultiChannelWindowedFIFOBuffer::clear()
 {
-    for ( auto buffer : buffers )
+    for ( auto & buffer : buffers )
     {
         buffer->clear();
     }
@@ -231,7 +240,7 @@ bool MultiChannelWindowedFIFOBuffer::sanityCheck()
     for ( unsigned i = 1; i < nBuffers; ++i )
     {
         if ( buffers[i]->inputBufferSize() != inputBufferSize ||
-           buffers[i]->outputBufferSize() != outputBufferSize )
+            buffers[i]->outputBufferSize() != outputBufferSize )
         {
             return false;
         }
@@ -243,29 +252,29 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)
 {
     assert(windowSize > 0);
-    transferBuffer.resize(windowSize, 0);
+    transferBuffer.resize(nAmbiChannels, vector<float>(windowSize, 0));
     ambiCoefs.resize(nAmbiChannels, 0);
 }
 
 /* For some crazy reason azimuths are recorded anti-clockwise */
 void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
 {
-    assert(transferBuffer.size() == windowSize);
+    assert(transferBuffer[0].size() == windowSize);
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
+    Tools::zeroVector(transferBuffer);
     for ( unsigned channel = 0; channel < nAmbiChannels; ++channel )
     {
-        Tools::zeroVector(transferBuffer);
         for ( unsigned object = 0; object < audioObjects.size(); ++object )
         {
             calculateAmbiCoefs(Tools::toRadians(azimuths[object]), channelOrder); // this could be optimised. Redo'ing this over and over for 1 coef each time?
             for ( unsigned j = 0; j < windowSize; ++j)
             {
-                transferBuffer[j] += audioObjects[object][j] * ambiCoefs[channel];
+                transferBuffer[channel][j] += audioObjects[object][j] * ambiCoefs[channel];
             }
         }
-        buffers[channel]->sendProcessedWindow(transferBuffer);
     }
+    sendProcessedWindows(transferBuffer);
     assert(sanityCheck());
 }
 
@@ -330,56 +339,56 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples, C
     assert(sanityCheck());
     if(transferBuffer.size() < nSamples)
     {
-        transferBuffer.resize(nSamples, 0); // a little hacky here..
+        stereoTransferBuffer.resize(nSamples, 0); // a little hacky here..
     }
     Tools::zeroVector(transferBuffer);
-    buffers[0]->read(&transferBuffer[0], nSamples); // W
+    buffers[0]->read(&stereoTransferBuffer[0], nSamples); // W
     for(unsigned i = 0; i < nSamples; ++i)
     {
-        left[i] = transferBuffer[i];
-        right[i] = transferBuffer[i];
+        left[i] = stereoTransferBuffer[i];
+        right[i] = stereoTransferBuffer[i];
     }
     switch (channelOrder)
     {
         case FuMa:
-            buffers[1]->read(&transferBuffer[0], nSamples); // X F<->B
+            buffers[1]->read(&stereoTransferBuffer[0], nSamples); // X F<->B
             for(unsigned i = 0; i < nSamples; ++i)
             {
-                left[i] += 0.6 * transferBuffer[i];
-                right[i] += 0.6 * transferBuffer[i];
+                left[i] += 0.6 * stereoTransferBuffer[i];
+                right[i] += 0.6 * stereoTransferBuffer[i];
             }
             
-            buffers[2]->read(&transferBuffer[0], nSamples); // Y L<->R
+            buffers[2]->read(&stereoTransferBuffer[0], nSamples); // Y L<->R
             for(unsigned i = 0; i < nSamples; ++i)
             {
-                left[i] += transferBuffer[i];
-                right[i] -= transferBuffer[i];
+                left[i] += stereoTransferBuffer[i];
+                right[i] -= stereoTransferBuffer[i];
             }
             // clear the rest...
             for(int i = 3; i < buffers.size(); ++i)
             {
-                buffers[i]->read(&transferBuffer[0], nSamples);
+                buffers[i]->read(&stereoTransferBuffer[0], nSamples);
             }
             break;
         case SN3D:
-            buffers[3]->read(&transferBuffer[0], nSamples); // X F<->B
+            buffers[3]->read(&stereoTransferBuffer[0], nSamples); // X F<->B
             for(unsigned i = 0; i < nSamples; ++i)
             {
-                left[i] += 0.6 * transferBuffer[i];
-                right[i] += 0.6 * transferBuffer[i];
+                left[i] += 0.6 * stereoTransferBuffer[i];
+                right[i] += 0.6 * stereoTransferBuffer[i];
             }
             
-            buffers[1]->read(&transferBuffer[0], nSamples); // Y L<->R
+            buffers[1]->read(&stereoTransferBuffer[0], nSamples); // Y L<->R
             for(unsigned i = 0; i < nSamples; ++i)
             {
-                left[i] += transferBuffer[i];
-                right[i] -= transferBuffer[i];
+                left[i] += stereoTransferBuffer[i];
+                right[i] -= stereoTransferBuffer[i];
             }
             // clear the rest...
-            buffers[2]->read(&transferBuffer[0], nSamples);
+            buffers[2]->read(&stereoTransferBuffer[0], nSamples);
             for(int i = 4; i < buffers.size(); ++i)
             {
-                buffers[i]->read(&transferBuffer[0], nSamples);
+                buffers[i]->read(&stereoTransferBuffer[0], nSamples);
             }
             break;
     }

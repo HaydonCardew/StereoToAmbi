@@ -49,18 +49,19 @@ class MultiChannelWindowedFIFOBuffer
 {
 public:
     MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize);
-    shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
+    //shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
     bool windowedAudioAvailable();
     void write(vector<const float*> readBuffers, unsigned nSamples, float gain = 1.0);
     void read(vector<float*> writeBuffers, unsigned nSamples);
     void getWindowedAudio(vector<vector<float>>& writeBuffers);
+    void sendProcessedWindows(vector<vector<float>>& writeBuffers);
     unsigned outputSamplesAvailable();
     unsigned size();
     void clear();
     
 protected:
     vector<shared_ptr<WindowedFIFOBuffer>> buffers;
-    
+    //vector<WindowedFIFOBuffer> buffers;
     //for debug
     bool sanityCheck();
 };
@@ -81,7 +82,8 @@ private:
     unsigned maxAmbiOrder;
     unsigned nAmbiChannels;
     const unsigned windowSize;
-    vector<float> transferBuffer;
+    vector<vector<float>> transferBuffer;
+    vector<float> stereoTransferBuffer;
     void calculateAmbiCoefs(float sourceAzimuth, ChannelOrder channelOrder);
     vector<float> ambiCoefs;
 };
