@@ -61,7 +61,7 @@ public:
     
 protected:
     vector<shared_ptr<WindowedFIFOBuffer>> buffers;
-    //vector<WindowedFIFOBuffer> buffers;
+    //vector<WindowedFIFOBuffer> testBuffers; one day!
     //for debug
     bool sanityCheck();
 };

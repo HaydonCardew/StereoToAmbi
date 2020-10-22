@@ -1,12 +1,14 @@
 - Fix number of channels break when loading uni reaper
 - Dislike the 'sanity check'!!
+- Fix buffers to be owned not pointers
 
 - Remove transfer buffers?
 - Hann gain correct now?
+- Make passthrough to check that...
+
 - Claps and kicks sound wrong in Avicii intro
 - Add tests
-- Fix buffers to be owned not pointers
+
 - Initalisation of pointers?
 - Only process bottom half of FFT
 - calculateAmbiCoefs fix
-- Add passthrough
