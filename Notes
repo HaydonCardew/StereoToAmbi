@@ -1,8 +1,7 @@
 - Fix number of channels break when loading uni reaper
-- Dislike the 'sanity check'!!
-- Fix buffers to be owned not pointers
 
 - Remove transfer buffers?
+- By adding my own FFT
 - Hann gain correct now?
 - Make passthrough to check that...
 
@@ -11,4 +10,6 @@
 
 - Initalisation of pointers?
 - Only process bottom half of FFT
-- calculateAmbiCoefs fix
+- calculateAmbiCoefs 
+
+- really check SN3D
