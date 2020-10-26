@@ -13,3 +13,5 @@
 - calculateAmbiCoefs 
 
 - really check SN3D
+
+- getTailLengthSeconds() ?

@@ -134,14 +134,17 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
     return true;
   #else
     // This is the place where you check if the layout is supported.
-    if (layouts.getMainInputChannelSet() != AudioChannelSet::stereo()
+    // https://forum.juce.com/t/vst-does-not-receive-update-in-channel-count-with-reaper/27932
+    // https://forum.juce.com/t/channel-configurations-for-vst3/23956/6
+    if ( (layouts.getMainInputChannelSet() != AudioChannelSet::stereo()
+         || layouts.getMainInputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
         #ifdef STEREO_DECODER
     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         #else
     && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
         #endif
     {
-        return false; // this isn't getting called...
+        return false;
     }
     return true;
   #endif
