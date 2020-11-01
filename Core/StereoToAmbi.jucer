@@ -6,6 +6,10 @@
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
       <FILE id="HD8gLs" name="FastAudioBuffer.cpp" compile="1" resource="0"
             file="Source/FastAudioBuffer.cpp"/>
+      <FILE id="sedT0P" name="Deverb.cpp" compile="1" resource="0" file="Source/Deverb.cpp"/>
+      <FILE id="fi8VfW" name="Deverb.h" compile="0" resource="0" file="Source/Deverb.h"/>
+      <FILE id="sKY93G" name="Tools.cpp" compile="1" resource="0" file="Source/Tools.cpp"/>
+      <FILE id="pOh1Pv" name="Tools.h" compile="0" resource="0" file="Source/Tools.h"/>
       <FILE id="aFL2bD" name="FastAudioBuffer.h" compile="0" resource="0"
             file="Source/FastAudioBuffer.h"/>
       <FILE id="CxRkO6" name="StoALookAndFeel.cpp" compile="1" resource="0"
@@ -31,7 +35,6 @@
             file="Source/MultiLevelThreshold.cpp"/>
       <FILE id="WN70uN" name="MultiLevelThreshold.h" compile="0" resource="0"
             file="Source/MultiLevelThreshold.h"/>
-      <FILE id="y61IM5" name="Tools.hpp" compile="0" resource="0" file="Source/Tools.hpp"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>
