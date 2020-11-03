@@ -15,7 +15,7 @@
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
-	: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*STEREO, windowLength)
+: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*STEREO, windowLength), deverb(fftSize), deverbAudio(STEREO*2, windowLength)
 #ifndef JucePlugin_PreferredChannelConfigurations
      , AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -42,6 +42,9 @@ valueTree(*this, nullptr, "ValueTree",
 	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
     stereoFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     stereoTimeBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
+    
+    directFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
+    ambientFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     
     width = valueTree.getRawParameterValue(WIDTH_ID);
     offset = valueTree.getRawParameterValue(OFFSET_ID);

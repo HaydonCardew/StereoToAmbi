@@ -49,7 +49,7 @@ class MultiChannelWindowedFIFOBuffer
 {
 public:
     MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize);
-    //shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
+    shared_ptr<WindowedFIFOBuffer> getChannel(unsigned channel);
     bool windowedAudioAvailable();
     void write(vector<const float*> readBuffers, unsigned nSamples, float gain = 1.0);
     void read(vector<float*> writeBuffers, unsigned nSamples);

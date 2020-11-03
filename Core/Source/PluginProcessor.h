@@ -13,6 +13,7 @@
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "MultiLevelThreshold.h"
 #include "WindowedFIFOBuffer.h"
+#include "Deverb.h"
 
 //#define STEREO_DECODER
 #define MAX_AMBI_ORDER 3
@@ -70,6 +71,8 @@ public:
 	void testProcessBlockWrite(float* left, float* right, int nSamples);
     int testProcessBlockMultiRead(float* buffer, int nSamples, float* azimuths, float width, unsigned sampleRate);
     void getLastHisto(float* probs, int* bins, int nSize);
+    void derverbWrite(float* left, float* right, int nSamples);
+    int deverbRead(float* buffer, int nSamples);
     
     AudioProcessorValueTreeState valueTree;
     
@@ -94,6 +97,9 @@ private:
     
     // test and should be private - initialise after window length though
     MultiChannelWindowedFIFOBuffer extractedAudio;
+    Deverb deverb;
+    MultiChannelWindowedFIFOBuffer deverbAudio;
+    vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessor)
 };

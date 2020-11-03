@@ -144,7 +144,7 @@ MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannel
     }
 }
 
-/*shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsigned channel)
+shared_ptr<WindowedFIFOBuffer> MultiChannelWindowedFIFOBuffer::getChannel(unsigned channel)
 {
     assert(channel < buffers.size());
     if(channel > buffers.size())
@@ -152,7 +152,7 @@ MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannel
         return nullptr;
     }
     return buffers[channel];
-}*/
+}
 
 void MultiChannelWindowedFIFOBuffer::write(vector<const float*> readBuffers, unsigned nSamples, float gain)
 {

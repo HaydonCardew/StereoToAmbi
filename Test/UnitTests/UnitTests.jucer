@@ -3,6 +3,8 @@
 <JUCERPROJECT id="ncYXdM" name="UnitTests" projectType="consoleapp" jucerVersion="5.4.7">
   <MAINGROUP id="RHQ7sH" name="UnitTests">
     <GROUP id="{583AA9CF-A0CF-1503-FC5B-2D407EEB1520}" name="Source">
+      <FILE id="uBh7Ls" name="Deverb.cpp" compile="1" resource="0" file="../../Core/Source/Deverb.cpp"/>
+      <FILE id="IrpzKY" name="Deverb.h" compile="0" resource="0" file="../../Core/Source/Deverb.h"/>
       <FILE id="B2cVi6" name="MultiLevelThreshold_UnitTest.h" compile="0"
             resource="0" file="Source/MultiLevelThreshold_UnitTest.h"/>
       <FILE id="fhvgPj" name="WindowedFIFOBuffer_UnitTest.h" compile="0"
