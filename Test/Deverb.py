@@ -54,18 +54,17 @@ class StereoToAmbiAudioProcessor(object):
         self._setTypes(self.lib.STAAP_deverb_read, ctypes.c_int32, [ctypes.c_void_p, _c_ndfloat, ctypes.c_int32])
         self._setTypes(self.lib.STAAP_delete, None, [ctypes.c_void_p])
 
-
 blockSize = 512
 nTotalWritten = 0
 nTotalRead = 0
 
 x = StereoToAmbiAudioProcessor(1)
 
-filename = 'TestAudio/PannedSources.wav'
-filename = 'TestAudio/LoudReverbedPannedSources.wav'
-#filename = 'TestAudio/Test.wav'
-#filename = 'TestAudio/2L.flac'
-#filename = 'TestAudio/PannedSources-48k.wav'
+dualMono = True
+
+folder = "DeverbTest"
+filename = f"{folder}/Both.wav"
+
 # get audio size
 f = sf.SoundFile(filename)
 samplerate = f.samplerate
@@ -82,7 +81,11 @@ percentageJump = 10
 progress = percentageJump
 
 for block in sf.blocks(filename, blocksize=blockSize, overlap=0, dtype='float32'):
-    x.deverbWrite(block[:,0], block[:,1], blockSize)
+    if dualMono:
+        x.deverbWrite(block[:,0], block[:,0], blockSize)
+    else:
+        x.deverbWrite(block[:,0], block[:,1], blockSize)
+    
     nTotalWritten = nTotalWritten + blockSize
     outTmp, nRead = x.deverbRead(outTmp, blockSize)
 
@@ -104,10 +107,10 @@ for block in sf.blocks(filename, blocksize=blockSize, overlap=0, dtype='float32'
         print('Completed: {}%'.format(progress))
         progress = progress + percentageJump
 
-name = f'TestAudio/Ambient.wav'
+name = f'{folder}/Ambient.wav'
 sf.write(name, ambientAudio, samplerate)
 
-name = f'TestAudio/Direct.wav'
+name = f'{folder}/Direct.wav'
 sf.write(name, directAudio, samplerate)
 
 print("Finito")

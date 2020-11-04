@@ -9,7 +9,6 @@
 */
 
 #pragma once
-
 #include <vector>
 #include <complex>
 
@@ -35,9 +34,9 @@ private:
     };
     const float forgetFactor = 0.85;
     
-    float getGamma ( const float corr );
+    float scaleCorrelation ( const float corr );
     const float phiZero = 0.15;
-    const float mu0 = 0.1; // min
+    const float mu0 = 0.0; // min
     const float mu1 = 1; // max
     const float sigma = 4; // curve
 };

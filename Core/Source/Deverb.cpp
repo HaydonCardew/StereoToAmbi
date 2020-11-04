@@ -12,6 +12,9 @@
 #include "Tools.h"
 #include <math.h>
 
+#include <iostream>
+#include <cmath>
+
 Deverb::Deverb (unsigned fftSize) : fftSize(fftSize)
 {
     reset();
@@ -33,9 +36,9 @@ void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, 
            && ambience[0].size() == fftSize);
     for (unsigned i = 0; i < fftSize; ++i)
     {
-        const float corr = getCorrelation(audio[LEFT][i], audio[RIGHT][i]);
-        alpha[i] = forgetFactor*alpha[i] + (1-forgetFactor)*corr;
-        const float gamma = getGamma(corr);
+        float corr = getCorrelation(audio[LEFT][i], audio[RIGHT][i]); // coming out as minus? that correct?
+        alpha[i] = forgetFactor*alpha[i] + (1-forgetFactor) * corr;
+        const float gamma = scaleCorrelation(alpha[i]);
         direct[LEFT][i] = audio[LEFT][i] * gamma;
         direct[RIGHT][i] = audio[RIGHT][i] * gamma;
         ambience[LEFT][i] = audio[LEFT][i] * (1 - gamma);
@@ -43,10 +46,14 @@ void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, 
     }
 }
 
-inline float Deverb::getGamma(float corr)
+inline float Deverb::scaleCorrelation(float corr)
 {
-    const float muAverage = (mu1-mu0) / 2;
-    return (muAverage * tanh(sigma * 3.141 * (phiZero - corr)) ) + muAverage;
+    const float muAverage = (mu1+mu0) / 2;
+    const float muHalfDiff = (mu1-mu0) / 2;
+    const float gamma = (muHalfDiff * tanh(sigma * 3.141 * (phiZero - corr)) ) + muAverage;
+    assert ( (gamma <= 1.0) && (gamma >= 0.0) );
+    // This function flips the correlation value. Flip it back
+    return (1 - gamma);
 }
 
 inline std::complex<float> Deverb::getPhi ( std::complex<float> first, std::complex<float> second )
@@ -56,8 +63,20 @@ inline std::complex<float> Deverb::getPhi ( std::complex<float> first, std::comp
 
 inline float Deverb::getCorrelation ( std::complex<float> left, std::complex<float> right )
 {
+    bool zeroInput = (left.real() == 0)
+    && (right.real() == 0)
+    && (left.imag() == 0)
+    && (right.imag() == 0);
+    
+    if (zeroInput)
+    {
+        return 1.f; // I guess silence is correlated...
+    }
+    
     std::complex<float> denom = getPhi(left, left) * getPhi(right, right);
     denom = pow(denom, 0.5);
     std::complex<float> num = getPhi(left, right);
-    return num.real() / denom.real();
+    const float corr = num.real() / denom.real();
+    // change scale from -1 -> 1 to 0 -> 1
+    return (corr + 1.f) / 2.f;
 }
