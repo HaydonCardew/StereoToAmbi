@@ -195,9 +195,13 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
             }
             fft.perform(stereoTimeBuffer[channel].data(), stereoFreqBuffer[channel].data(), false);
         }
-
+        
+        if (extractReverb)
+        {
+            deverb.deverberate(stereoFreqBuffer, directFreqBuffer, ambientFreqBuffer);
+        }
 		// Perform Stereo to Ambi processing
-		multiLevelThreshold.stereoFftToAmbiFft(stereoFreqBuffer, extractedFfts, sourceAzimuths, *width, *offset, getSampleRate());
+		multiLevelThreshold.stereoFftToAmbiFft(extractReverb ? directFreqBuffer  : stereoFreqBuffer, extractedFfts, sourceAzimuths, *width, *offset, getSampleRate());
         
 		for (unsigned i = 0; i < extractedSources.size(); i++)
         {

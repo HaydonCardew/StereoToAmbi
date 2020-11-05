@@ -26,7 +26,8 @@ void Deverb::reset()
     alpha.resize(fftSize, 0.5);
 }
 
-void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience )
+void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience,
+                          float mu0, float mu1, float phiZero, float sigma, float forgetFactor)
 {
     assert(audio.size() == STEREO
            && direct.size() == STEREO
@@ -36,9 +37,9 @@ void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, 
            && ambience[0].size() == fftSize);
     for (unsigned i = 0; i < fftSize; ++i)
     {
-        float corr = getCorrelation(audio[LEFT][i], audio[RIGHT][i]); // coming out as minus? that correct?
+        float corr = getCorrelation(audio[LEFT][i], audio[RIGHT][i]);
         alpha[i] = forgetFactor*alpha[i] + (1-forgetFactor) * corr;
-        const float gamma = scaleCorrelation(alpha[i]);
+        const float gamma = scaleCorrelation(alpha[i], mu0, mu1, sigma, phiZero);
         direct[LEFT][i] = audio[LEFT][i] * gamma;
         direct[RIGHT][i] = audio[RIGHT][i] * gamma;
         ambience[LEFT][i] = audio[LEFT][i] * (1 - gamma);
@@ -46,7 +47,7 @@ void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, 
     }
 }
 
-inline float Deverb::scaleCorrelation(float corr)
+inline float Deverb::scaleCorrelation(float corr, float mu0, float mu1, float sigma, float phiZero)
 {
     const float muAverage = (mu1+mu0) / 2;
     const float muHalfDiff = (mu1-mu0) / 2;
@@ -66,7 +67,7 @@ inline float Deverb::getCorrelation ( std::complex<float> left, std::complex<flo
     bool zeroInput = (left.real() == 0)
     && (right.real() == 0)
     && (left.imag() == 0)
-    && (right.imag() == 0);
+    && (right.imag() == 0); // this aint quite right...
     
     if (zeroInput)
     {
@@ -74,9 +75,19 @@ inline float Deverb::getCorrelation ( std::complex<float> left, std::complex<flo
     }
     
     std::complex<float> denom = getPhi(left, left) * getPhi(right, right);
+    
+    if (denom.real() == 0)
+    {
+        // I think this means one side was (0, 0) and the other (x, 0)
+        bool oneIsZero = (left.real() == 0 && left.imag() == 0) || (right.real() == 0 && right.imag() == 0);
+        assert(oneIsZero);
+        return 1.f;
+    }
+    
     denom = pow(denom, 0.5);
     std::complex<float> num = getPhi(left, right);
     const float corr = num.real() / denom.real();
+    assert(!isnan(corr));
     // change scale from -1 -> 1 to 0 -> 1
     return (corr + 1.f) / 2.f;
 }

@@ -20,7 +20,8 @@ public:
     typedef std::vector<FftArray> StereoFftArray;
     Deverb (unsigned fftSize);
     void reset();
-    void deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience );
+    void deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience,
+                      float mu0 = 0.0, float mu1 = 1.0, float phiZero = 0.15, float sigma = 4, float forgetFactor = 0.85);
 private:
     const unsigned fftSize;
     std::vector<float> alpha;
@@ -32,11 +33,12 @@ private:
         RIGHT = 1,
         STEREO = 2
     };
-    const float forgetFactor = 0.85;
-    
-    float scaleCorrelation ( const float corr );
+    float scaleCorrelation(float corr, float mu0, float mu1, float sigma, float phiZero);
+    /*
+    const float forgetFactor = 0.85; // calculate the time this takes
     const float phiZero = 0.15;
     const float mu0 = 0.0; // min
     const float mu1 = 1; // max
     const float sigma = 4; // curve
+     */
 };

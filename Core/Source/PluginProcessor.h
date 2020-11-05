@@ -82,6 +82,8 @@ private:
     unsigned fftSize;
 	unsigned windowLength;
 
+    bool extractReverb = false;
+    
 	atomic<float>* width;
     atomic<float>* offset;
     
@@ -90,16 +92,15 @@ private:
     BFormatBuffer ambiAudio;
 
 	MultiLevelThreshold multiLevelThreshold;
-    //MultiLevelThreshold::ComplexFft leftFreqBuffer, leftTimeBuffer, rightFreqBuffer, rightTimeBuffer;
+    Deverb deverb;
+    vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer;
     vector<MultiLevelThreshold::ComplexFft> extractedFfts, extractedSources, stereoTimeBuffer, stereoFreqBuffer;
 	vector<float> sourceAzimuths;
     vector<vector<float>> transferBuffer;
     
     // test and should be private - initialise after window length though
     MultiChannelWindowedFIFOBuffer extractedAudio;
-    Deverb deverb;
     MultiChannelWindowedFIFOBuffer deverbAudio;
-    vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer;
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessor)
 };
