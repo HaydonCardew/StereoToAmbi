@@ -12,12 +12,12 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "MultiLevelThreshold.h"
-#include "WindowedFIFOBuffer.h"
+#include "Buffers/MultiChannelWindowedFIFOBuffer.h"
+#include "Buffers/BFormatBuffer.h"
 #include "Deverb.h"
 
 //#define STEREO_DECODER
 #define MAX_AMBI_ORDER 3
-#define STEREO 2
 
 #define WIDTH_NAME "Width"
 #define WIDTH_ID "width"
@@ -80,6 +80,8 @@ public:
     
 private:
     
+    enum { LEFT = 0, RIGHT = 1, STEREO = 2 };
+    
     unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
     unsigned fftSize;
 	unsigned windowLength;
@@ -97,7 +99,7 @@ private:
     vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer, ambientTimeBuffer;
     vector<MultiLevelThreshold::ComplexFft> extractedFfts, extractedSources, stereoTimeBuffer, stereoFreqBuffer;
 	vector<float> sourceAzimuths;
-    vector<vector<float>> transferBuffer, ambienceTransferBuffer;
+    //vector<vector<float>> transferBuffer, ambienceTransferBuffer;
     
     bool convertParamToBool(float param) { return param > 0.5f ? true : false; };
     

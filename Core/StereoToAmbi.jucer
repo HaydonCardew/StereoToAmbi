@@ -4,14 +4,27 @@
               companyName="HaydonCardew">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
-      <FILE id="HD8gLs" name="FastAudioBuffer.cpp" compile="1" resource="0"
-            file="Source/FastAudioBuffer.cpp"/>
+      <GROUP id="{AD98B56E-7E29-993E-2ED2-DAD26E7805EC}" name="Buffers">
+        <FILE id="rbVWli" name="BFormatBuffer.cpp" compile="1" resource="0"
+              file="Source/Buffers/BFormatBuffer.cpp"/>
+        <FILE id="D84q2B" name="BFormatBuffer.h" compile="0" resource="0" file="Source/Buffers/BFormatBuffer.h"/>
+        <FILE id="lYgiwa" name="FastAudioBuffer.cpp" compile="1" resource="0"
+              file="Source/Buffers/FastAudioBuffer.cpp"/>
+        <FILE id="HMgUOn" name="FastAudioBuffer.h" compile="0" resource="0"
+              file="Source/Buffers/FastAudioBuffer.h"/>
+        <FILE id="yTgJeT" name="MultiChannelWindowedFIFOBuffer.cpp" compile="1"
+              resource="0" file="Source/Buffers/MultiChannelWindowedFIFOBuffer.cpp"/>
+        <FILE id="bgrk5L" name="MultiChannelWindowedFIFOBuffer.h" compile="0"
+              resource="0" file="Source/Buffers/MultiChannelWindowedFIFOBuffer.h"/>
+        <FILE id="lQRl9l" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
+              file="Source/Buffers/WindowedFIFOBuffer.cpp"/>
+        <FILE id="G5bIgA" name="WindowedFIFOBuffer.h" compile="0" resource="0"
+              file="Source/Buffers/WindowedFIFOBuffer.h"/>
+      </GROUP>
       <FILE id="sedT0P" name="Deverb.cpp" compile="1" resource="0" file="Source/Deverb.cpp"/>
       <FILE id="fi8VfW" name="Deverb.h" compile="0" resource="0" file="Source/Deverb.h"/>
       <FILE id="sKY93G" name="Tools.cpp" compile="1" resource="0" file="Source/Tools.cpp"/>
       <FILE id="pOh1Pv" name="Tools.h" compile="0" resource="0" file="Source/Tools.h"/>
-      <FILE id="aFL2bD" name="FastAudioBuffer.h" compile="0" resource="0"
-            file="Source/FastAudioBuffer.h"/>
       <FILE id="CxRkO6" name="StoALookAndFeel.cpp" compile="1" resource="0"
             file="Source/StoALookAndFeel.cpp"/>
       <FILE id="M1QcYU" name="StoALookAndFeel.h" compile="0" resource="0"
@@ -20,10 +33,6 @@
       <FILE id="QXCcqw" name="Assets.cpp" compile="1" resource="0" file="Source/Assets.cpp"/>
       <FILE id="oRzJEB" name="Histogram.h" compile="0" resource="0" file="Source/Histogram.h"/>
       <FILE id="Q7hs8l" name="Histogram.cpp" compile="1" resource="0" file="Source/Histogram.cpp"/>
-      <FILE id="ykVx9p" name="WindowedFIFOBuffer.h" compile="0" resource="0"
-            file="Source/WindowedFIFOBuffer.h"/>
-      <FILE id="kOabqY" name="WindowedFIFOBuffer.cpp" compile="1" resource="0"
-            file="Source/WindowedFIFOBuffer.cpp"/>
       <FILE id="y1B4HR" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="WOzrTp" name="PluginProcessor.h" compile="0" resource="0"

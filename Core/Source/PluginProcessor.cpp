@@ -39,7 +39,6 @@ valueTree(*this, nullptr, "ValueTree",
 {
 	extractedFfts.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());
-	transferBuffer.resize(multiLevelThreshold.getNumberOfExtractedSources(), vector<float>(windowLength));
 	extractedSources.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
     stereoFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     stereoTimeBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
@@ -47,7 +46,6 @@ valueTree(*this, nullptr, "ValueTree",
     directFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     ambientFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     ambientTimeBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
-    ambienceTransferBuffer.resize(STEREO, vector<float>(windowLength));
     
     width = valueTree.getRawParameterValue(WIDTH_ID);
     offset = valueTree.getRawParameterValue(OFFSET_ID);
@@ -182,56 +180,43 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 
 	//buffer.clear(1, 0, nSamples);
 
-    stereoAudio.write({buffer.getReadPointer(0), buffer.getReadPointer(1)}, nSamples, 0.5);
+    stereoAudio.write({buffer.getReadPointer(LEFT), buffer.getReadPointer(RIGHT)}, nSamples, 0.5);
     
     while (stereoAudio.windowedAudioAvailable())
     {
-        Tools::zeroVector(transferBuffer);
-        Tools::zeroVector(stereoTimeBuffer);
-        Tools::zeroVector(stereoFreqBuffer);
-        
-        stereoAudio.getWindowedAudio(transferBuffer);
-        for (unsigned channel = 0; channel < STEREO; ++channel)
-        {
-            for (unsigned i = 0; i < windowLength; i++)
-            {
-                stereoTimeBuffer[channel][i] = transferBuffer[channel][i]; // just read as complex number..
-            }
-            fft.perform(stereoTimeBuffer[channel].data(), stereoFreqBuffer[channel].data(), false);
-        }
+        stereoAudio.getWindowedAudio(stereoTimeBuffer);
+        fft.perform(stereoTimeBuffer[LEFT].data(), stereoFreqBuffer[LEFT].data(), false);
+        fft.perform(stereoTimeBuffer[RIGHT].data(), stereoFreqBuffer[RIGHT].data(), false);
         
         bool useDeverb = convertParamToBool(*extractReverb);
         if (useDeverb)
         {
             deverb.deverberate(stereoFreqBuffer, directFreqBuffer, ambientFreqBuffer);
-            for (unsigned channel = 0; channel < STEREO; ++channel)
-            {
-                fft.perform(ambientFreqBuffer[channel].data(), ambientTimeBuffer[channel].data(), true);
-                for (unsigned i = 0; i < windowLength; ++i)
-                {
-                    ambienceTransferBuffer[channel][i] = ambientTimeBuffer[channel][i].real();
-                }
-            }
+            fft.perform(ambientFreqBuffer[LEFT].data(), ambientTimeBuffer[LEFT].data(), true);
+            fft.perform(ambientFreqBuffer[RIGHT].data(), ambientTimeBuffer[RIGHT].data(), true);
         }
 		// Perform Stereo to Ambi processing
 		multiLevelThreshold.stereoFftToAmbiFft(useDeverb ? directFreqBuffer  : stereoFreqBuffer, extractedFfts, sourceAzimuths, *width, *offset, getSampleRate());
         
-		for (unsigned i = 0; i < extractedSources.size(); i++)
+		for (unsigned i = 0; i < extractedSources.size(); ++i)
         {
 			fft.perform(extractedFfts[i].data(), extractedSources[i].data(), true);
-			for (int j = 0; j < windowLength; j++)
-            {
-				transferBuffer[i][j] = extractedSources[i][j].real();
-			}
         }
         
-        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths, ambienceTransferBuffer, *offset); // ambienceTranferBuffer gets fucked when deverb turned off
+        if (useDeverb)
+        {
+            ambiAudio.addAudioOjectsAsBFormatWithAmbience(extractedSources, sourceAzimuths, ambientTimeBuffer, *offset);
+        }
+        else
+        {
+            ambiAudio.addAudioOjectsAsBFormat(extractedSources, sourceAzimuths);
+        }
 	}
     
 	if (ambiAudio.outputSamplesAvailable() >= nSamples)
     {
     #ifdef STEREO_DECODER
-        ambiAudio.readAsStereo(buffer.getWritePointer(0), buffer.getWritePointer(1), nSamples);
+        ambiAudio.readAsStereo(buffer.getWritePointer(LEFT), buffer.getWritePointer(RIGHT), nSamples);
     #else
         unsigned nChannelsToWrite = min(totalNumOutputChannels, ambiAudio.size());
         vector<float*> writePointers(nChannelsToWrite);
