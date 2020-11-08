@@ -71,6 +71,10 @@ inline float Deverb::getCorrelation ( std::complex<float> left, std::complex<flo
     }
     std::complex<float> denom = getPhi(left, left) * getPhi(right, right);
     denom = pow(denom, 0.5);
+    if (denom.real() == 0)
+    {
+        return 1.f;
+    }
     std::complex<float> num = getPhi(left, right);
     const float corr = num.real() / denom.real();
     assert ( (corr <= 1.1) && (corr >= -1.1) ); // stupid floats

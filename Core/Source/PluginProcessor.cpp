@@ -225,7 +225,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 			}
         }
         
-        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths, ambienceTransferBuffer, *offset); // window audio again as a test
+        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths, ambienceTransferBuffer, *offset); // ambienceTranferBuffer gets fucked when deverb turned off
 	}
     
 	if (ambiAudio.outputSamplesAvailable() >= nSamples)
