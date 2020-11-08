@@ -257,12 +257,22 @@ BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
 }
 
 /* For some crazy reason azimuths are recorded anti-clockwise */
-void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
+void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, const vector<vector<float>>& ambience, const float centreAngle, ChannelOrder channelOrder)
 {
     assert(transferBuffer[0].size() == windowSize);
+    Tools::zeroVector(transferBuffer);
+    
+    addObjectsToTransferBuffer(audioObjects, azimuths, channelOrder);
+    addAmbienceToTransferBuffer(ambience, centreAngle);
+    
+    sendProcessedWindows(transferBuffer);
+    assert(sanityCheck());
+}
+
+void BFormatBuffer::addObjectsToTransferBuffer(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder)
+{
     assert(audioObjects.size() == azimuths.size());
     assert(audioObjects[0].size() == windowSize);
-    Tools::zeroVector(transferBuffer);
     for ( unsigned channel = 0; channel < nAmbiChannels; ++channel )
     {
         for ( unsigned object = 0; object < audioObjects.size(); ++object )
@@ -274,8 +284,31 @@ void BFormatBuffer::addAudioOjectsAsBFormat(const vector<vector<float>>& audioOb
             }
         }
     }
-    sendProcessedWindows(transferBuffer);
-    assert(sanityCheck());
+}
+
+void BFormatBuffer::addAmbienceToTransferBuffer ( const vector<vector<float>>& ambience, const float centreAngle)
+{
+    // add ambience as hard L/R in 1st order b-format
+    assert(ambience.size() == STEREO);
+    assert(ambience[0].size() == windowSize);
+
+    calculateAmbiCoefs(Tools::toRadians(centreAngle + 90), SN3D);
+    for ( unsigned j = 0; j < windowSize; ++j)
+    {
+        transferBuffer[0][j] += ambience[LEFT][j] * ambiCoefs[0];
+        transferBuffer[1][j] += ambience[LEFT][j] * ambiCoefs[1];
+        transferBuffer[2][j] += ambience[LEFT][j] * ambiCoefs[2];
+        transferBuffer[3][j] += ambience[LEFT][j] * ambiCoefs[3];
+    }
+    
+    calculateAmbiCoefs(Tools::toRadians(centreAngle - 90), SN3D);
+    for ( unsigned j = 0; j < windowSize; ++j)
+    {
+        transferBuffer[0][j] += ambience[RIGHT][j] * ambiCoefs[0];
+        transferBuffer[1][j] += ambience[RIGHT][j] * ambiCoefs[1];
+        transferBuffer[2][j] += ambience[RIGHT][j] * ambiCoefs[2];
+        transferBuffer[3][j] += ambience[RIGHT][j] * ambiCoefs[3];
+    }
 }
 
 /* For some crazy reason azimuths are recorded anti-clockwise */

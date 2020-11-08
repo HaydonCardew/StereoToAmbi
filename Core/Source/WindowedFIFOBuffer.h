@@ -72,8 +72,9 @@ public:
     BFormatBuffer(unsigned maxOrder, unsigned windowSize);
     
     enum ChannelOrder { SN3D, FuMa };
+    enum { LEFT = 0, RIGHT = 1, STEREO = 2 };
     
-    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=SN3D);
+    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, const vector<vector<float>>& ambience, const float centreAngle, ChannelOrder channelOrder=SN3D);
     
     // simple stereo decoder for sanity checking
     void readAsStereo(float* left, float* right, unsigned nSamples, ChannelOrder channelOrder=SN3D);
@@ -84,6 +85,8 @@ private:
     const unsigned windowSize;
     vector<vector<float>> transferBuffer;
     vector<float> stereoTransferBuffer;
-    void calculateAmbiCoefs(float sourceAzimuth, ChannelOrder channelOrder);
+    void addObjectsToTransferBuffer (const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder);
+    void addAmbienceToTransferBuffer ( const vector<vector<float>>& ambience, const float centreAngle);
+    void calculateAmbiCoefs (float sourceAzimuth, ChannelOrder channelOrder);
     vector<float> ambiCoefs;
 };

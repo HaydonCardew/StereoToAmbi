@@ -219,6 +219,7 @@ public:
     AzimuthView angleShown;
     Human listener;
     Image background;
+    ToggleButton deverb;
 	
 private:
     //==============================================================================
@@ -242,5 +243,6 @@ private:
     StereoToAmbiAudioProcessor& processor;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> widthValue;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> offsetValue;
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor)
+    std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> deverbButton;
+    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor);
 };

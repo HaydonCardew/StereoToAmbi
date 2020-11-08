@@ -23,6 +23,8 @@
 #define WIDTH_ID "width"
 #define OFFSET_NAME "Offset"
 #define OFFSET_ID "offset"
+#define DEVERB_NAME "Deverb"
+#define DEVERB_ID "deverb"
 
 //==============================================================================
 /**
@@ -81,11 +83,10 @@ private:
     unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
     unsigned fftSize;
 	unsigned windowLength;
-
-    bool extractReverb = false;
     
 	atomic<float>* width;
     atomic<float>* offset;
+    atomic<float>* extractReverb;
     
 	dsp::FFT fft;
     MultiChannelWindowedFIFOBuffer stereoAudio;
@@ -93,10 +94,12 @@ private:
 
 	MultiLevelThreshold multiLevelThreshold;
     Deverb deverb;
-    vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer;
+    vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer, ambientTimeBuffer;
     vector<MultiLevelThreshold::ComplexFft> extractedFfts, extractedSources, stereoTimeBuffer, stereoFreqBuffer;
 	vector<float> sourceAzimuths;
-    vector<vector<float>> transferBuffer;
+    vector<vector<float>> transferBuffer, ambienceTransferBuffer;
+    
+    bool convertParamToBool(float param) { return param > 0.5f ? true : false; };
     
     // test and should be private - initialise after window length though
     MultiChannelWindowedFIFOBuffer extractedAudio;

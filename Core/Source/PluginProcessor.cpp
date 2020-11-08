@@ -32,7 +32,8 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
 valueTree(*this, nullptr, "ValueTree",
 {
     std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME, 0.0f, 360.f, 90.0f),
-    std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f)
+    std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f),
+    std::make_unique<AudioParameterBool>(DEVERB_ID, DEVERB_NAME, true)
 })
 #endif
 {
@@ -45,9 +46,12 @@ valueTree(*this, nullptr, "ValueTree",
     
     directFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
     ambientFreqBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
+    ambientTimeBuffer.resize(STEREO, MultiLevelThreshold::ComplexFft(fftSize, 0));
+    ambienceTransferBuffer.resize(STEREO, vector<float>(windowLength));
     
     width = valueTree.getRawParameterValue(WIDTH_ID);
     offset = valueTree.getRawParameterValue(OFFSET_ID);
+    extractReverb = valueTree.getRawParameterValue(DEVERB_ID);
 }
 
 StereoToAmbiAudioProcessor::~StereoToAmbiAudioProcessor()
@@ -191,17 +195,26 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         {
             for (unsigned i = 0; i < windowLength; i++)
             {
-                stereoTimeBuffer[channel][i] = transferBuffer[channel][i];
+                stereoTimeBuffer[channel][i] = transferBuffer[channel][i]; // just read as complex number..
             }
             fft.perform(stereoTimeBuffer[channel].data(), stereoFreqBuffer[channel].data(), false);
         }
         
-        if (extractReverb)
+        bool useDeverb = convertParamToBool(*extractReverb);
+        if (useDeverb)
         {
             deverb.deverberate(stereoFreqBuffer, directFreqBuffer, ambientFreqBuffer);
+            for (unsigned channel = 0; channel < STEREO; ++channel)
+            {
+                fft.perform(ambientFreqBuffer[channel].data(), ambientTimeBuffer[channel].data(), true);
+                for (unsigned i = 0; i < windowLength; ++i)
+                {
+                    ambienceTransferBuffer[channel][i] = ambientTimeBuffer[channel][i].real();
+                }
+            }
         }
 		// Perform Stereo to Ambi processing
-		multiLevelThreshold.stereoFftToAmbiFft(extractReverb ? directFreqBuffer  : stereoFreqBuffer, extractedFfts, sourceAzimuths, *width, *offset, getSampleRate());
+		multiLevelThreshold.stereoFftToAmbiFft(useDeverb ? directFreqBuffer  : stereoFreqBuffer, extractedFfts, sourceAzimuths, *width, *offset, getSampleRate());
         
 		for (unsigned i = 0; i < extractedSources.size(); i++)
         {
@@ -211,7 +224,8 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 				transferBuffer[i][j] = extractedSources[i][j].real();
 			}
         }
-        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths); // window audio again as a test
+        
+        ambiAudio.addAudioOjectsAsBFormat(transferBuffer, sourceAzimuths, ambienceTransferBuffer, *offset); // window audio again as a test
 	}
     
 	if (ambiAudio.outputSamplesAvailable() >= nSamples)

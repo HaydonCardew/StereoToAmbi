@@ -64,30 +64,16 @@ inline std::complex<float> Deverb::getPhi ( std::complex<float> first, std::comp
 
 inline float Deverb::getCorrelation ( std::complex<float> left, std::complex<float> right )
 {
-    bool zeroInput = (left.real() == 0)
-    && (right.real() == 0)
-    && (left.imag() == 0)
-    && (right.imag() == 0); // this aint quite right...
-    
-    if (zeroInput)
+    const bool oneIsZero = (left.real() == 0 && left.imag() == 0) || (right.real() == 0 && right.imag() == 0);
+    if (oneIsZero)
     {
-        return 1.f; // I guess silence is correlated...
+        return 0.5f;
     }
-    
     std::complex<float> denom = getPhi(left, left) * getPhi(right, right);
-    
-    if (denom.real() == 0)
-    {
-        // I think this means one side was (0, 0) and the other (x, 0)
-        bool oneIsZero = (left.real() == 0 && left.imag() == 0) || (right.real() == 0 && right.imag() == 0);
-        assert(oneIsZero);
-        return 1.f;
-    }
-    
     denom = pow(denom, 0.5);
     std::complex<float> num = getPhi(left, right);
     const float corr = num.real() / denom.real();
-    assert(!isnan(corr));
+    assert ( (corr <= 1.1) && (corr >= -1.1) ); // stupid floats
     // change scale from -1 -> 1 to 0 -> 1
     return (corr + 1.f) / 2.f;
 }

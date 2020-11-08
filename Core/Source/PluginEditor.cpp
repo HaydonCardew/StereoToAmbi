@@ -22,6 +22,7 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     addAndMakeVisible(mainContentComponent);
     widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, mainContentComponent.spread); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
     offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, mainContentComponent.direction);
+    deverbButton = make_unique<AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTree, DEVERB_ID, mainContentComponent.deverb);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
@@ -68,6 +69,8 @@ MainContentComponent::MainContentComponent()
 
     addAndMakeVisible(listener);
     
+    addAndMakeVisible(deverb);
+    
     resized();
 }
 
@@ -84,6 +87,9 @@ void MainContentComponent::resized()
     direction.setBoundsRelative(0.073095f, 0.01181f, 0.366223f, 0.241731f);
     
     spread.setBoundsRelative(0.130751f, 0.29635f, 0.0841174f, 0.467847f);
+    
+    deverb.setBoundsRelative(0.15, 0.8, 0.1, 0.1);
+
 }
 
 void MainContentComponent::paint(Graphics& g)
