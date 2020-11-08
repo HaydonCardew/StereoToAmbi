@@ -23,6 +23,8 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, mainContentComponent.spread); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
     offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, mainContentComponent.direction);
     deverbButton = make_unique<AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTree, DEVERB_ID, mainContentComponent.deverb);
+    deverbCutoffValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_CUTOFF_ID, mainContentComponent.deverbCutoff);
+    deverbSlewrateValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_SLEWRATE_ID, mainContentComponent.deverbSlewrate);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
@@ -71,6 +73,14 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(deverb);
     
+    deverbCutoff.setSliderStyle(juce::Slider::LinearVertical);
+    deverbCutoff.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    addAndMakeVisible(deverbCutoff);
+    
+    deverbSlewrate.setSliderStyle(juce::Slider::LinearVertical);
+    deverbSlewrate.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    addAndMakeVisible(deverbSlewrate);
+    
     resized();
 }
 
@@ -90,6 +100,9 @@ void MainContentComponent::resized()
     
     deverb.setBoundsRelative(0.15, 0.8, 0.1, 0.1);
 
+    deverbCutoff.setBoundsRelative(0.230751f, 0.29635f, 0.0841174f, 0.467847f);
+    
+    deverbSlewrate.setBoundsRelative(0.330751f, 0.29635f, 0.0841174f, 0.467847f);
 }
 
 void MainContentComponent::paint(Graphics& g)

@@ -33,7 +33,9 @@ valueTree(*this, nullptr, "ValueTree",
 {
     std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME, 0.0f, 360.f, 90.0f),
     std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f),
-    std::make_unique<AudioParameterBool>(DEVERB_ID, DEVERB_NAME, true)
+    std::make_unique<AudioParameterBool>(DEVERB_ID, DEVERB_NAME, true),
+    std::make_unique<AudioParameterFloat>(DEVERB_CUTOFF_ID, DEVERB_CUTOFF_NAME, 0.1f, 0.9f, 0.1f),
+    std::make_unique<AudioParameterFloat>(DEVERB_SLEWRATE_ID, DEVERB_SLEWRATE_NAME, 0.1f, 0.9f, 0.1f)
 })
 #endif
 {
@@ -50,6 +52,8 @@ valueTree(*this, nullptr, "ValueTree",
     width = valueTree.getRawParameterValue(WIDTH_ID);
     offset = valueTree.getRawParameterValue(OFFSET_ID);
     extractReverb = valueTree.getRawParameterValue(DEVERB_ID);
+    deverbCutoff = valueTree.getRawParameterValue(DEVERB_CUTOFF_ID);
+    deverbSlewRate = valueTree.getRawParameterValue(DEVERB_SLEWRATE_ID);
 }
 
 StereoToAmbiAudioProcessor::~StereoToAmbiAudioProcessor()
@@ -191,7 +195,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
         bool useDeverb = convertParamToBool(*extractReverb);
         if (useDeverb)
         {
-            deverb.deverberate(stereoFreqBuffer, directFreqBuffer, ambientFreqBuffer);
+            deverb.deverberate(stereoFreqBuffer, directFreqBuffer, ambientFreqBuffer, *deverbCutoff, *deverbSlewRate);
             fft.perform(ambientFreqBuffer[LEFT].data(), ambientTimeBuffer[LEFT].data(), true);
             fft.perform(ambientFreqBuffer[RIGHT].data(), ambientTimeBuffer[RIGHT].data(), true);
         }

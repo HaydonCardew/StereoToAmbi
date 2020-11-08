@@ -20,8 +20,7 @@ public:
     typedef std::vector<FftArray> StereoFftArray;
     Deverb (unsigned fftSize);
     void reset();
-    void deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience,
-                      float mu0 = 0.0, float mu1 = 1.0, float phiZero = 0.85, float sigma = 2, float forgetFactor = 0.85);
+    void deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience, float phiZero = 0.85, float forgetFactor = 0.85, float mu0 = 0.0, float mu1 = 1.0, float sigma = 2);
 private:
     const unsigned fftSize;
     std::vector<float> alpha;

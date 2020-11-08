@@ -26,8 +26,7 @@ void Deverb::reset()
     alpha.resize(fftSize, 0.5);
 }
 
-void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience,
-                          float mu0, float mu1, float phiZero, float sigma, float forgetFactor)
+void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience, float phiZero, float forgetFactor, float mu0, float mu1,  float sigma)
 {
     assert(audio.size() == STEREO
            && direct.size() == STEREO

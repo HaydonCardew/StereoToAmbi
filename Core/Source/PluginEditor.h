@@ -220,6 +220,8 @@ public:
     Human listener;
     Image background;
     ToggleButton deverb;
+    Slider deverbCutoff;
+    Slider deverbSlewrate;
 	
 private:
     //==============================================================================
@@ -244,5 +246,7 @@ private:
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> widthValue;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> offsetValue;
     std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> deverbButton;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> deverbCutoffValue;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> deverbSlewrateValue;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor);
 };
