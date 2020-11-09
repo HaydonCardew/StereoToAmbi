@@ -1,6 +1,5 @@
 #include "WindowedFIFOBuffer.h"
 #include "../Tools.h"
-
 #define PI 3.14159265359
 
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)
@@ -123,14 +122,14 @@ float WindowedFIFOBuffer::getWindowGain(WindowType windowType, float overlap)
     {
         case WindowType::hann:
         {
-            auto hannValue = [](auto point) { return 0.5 - (0.5 * cos(2*PI*(point))); };
+            /*auto hannValue = [](auto point) { return 0.5 - (0.5 * cos(2*PI*(point))); };
             gain = 0;
             float step = hopSize;
             while (step < 1.f)
             {
                 gain += hannValue(step);
                 step += hopSize;
-            }
+            }*/
         }
         break;
         default:

@@ -51,6 +51,8 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(angleShown);
     
+    addAndMakeVisible(directionBorder);
+    
     addAndMakeVisible(spread);
     //spread.setRange(0.0f, 3.1416f);
     spread.onValueChange = [this] {
@@ -58,7 +60,7 @@ MainContentComponent::MainContentComponent()
     };
     spread.setSliderStyle(juce::Slider::LinearVertical);
     spread.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
-    
+
     addAndMakeVisible(direction);
     direction.setSliderStyle(Slider::Rotary);
     //direction.setRange(0.0f, 3.1416f * 2.0f);
@@ -71,6 +73,25 @@ MainContentComponent::MainContentComponent()
 
     addAndMakeVisible(listener);
     
+    addAndMakeVisible(deverbBorder);
+    deverb.setClickingTogglesState(true);
+    deverb.setButtonText("Extract Reverb");
+    deverb.setColour(TextButton::textColourOffId, Colours::black);
+    deverb.setColour(TextButton::textColourOnId, Colours::black);
+    deverb.setColour(TextButton::buttonColourId, Colours::darkgrey);
+    deverb.setColour(TextButton::buttonOnColourId, Colours::cyan);
+    deverb.changeWidthToFitText();
+    deverb.onStateChange = [this] {
+        if (deverb.getToggleState())
+        {
+            deverbBorder.setOn();
+        }
+        else
+        {
+            deverbBorder.setOff();
+        }
+    };
+    deverb.setState(juce::Button::buttonDown);
     addAndMakeVisible(deverb);
     
     deverbCutoff.setSliderStyle(juce::Slider::LinearVertical);
@@ -94,15 +115,19 @@ void MainContentComponent::resized()
     
     angleShown.setBoundsRelative(0.379, 0.11, angleShownSize, angleShownSize);
     
-    direction.setBoundsRelative(0.073095f, 0.01181f, 0.366223f, 0.241731f);
+    direction.setBoundsRelative(0.187374f, 0.150814f, 0.366223f, 0.241731f);
     
-    spread.setBoundsRelative(0.130751f, 0.29635f, 0.0841174f, 0.467847f);
+    spread.setBoundsRelative(0.234225f, 0.353489f, 0.0841174f, 0.467847f);
     
-    deverb.setBoundsRelative(0.15, 0.8, 0.1, 0.1);
+    directionBorder.setBoundsRelative(0.195785f, 0.135913, 0.154554f, 0.693495f);
+    
+    deverb.setBoundsRelative(0.0533825, 0.217803, 0.1, 0.1);
 
-    deverbCutoff.setBoundsRelative(0.230751f, 0.29635f, 0.0841174f, 0.467847f);
+    deverbCutoff.setBoundsRelative(0.0269193f, 0.353489f, 0.0841174f, 0.467847f);
     
-    deverbSlewrate.setBoundsRelative(0.330751f, 0.29635f, 0.0841174f, 0.467847f);
+    deverbSlewrate.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
+    
+    deverbBorder.setBoundsRelative(0.0322856, 0.135913, 0.150464, 0.69292);
 }
 
 void MainContentComponent::paint(Graphics& g)

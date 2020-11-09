@@ -202,6 +202,39 @@ private:
 	}
 };
 
+class Border : public Component
+{
+public:
+    Border()
+    {
+        box.addRoundedRectangle(getLocalBounds(), 0.5f);
+        setOn();
+    }
+    void resized() override
+    {
+        box.clear();
+        box.addRoundedRectangle(getLocalBounds(), 0.5f);
+    }
+    void paint(Graphics& g) override
+    {
+        g.setColour(borderColour);
+        g.strokePath(box, PathStrokeType(2.f, PathStrokeType::JointStyle::curved, PathStrokeType::EndCapStyle::butt));
+    }
+    void setOn()
+    {
+        borderColour = juce::Colours::cyan;
+        repaint();
+    }
+    void setOff()
+    {
+        borderColour = juce::Colours::black;
+        repaint();
+    }
+private:
+    juce::Colour borderColour;
+    Path box;
+};
+
 class MainContentComponent : public Component
 {
 public:
@@ -216,14 +249,18 @@ public:
 
 	Slider direction;
     Slider spread;
+    Border directionBorder;
+    
     AzimuthView angleShown;
     Human listener;
     Image background;
-    ToggleButton deverb;
+    TextButton deverb;
     Slider deverbCutoff;
     Slider deverbSlewrate;
+    Border deverbBorder;
 	
 private:
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
 };
