@@ -10,7 +10,7 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "Assets.h"
+#include "GUI/Assets.h"
 #include "Tools.h"
 
 //==============================================================================
@@ -95,11 +95,17 @@ MainContentComponent::MainContentComponent()
     addAndMakeVisible(deverb);
     
     deverbCutoff.setSliderStyle(juce::Slider::LinearVertical);
-    deverbCutoff.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    deverbCutoff.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
+    deverbCutoffLabel.setText("Cutoff", juce::dontSendNotification);
+    deverbCutoffLabel.attachToComponent(&deverbCutoff, true);
+    deverbCutoffLabel.setColour (juce::Label::textColourId, juce::Colours::lightgreen);
     addAndMakeVisible(deverbCutoff);
     
     deverbSlewrate.setSliderStyle(juce::Slider::LinearVertical);
-    deverbSlewrate.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    deverbSlewrate.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
+    deverbSlewrateLabel.setText("Slew", juce::dontSendNotification);
+    deverbSlewrateLabel.attachToComponent(&deverbSlewrate, true);
+    
     addAndMakeVisible(deverbSlewrate);
     
     resized();
@@ -128,6 +134,10 @@ void MainContentComponent::resized()
     deverbSlewrate.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
     
     deverbBorder.setBoundsRelative(0.0322856, 0.135913, 0.150464, 0.69292);
+    
+    deverbCutoffLabel.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
+    
+    deverbSlewrateLabel.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
 }
 
 void MainContentComponent::paint(Graphics& g)

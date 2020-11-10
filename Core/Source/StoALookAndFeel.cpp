@@ -9,7 +9,7 @@
 */
 
 #include "StoALookAndFeel.h"
-#include "Assets.h"
+#include "GUI/Assets.h"
 
 StoALookAndFeel::StoALookAndFeel()
 {

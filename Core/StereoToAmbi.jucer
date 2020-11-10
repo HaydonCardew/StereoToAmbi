@@ -4,6 +4,16 @@
               companyName="HaydonCardew">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
+      <GROUP id="{69CBD838-5003-513C-2119-F10AE2A2EF0B}" name="GUI">
+        <FILE id="O3RzeU" name="Assets.cpp" compile="1" resource="0" file="Source/GUI/Assets.cpp"/>
+        <FILE id="cZ3ysJ" name="Assets.h" compile="0" resource="0" file="Source/GUI/Assets.h"/>
+        <FILE id="DX3KZA" name="AzimuthView.cpp" compile="1" resource="0" file="Source/GUI/AzimuthView.cpp"/>
+        <FILE id="ttnYi6" name="AzimuthView.h" compile="0" resource="0" file="Source/GUI/AzimuthView.h"/>
+        <FILE id="nvLF76" name="Border.cpp" compile="1" resource="0" file="Source/GUI/Border.cpp"/>
+        <FILE id="iq2uhK" name="Border.h" compile="0" resource="0" file="Source/GUI/Border.h"/>
+        <FILE id="irhY6w" name="Head.cpp" compile="1" resource="0" file="Source/GUI/Head.cpp"/>
+        <FILE id="mFFdLD" name="Head.h" compile="0" resource="0" file="Source/GUI/Head.h"/>
+      </GROUP>
       <GROUP id="{AD98B56E-7E29-993E-2ED2-DAD26E7805EC}" name="Buffers">
         <FILE id="rbVWli" name="BFormatBuffer.cpp" compile="1" resource="0"
               file="Source/Buffers/BFormatBuffer.cpp"/>
@@ -29,8 +39,6 @@
             file="Source/StoALookAndFeel.cpp"/>
       <FILE id="M1QcYU" name="StoALookAndFeel.h" compile="0" resource="0"
             file="Source/StoALookAndFeel.h"/>
-      <FILE id="Fc8mpV" name="Assets.h" compile="0" resource="0" file="Source/Assets.h"/>
-      <FILE id="QXCcqw" name="Assets.cpp" compile="1" resource="0" file="Source/Assets.cpp"/>
       <FILE id="oRzJEB" name="Histogram.h" compile="0" resource="0" file="Source/Histogram.h"/>
       <FILE id="Q7hs8l" name="Histogram.cpp" compile="1" resource="0" file="Source/Histogram.cpp"/>
       <FILE id="y1B4HR" name="PluginProcessor.cpp" compile="1" resource="0"
@@ -117,7 +125,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="0" continuousRebuildEnabled="1"/>
-    <OSX buildEnabled="1"/>
+    <OSX buildEnabled="0"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
 </JUCERPROJECT>
