@@ -98,15 +98,18 @@ MainContentComponent::MainContentComponent()
     deverbCutoff.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
     deverbCutoffLabel.setText("Cutoff", juce::dontSendNotification);
     deverbCutoffLabel.attachToComponent(&deverbCutoff, true);
-    deverbCutoffLabel.setColour (juce::Label::textColourId, juce::Colours::lightgreen);
+    deverbCutoffLabel.setColour (juce::Label::textColourId, juce::Colours::grey);
     addAndMakeVisible(deverbCutoff);
     
     deverbSlewrate.setSliderStyle(juce::Slider::LinearVertical);
     deverbSlewrate.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
     deverbSlewrateLabel.setText("Slew", juce::dontSendNotification);
+    deverbSlewrateLabel.setColour (juce::Label::textColourId, juce::Colours::grey);
     deverbSlewrateLabel.attachToComponent(&deverbSlewrate, true);
-    
     addAndMakeVisible(deverbSlewrate);
+    
+    deverbSlewrate.setAlwaysOnTop(true);
+    deverbCutoff.setAlwaysOnTop(true);
     
     resized();
 }
@@ -135,9 +138,9 @@ void MainContentComponent::resized()
     
     deverbBorder.setBoundsRelative(0.0322856, 0.135913, 0.150464, 0.69292);
     
-    deverbCutoffLabel.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
+    deverbCutoffLabel.setBoundsRelative(0.0292635f, 0.564385f, 0.0841174f, 0.467847f);
     
-    deverbSlewrateLabel.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
+    deverbSlewrateLabel.setBoundsRelative(0.107388f, 0.564385f, 0.0841174f, 0.467847f);
 }
 
 void MainContentComponent::paint(Graphics& g)
