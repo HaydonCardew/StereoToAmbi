@@ -184,7 +184,7 @@ void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiB
 
 	//buffer.clear(1, 0, nSamples);
 
-    stereoAudio.write({buffer.getReadPointer(LEFT), buffer.getReadPointer(RIGHT)}, nSamples, 0.5);
+    stereoAudio.write({buffer.getReadPointer(LEFT), buffer.getReadPointer(RIGHT)}, nSamples, 0.25);
     
     while (stereoAudio.windowedAudioAvailable())
     {

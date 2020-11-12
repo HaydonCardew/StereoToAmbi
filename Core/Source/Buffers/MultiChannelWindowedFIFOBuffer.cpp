@@ -9,6 +9,7 @@
 */
 
 #include "MultiChannelWindowedFIFOBuffer.h"
+#include <assert.h>
 
 MultiChannelWindowedFIFOBuffer::MultiChannelWindowedFIFOBuffer(unsigned nChannels, unsigned windowSize) : windowSize(windowSize)
 {

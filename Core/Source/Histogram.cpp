@@ -3,6 +3,7 @@
 #include <math.h>
 #include "Tools.h"
 #include <iostream>
+#include <algorithm>
 
 Histogram::Histogram(unsigned nBins) : nBins(nBins), increment(0.f), maxValue(0.f), nThresholds(0)
 {

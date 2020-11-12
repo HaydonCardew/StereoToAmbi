@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" jucerVersion="5.4.7"
-              companyName="HaydonCardew">
+<JUCERPROJECT id="iUiRpV" name="StereoToAmbi" projectType="audioplug" companyName="HaydonCardew"
+              displaySplashScreen="1" jucerFormatVersion="1" jucerVersion="5.4.7">
   <MAINGROUP id="fq5xQe" name="StereoToAmbi">
     <GROUP id="{C54EA477-FCE6-892D-5B8B-EE4440F299C3}" name="Source">
       <GROUP id="{69CBD838-5003-513C-2119-F10AE2A2EF0B}" name="GUI">
@@ -103,6 +103,32 @@
         <MODULEPATH id="juce_dsp" path="//Mac/Home/Desktop/Plugin/juce-5.4.1-windows/JUCE/modules"/>
       </MODULEPATHS>
     </VS2017>
+    <VS2019 targetFolder="Builds/VisualStudio2019">
+      <CONFIGURATIONS>
+        <CONFIGURATION isDebug="0" name="Release"/>
+        <CONFIGURATION isDebug="1" name="Debug" winArchitecture="x64"/>
+        <CONFIGURATION isDebug="0" name="Release" winArchitecture="Win32"/>
+        <CONFIGURATION isDebug="1" name="Debug" winArchitecture="Win32"/>
+      </CONFIGURATIONS>
+      <MODULEPATHS>
+        <MODULEPATH id="juce_video"/>
+        <MODULEPATH id="juce_opengl"/>
+        <MODULEPATH id="juce_gui_extra"/>
+        <MODULEPATH id="juce_gui_basics"/>
+        <MODULEPATH id="juce_graphics"/>
+        <MODULEPATH id="juce_events"/>
+        <MODULEPATH id="juce_dsp"/>
+        <MODULEPATH id="juce_data_structures"/>
+        <MODULEPATH id="juce_cryptography"/>
+        <MODULEPATH id="juce_core"/>
+        <MODULEPATH id="juce_audio_utils"/>
+        <MODULEPATH id="juce_audio_processors"/>
+        <MODULEPATH id="juce_audio_plugin_client"/>
+        <MODULEPATH id="juce_audio_formats"/>
+        <MODULEPATH id="juce_audio_devices"/>
+        <MODULEPATH id="juce_audio_basics"/>
+      </MODULEPATHS>
+    </VS2019>
   </EXPORTFORMATS>
   <MODULES>
     <MODULE id="juce_audio_basics" showAllCode="1" useLocalCopy="0" useGlobalPath="0"/>

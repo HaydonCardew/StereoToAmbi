@@ -96,14 +96,14 @@ MainContentComponent::MainContentComponent()
     
     deverbCutoff.setSliderStyle(juce::Slider::LinearVertical);
     deverbCutoff.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
-    deverbCutoffLabel.setText("Cutoff", juce::dontSendNotification);
+    deverbCutoffLabel.setText("Threshold", juce::dontSendNotification);
     deverbCutoffLabel.attachToComponent(&deverbCutoff, true);
     deverbCutoffLabel.setColour (juce::Label::textColourId, juce::Colours::grey);
     addAndMakeVisible(deverbCutoff);
     
     deverbSlewrate.setSliderStyle(juce::Slider::LinearVertical);
     deverbSlewrate.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
-    deverbSlewrateLabel.setText("Slew", juce::dontSendNotification);
+    deverbSlewrateLabel.setText("Release", juce::dontSendNotification);
     deverbSlewrateLabel.setColour (juce::Label::textColourId, juce::Colours::grey);
     deverbSlewrateLabel.attachToComponent(&deverbSlewrate, true);
     addAndMakeVisible(deverbSlewrate);
@@ -124,23 +124,23 @@ void MainContentComponent::resized()
     
     angleShown.setBoundsRelative(0.379, 0.11, angleShownSize, angleShownSize);
     
-    direction.setBoundsRelative(0.187374f, 0.150814f, 0.366223f, 0.241731f);
+    direction.setBoundsRelative(0.22519f, 0.19f, 0.366223f, 0.241731f);
     
-    spread.setBoundsRelative(0.234225f, 0.353489f, 0.0841174f, 0.467847f);
+    spread.setBoundsRelative(0.25064f, 0.353489f, 0.0866108f, 0.467847f);
     
-    directionBorder.setBoundsRelative(0.195785f, 0.135913, 0.154554f, 0.693495f);
+    directionBorder.setBoundsRelative(0.233809f, 0.135913, 0.12f, 0.693495f);
     
-    deverb.setBoundsRelative(0.0533825, 0.217803, 0.1, 0.1);
+    deverb.setBoundsRelative(0.0637715, 0.217803, 0.1, 0.1);
 
-    deverbCutoff.setBoundsRelative(0.0269193f, 0.353489f, 0.0841174f, 0.467847f);
+    deverbCutoff.setBoundsRelative(0.0269193f, 0.353489f, 0.0866108f, 0.467847f);
     
-    deverbSlewrate.setBoundsRelative(0.0915973f, 0.353489f, 0.0841174f, 0.467847f);
+    deverbSlewrate.setBoundsRelative(0.111752f, 0.353489f, 0.0866108f, 0.467847f);
     
-    deverbBorder.setBoundsRelative(0.0322856, 0.135913, 0.150464, 0.69292);
+    deverbBorder.setBoundsRelative(0.02252, 0.135913, 0.18454, 0.69292);
     
-    deverbCutoffLabel.setBoundsRelative(0.0292635f, 0.564385f, 0.0841174f, 0.467847f);
+    deverbCutoffLabel.setBoundsRelative(0.0215757f, 0.564385f, 0.107804f, 0.467847f);
     
-    deverbSlewrateLabel.setBoundsRelative(0.107388f, 0.564385f, 0.0841174f, 0.467847f);
+    deverbSlewrateLabel.setBoundsRelative(0.123309f, 0.564385f, 0.0841174f, 0.467847f);
 }
 
 void MainContentComponent::paint(Graphics& g)
