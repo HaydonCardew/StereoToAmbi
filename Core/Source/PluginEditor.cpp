@@ -20,11 +20,11 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
 {
     setSize(600, 432);
     addAndMakeVisible(mainContentComponent);
-    widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, mainContentComponent.spread); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
-    offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, mainContentComponent.direction);
-    deverbButton = make_unique<AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTree, DEVERB_ID, mainContentComponent.deverb);
-    deverbCutoffValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_CUTOFF_ID, mainContentComponent.deverbCutoff);
-    deverbSlewrateValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_SLEWRATE_ID, mainContentComponent.deverbSlewrate);
+    widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, *mainContentComponent.azimuthControls.getSlider("Spread")); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
+    offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, *mainContentComponent.azimuthControls.getDial());
+    deverbButton = make_unique<AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTree, DEVERB_ID, *mainContentComponent.deverbControls.getButton());
+    deverbCutoffValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_CUTOFF_ID, *mainContentComponent.deverbControls.getSlider("Cutoff"));
+    deverbSlewrateValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_SLEWRATE_ID, *mainContentComponent.deverbControls.getSlider("Threshold"));
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
@@ -42,6 +42,7 @@ void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 }
 
 MainContentComponent::MainContentComponent()
+    : deverbControls({ "Threshold", "Cutoff" }, "Reverb Extraction"), azimuthControls({"Spread"})
 {
     setLookAndFeel(&laf);
     
@@ -51,66 +52,29 @@ MainContentComponent::MainContentComponent()
     
     addAndMakeVisible(angleShown);
     
-    addAndMakeVisible(directionBorder);
+    //addAndMakeVisible(directionBorder);
     
-    addAndMakeVisible(spread);
+    //addAndMakeVisible(spread);
     //spread.setRange(0.0f, 3.1416f);
-    spread.onValueChange = [this] {
-        angleShown.changeAzimuth(Tools::toRadians(spread.getValue()));
+    azimuthControls.getSlider("Spread")->onValueChange = [this] {
+        angleShown.changeAzimuth(Tools::toRadians(azimuthControls.getSlider("Spread")->getValue()));
     };
-    spread.setSliderStyle(juce::Slider::LinearVertical);
-    spread.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    //spread.setSliderStyle(juce::Slider::LinearVertical);
+    //spread.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
 
-    addAndMakeVisible(direction);
-    direction.setSliderStyle(Slider::Rotary);
-    //direction.setRange(0.0f, 3.1416f * 2.0f);
-    direction.onValueChange = [this] {
-        listener.rotateBy(Tools::toRadians(direction.getValue()));
-        angleShown.changeOffset(Tools::toRadians(direction.getValue()));
+    //addAndMakeVisible(direction);
+    //direction.setSliderStyle(Slider::Rotary);
+    azimuthControls.getDial()->setRange(0.0f, 3.1416f * 2.0f);
+    azimuthControls.getDial()->onValueChange = [this] {
+        listener.rotateBy(Tools::toRadians(azimuthControls.getDial()->getValue()));
+        angleShown.changeOffset(Tools::toRadians(azimuthControls.getDial()->getValue()));
     };
-    direction.setRotaryParameters(0.f, 6.282f, false);
-    direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
+    azimuthControls.getDial()->setRotaryParameters(0.f, 6.282f, false);
+    //direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
 
     addAndMakeVisible(listener);
-    
-    addAndMakeVisible(deverbBorder);
-    deverb.setClickingTogglesState(true);
-    deverb.setButtonText("Extract Reverb");
-    deverb.setColour(TextButton::textColourOffId, Colours::black);
-    deverb.setColour(TextButton::textColourOnId, Colours::black);
-    deverb.setColour(TextButton::buttonColourId, Colours::darkgrey);
-    deverb.setColour(TextButton::buttonOnColourId, Colours::cyan);
-    deverb.changeWidthToFitText();
-    deverb.onStateChange = [this] {
-        if (deverb.getToggleState())
-        {
-            deverbBorder.setOn();
-        }
-        else
-        {
-            deverbBorder.setOff();
-        }
-    };
-    deverb.setState(juce::Button::buttonDown);
-    addAndMakeVisible(deverb);
-    
-    deverbCutoff.setSliderStyle(juce::Slider::LinearVertical);
-    deverbCutoff.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
-    deverbCutoffLabel.setText("Threshold", juce::dontSendNotification);
-    deverbCutoffLabel.attachToComponent(&deverbCutoff, true);
-    deverbCutoffLabel.setColour (juce::Label::textColourId, juce::Colours::grey);
-    addAndMakeVisible(deverbCutoff);
-    
-    deverbSlewrate.setSliderStyle(juce::Slider::LinearVertical);
-    deverbSlewrate.setTextBoxStyle(Slider::TextEntryBoxPosition::TextBoxBelow, true, 0.0f, 0.0f);
-    deverbSlewrateLabel.setText("Release", juce::dontSendNotification);
-    deverbSlewrateLabel.setColour (juce::Label::textColourId, juce::Colours::grey);
-    deverbSlewrateLabel.attachToComponent(&deverbSlewrate, true);
-    addAndMakeVisible(deverbSlewrate);
-    
-    deverbSlewrate.setAlwaysOnTop(true);
-    deverbCutoff.setAlwaysOnTop(true);
-    
+    addAndMakeVisible(azimuthControls);
+    addAndMakeVisible(deverbControls);
     resized();
 }
 
@@ -124,23 +88,15 @@ void MainContentComponent::resized()
     
     angleShown.setBoundsRelative(0.379, 0.11, angleShownSize, angleShownSize);
     
-    direction.setBoundsRelative(0.22519f, 0.19f, 0.366223f, 0.241731f);
+    //direction.setBoundsRelative(0.22519f, 0.19f, 0.366223f, 0.241731f);
     
-    spread.setBoundsRelative(0.25064f, 0.353489f, 0.0866108f, 0.467847f);
+    //spread.setBoundsRelative(0.25064f, 0.353489f, 0.0866108f, 0.467847f);
     
-    directionBorder.setBoundsRelative(0.233809f, 0.135913, 0.12f, 0.693495f);
+    //directionBorder.setBoundsRelative(0.233809f, 0.135913, 0.12f, 0.693495f);
     
-    deverb.setBoundsRelative(0.0637715, 0.217803, 0.1, 0.1);
-
-    deverbCutoff.setBoundsRelative(0.0269193f, 0.353489f, 0.0866108f, 0.467847f);
+    azimuthControls.setBoundsRelative(0.182696, 0.132231, 0.163904, 0.703208);
     
-    deverbSlewrate.setBoundsRelative(0.111752f, 0.353489f, 0.0866108f, 0.467847f);
-    
-    deverbBorder.setBoundsRelative(0.02252, 0.135913, 0.18454, 0.69292);
-    
-    deverbCutoffLabel.setBoundsRelative(0.0215757f, 0.564385f, 0.107804f, 0.467847f);
-    
-    deverbSlewrateLabel.setBoundsRelative(0.123309f, 0.564385f, 0.0841174f, 0.467847f);
+    deverbControls.setBoundsRelative(0.0135638, 0.132647, 0.156424, 0.703208);
 }
 
 void MainContentComponent::paint(Graphics& g)

@@ -16,6 +16,7 @@
 #include "GUI/Head.h"
 #include "GUI/AzimuthView.h"
 #include "GUI/Border.h"
+#include "GUI/SliderBoxes.h"
 
 class MainContentComponent : public Component
 {
@@ -29,19 +30,17 @@ public:
 
 	void resized() override;
 
-	Slider direction;
-    Slider spread;
-    Border directionBorder;
+	//Slider direction;
+    //Slider spread;
+    //Border directionBorder;
+    
+    RowOfSlidersWithDial azimuthControls;
     
     AzimuthView angleShown;
     Head listener;
     Image background;
-    TextButton deverb;
-    Slider deverbCutoff;
-    Label deverbCutoffLabel;
-    Slider deverbSlewrate;
-    Label deverbSlewrateLabel;
-    Border deverbBorder;
+    
+    RowOfSlidersWithButton deverbControls;
 	
 private:
     

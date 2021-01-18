@@ -13,6 +13,8 @@
         <FILE id="iq2uhK" name="Border.h" compile="0" resource="0" file="Source/GUI/Border.h"/>
         <FILE id="irhY6w" name="Head.cpp" compile="1" resource="0" file="Source/GUI/Head.cpp"/>
         <FILE id="mFFdLD" name="Head.h" compile="0" resource="0" file="Source/GUI/Head.h"/>
+        <FILE id="IuTkWa" name="SliderBoxes.cpp" compile="1" resource="0" file="Source/GUI/SliderBoxes.cpp"/>
+        <FILE id="ajEbuZ" name="SliderBoxes.h" compile="0" resource="0" file="Source/GUI/SliderBoxes.h"/>
       </GROUP>
       <GROUP id="{AD98B56E-7E29-993E-2ED2-DAD26E7805EC}" name="Buffers">
         <FILE id="rbVWli" name="BFormatBuffer.cpp" compile="1" resource="0"
@@ -151,7 +153,7 @@
   </MODULES>
   <LIVE_SETTINGS>
     <WINDOWS buildEnabled="0" continuousRebuildEnabled="1"/>
-    <OSX buildEnabled="0"/>
+    <OSX buildEnabled="1"/>
   </LIVE_SETTINGS>
   <JUCEOPTIONS JUCE_VST3_CAN_REPLACE_VST2="0" JUCE_STRICT_REFCOUNTEDPOINTER="1"/>
 </JUCERPROJECT>
