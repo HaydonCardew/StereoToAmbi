@@ -59,12 +59,10 @@ MainContentComponent::MainContentComponent()
     azimuthControls.getSlider("Spread")->onValueChange = [this] {
         angleShown.changeAzimuth(Tools::toRadians(azimuthControls.getSlider("Spread")->getValue()));
     };
-    //spread.setSliderStyle(juce::Slider::LinearVertical);
-    //spread.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
-
-    //addAndMakeVisible(direction);
-    //direction.setSliderStyle(Slider::Rotary);
-    azimuthControls.getDial()->setRange(0.0f, 3.1416f * 2.0f);
+    azimuthControls.getSlider("Spread")->setRange(0.0, 360.0, 1.0);
+    //azimuthControls.getSlider("Spread")->setPopupDisplayEnabled(true, true, nullptr);
+    
+    azimuthControls.getDial()->setRange(0.0, 360.0, 1.0);
     azimuthControls.getDial()->onValueChange = [this] {
         listener.rotateBy(Tools::toRadians(azimuthControls.getDial()->getValue()));
         angleShown.changeOffset(Tools::toRadians(azimuthControls.getDial()->getValue()));
@@ -74,6 +72,10 @@ MainContentComponent::MainContentComponent()
 
     addAndMakeVisible(listener);
     addAndMakeVisible(azimuthControls);
+    
+    deverbControls.getSlider("Threshold")->setRange(0.0, 100.0, 1.0);
+    deverbControls.getSlider("Cutoff")->setRange(0.0, 100.0, 1.0);
+    
     addAndMakeVisible(deverbControls);
     resized();
 }
