@@ -25,10 +25,10 @@
 #define OFFSET_ID "offset"
 #define DEVERB_NAME "Deverb"
 #define DEVERB_ID "deverb"
-#define DEVERB_CUTOFF_NAME "DeverbCutoff"
-#define DEVERB_CUTOFF_ID "deverbCutoff"
-#define DEVERB_SLEWRATE_NAME "DeverbSlew"
-#define DEVERB_SLEWRATE_ID "deverbSlew"
+#define DEVERB_THRESHOLD_NAME "DeverbThreshold"
+#define DEVERB_THRESHOLD_ID "deverbThreshold"
+#define DEVERB_SUSTAIN_NAME "DeverbSustain"
+#define DEVERB_SUSTAIN_ID "deverbSustain"
 
 //==============================================================================
 /**
@@ -93,8 +93,10 @@ private:
 	atomic<float>* width;
     atomic<float>* offset;
     atomic<float>* extractReverb;
-    atomic<float>* deverbCutoff; // should be frequency dependant?
-    atomic<float>* deverbSlewRate;
+    atomic<float>* deverbThreshold; // should be frequency dependant?
+    NormalisableRange<float> deverbThresholdRange;
+    atomic<float>* deverbSustain;
+    NormalisableRange<float> deverbSustainRange;
     
 	dsp::FFT fft;
     MultiChannelWindowedFIFOBuffer stereoAudio;

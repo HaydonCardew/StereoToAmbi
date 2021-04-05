@@ -11,6 +11,7 @@
 #pragma once
 #include <vector>
 #include <complex>
+#include "Tools.h"
 
 class Deverb
 {
@@ -20,7 +21,7 @@ public:
     typedef std::vector<FftArray> StereoFftArray;
     Deverb (unsigned fftSize);
     void reset();
-    void deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience, float phiZero = 0.85, float forgetFactor = 0.85, float mu0 = 0.0, float mu1 = 1.0, float sigma = 2);
+    void deverberate ( const StereoFftArray& audio, StereoFftArray& direct, StereoFftArray& ambience, float phiZero = 0.85, float forgetFactor = 0.85, float mu0 = 0.0, float mu1 = 1.0, float sigma = 2); // forget factor could be in ms
 private:
     const unsigned fftSize;
     std::vector<float> alpha;
@@ -33,11 +34,5 @@ private:
         STEREO = 2
     };
     float scaleCorrelation(float corr, float mu0, float mu1, float sigma, float phiZero);
-    /*
-    const float forgetFactor = 0.85; // calculate the time this takes
-    const float phiZero = 0.15;
-    const float mu0 = 0.0; // min
-    const float mu1 = 1; // max
-    const float sigma = 4; // curve
-     */
+    Tools::MinMaxRange forgetFactorRange, phiZeroRange;
 };

@@ -66,7 +66,7 @@ private:
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> widthValue;
     std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> offsetValue;
     std::unique_ptr<AudioProcessorValueTreeState::ButtonAttachment> deverbButton;
-    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> deverbCutoffValue;
-    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> deverbSlewrateValue;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> deverbThresholdValue;
+    std::unique_ptr<AudioProcessorValueTreeState::SliderAttachment> deverbSustainValue;
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessorEditor);
 };

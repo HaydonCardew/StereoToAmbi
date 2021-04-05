@@ -66,7 +66,7 @@ void RowOfSliders::resized()
     for (unsigned i = 0; i < sliders.size(); ++i)
     {
         sliders[i]->setBoundsRelative(x, 1.f-sliderHeight, increment, sliderHeight);
-        labels[i]->setBoundsRelative(x, sliderHeight, increment, 1.f-sliderHeight);
+        labels[i]->setBoundsRelative(x, 0, increment, 1.f-sliderHeight);
         x += increment;
     }
 }
@@ -83,6 +83,21 @@ shared_ptr<Slider> RowOfSliders::getSlider(string name)
     return nullptr;
 }
 
+void RowOfSliders::setSuffix(string suffix)
+{
+    for ( auto & slider : sliders)
+    {
+        slider->setTextValueSuffix(suffix);
+    }
+}
+
+void RowOfSliders::setDecimalPlaces(int numberOfPlaces)
+{
+    for ( auto & slider : sliders)
+    {
+        slider->setNumDecimalPlacesToDisplay(numberOfPlaces);
+    }
+}
 
 RowOfSlidersWithDial::RowOfSlidersWithDial(vector<string> labelNames) : RowOfSliders(labelNames, 0.7), dial(make_shared<Slider>())
 {
@@ -91,7 +106,7 @@ RowOfSlidersWithDial::RowOfSlidersWithDial(vector<string> labelNames) : RowOfSli
     dial->setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
     addAndMakeVisible(*dial);
 }
-RowOfSlidersWithDial::RowOfSlidersWithDial() : RowOfSliders({"First", "Second"}, 0.7), dial(make_shared<Slider>())
+RowOfSlidersWithDial::RowOfSlidersWithDial() : RowOfSliders({"First", "Second"}, 0.8), dial(make_shared<Slider>())
 {
     dial->setSliderStyle(Slider::Rotary);
     dial->setAlwaysOnTop(true);
@@ -112,7 +127,7 @@ RowOfSlidersWithButton::RowOfSlidersWithButton(vector<string> labelNames, string
     button = make_shared<TextButton>(buttonText);
     constructButton();
 }
-RowOfSlidersWithButton::RowOfSlidersWithButton() : RowOfSliders({"First", "Second"}, 0.7)
+RowOfSlidersWithButton::RowOfSlidersWithButton() : RowOfSliders({"First", "Second"}, 0.8)
 {
     button = make_shared<TextButton>("Test");
     constructButton();
@@ -143,9 +158,11 @@ void RowOfSlidersWithButton::resized()
 {
     RowOfSliders::resized();
     float buttonWidth = 0.7;
-    float buttonHeight = 0.5;
+    float buttonHeight = 0.6;
     const float heightForButton = 1.0 - sliderHeight;
-    button->setBoundsRelative( (1.0 - buttonWidth)/2.0, (heightForButton - (heightForButton*buttonHeight))/2.0, buttonWidth, heightForButton * buttonHeight );
+    // (heightForButton - (heightForButton*buttonHeight))/2.0
+    const float buttonHeightPos = 0.05;
+    button->setBoundsRelative( (1.0 - buttonWidth)/2.0, buttonHeightPos, buttonWidth, heightForButton * buttonHeight );
 }
 
 shared_ptr<TextButton> RowOfSlidersWithButton::getButton()

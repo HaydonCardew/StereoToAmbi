@@ -9,6 +9,9 @@
 */
 
 #include "Tools.h"
+#include <sstream>
+#include <iostream>
+#include <iomanip>
 
 uint64_t Tools::factorial(int x)
 {
@@ -23,4 +26,11 @@ uint64_t Tools::factorial(int x)
 int Tools::nCombinations(int n, int k)
 {
     return factorial(n) / (factorial(n - k) * factorial(k));
+}
+
+std::string Tools::floatToString(float number, unsigned decimalPlaces)
+{
+    stringstream stream;
+    stream << fixed << setprecision(decimalPlaces) << number;
+    return stream.str();
 }

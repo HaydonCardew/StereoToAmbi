@@ -9,13 +9,12 @@
 */
 
 #include "Deverb.h"
-#include "Tools.h"
 #include <math.h>
 
 #include <iostream>
 #include <cmath>
 
-Deverb::Deverb (unsigned fftSize) : fftSize(fftSize)
+Deverb::Deverb (unsigned fftSize) : fftSize(fftSize), forgetFactorRange(0.1, 0.9), phiZeroRange(0.1, 0.9)
 {
     reset();
 }
@@ -34,6 +33,8 @@ void Deverb::deverberate ( const StereoFftArray& audio, StereoFftArray& direct, 
            && audio[0].size() == fftSize
            && direct[0].size() == fftSize
            && ambience[0].size() == fftSize);
+    forgetFactor = forgetFactorRange.mapFrom0to1(forgetFactor);
+    phiZero = phiZeroRange.mapFrom0to1(phiZero);
     for (unsigned i = 0; i < fftSize; ++i)
     {
         float corr = getCorrelation(audio[LEFT][i], audio[RIGHT][i]);

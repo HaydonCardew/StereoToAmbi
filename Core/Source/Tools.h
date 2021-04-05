@@ -13,6 +13,7 @@
 
 #include <vector>
 #include <cassert>
+#include <string>
 
 namespace Tools
 {
@@ -53,6 +54,21 @@ float toRadians(T degs)
 {
     return (degs*3.14159265) / 180.f;
 }
+
+struct MinMaxRange
+{
+public:
+    MinMaxRange(float min, float max) : min(min), max(max) {};
+    void setMin(float min) { this->min = min; };
+    void setMax(float max) { this->max = max; };
+    float getMin() { return min; };
+    float getMax() { return max; };
+    float mapFrom0to1(float value) { return (value * (max-min) ) + min; };
+private:
+    float min, max;
+};
+
+string floatToString(float number, unsigned decimalPlaces);
 
 uint64_t factorial(int x);
 

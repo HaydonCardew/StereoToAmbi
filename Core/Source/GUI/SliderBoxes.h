@@ -26,6 +26,9 @@ public:
     void constructSliders();
     void resized();
     
+    void setSuffix(string suffix);
+    void setDecimalPlaces(int numberOfPlaces);
+    
     shared_ptr<Slider> getSlider(string name);
     vector<shared_ptr<Slider>> sliders;
     vector<shared_ptr<Label>> labels;

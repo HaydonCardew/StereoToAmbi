@@ -71,10 +71,16 @@ Slider::SliderLayout StoALookAndFeel::getSliderLayout( Slider & slider)
     Rectangle<int> bounds = slider.getBounds();
     const int width = bounds.getWidth();
     const int height = bounds.getHeight();
+    const int dialHeight = dial.getHeight();
     juce::Slider::SliderLayout layout;
-    int textHeight = dial.getHeight() / 2.0;
-    int textWidth = width * 0.6;
-    layout.sliderBounds = { 0, dial.getHeight()/2, width, height - dial.getHeight() - textHeight };
-    layout.textBoxBounds = { (width-textWidth)/2, height-textHeight, textWidth, textHeight };
+    //<> slider size rect/ slider size pos
+    Rectangle<float> sliderPos(0.0, 0.0);
+    Rectangle<float> sliderSize(1.0, 0.95);
+    Rectangle<float> textPos(0.0, 0.9);
+    Rectangle<float> textSize(1.0, 0.1);
+    layout.sliderBounds = { int(sliderPos.getWidth() * width), int(sliderPos.getHeight() * height) + dialHeight/2,
+                            int(sliderSize.getWidth() * width), int(sliderSize.getHeight() * height) - dialHeight};
+    layout.textBoxBounds = { int(textPos.getWidth() * width), int(textPos.getHeight() * height),
+                             int(textSize.getWidth() * width), int(textSize.getHeight() * height) };
     return layout;
 }
