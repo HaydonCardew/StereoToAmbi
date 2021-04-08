@@ -115,7 +115,7 @@ RowOfSlidersWithDial::RowOfSlidersWithDial() : RowOfSliders({"First", "Second"},
 void RowOfSlidersWithDial::resized()
 {
     RowOfSliders::resized();
-    dial->setBoundsRelative(0.1, 0.05, 0.8, 0.3);
+    dial->setBounds(10, 10, getLocalBounds().getWidth(), int(getLocalBounds().getHeight()*0.3));
 }
 shared_ptr<Slider> RowOfSlidersWithDial::getDial()
 {
@@ -158,9 +158,8 @@ void RowOfSlidersWithButton::resized()
 {
     RowOfSliders::resized();
     float buttonWidth = 0.7;
-    float buttonHeight = 0.6;
+    float buttonHeight = 0.4;
     const float heightForButton = 1.0 - sliderHeight;
-    // (heightForButton - (heightForButton*buttonHeight))/2.0
     const float buttonHeightPos = 0.05;
     button->setBoundsRelative( (1.0 - buttonWidth)/2.0, buttonHeightPos, buttonWidth, heightForButton * buttonHeight );
 }

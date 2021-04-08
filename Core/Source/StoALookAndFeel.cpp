@@ -71,16 +71,29 @@ Slider::SliderLayout StoALookAndFeel::getSliderLayout( Slider & slider)
     Rectangle<int> bounds = slider.getBounds();
     const int width = bounds.getWidth();
     const int height = bounds.getHeight();
-    const int dialHeight = dial.getHeight();
     juce::Slider::SliderLayout layout;
-    //<> slider size rect/ slider size pos
-    Rectangle<float> sliderPos(0.0, 0.0);
-    Rectangle<float> sliderSize(1.0, 0.95);
-    Rectangle<float> textPos(0.0, 0.9);
-    Rectangle<float> textSize(1.0, 0.1);
-    layout.sliderBounds = { int(sliderPos.getWidth() * width), int(sliderPos.getHeight() * height) + dialHeight/2,
-                            int(sliderSize.getWidth() * width), int(sliderSize.getHeight() * height) - dialHeight};
-    layout.textBoxBounds = { int(textPos.getWidth() * width), int(textPos.getHeight() * height),
-                             int(textSize.getWidth() * width), int(textSize.getHeight() * height) };
+    if (slider.isVertical())
+    {
+        int sliderHeight = dial.getHeight();
+        Rectangle<float> sliderPos(0.0, 0.0);
+        Rectangle<float> sliderSize(1.0, 0.95);
+        Rectangle<float> textPos(0.0, 0.9);
+        Rectangle<float> textSize(1.0, 0.1);
+        layout.sliderBounds = { int(sliderPos.getWidth() * width), int(sliderPos.getHeight() * height) + sliderHeight/2,
+                                int(sliderSize.getWidth() * width), int(sliderSize.getHeight() * height) - sliderHeight};
+        layout.textBoxBounds = { int(textPos.getWidth() * width), int(textPos.getHeight() * height),
+                                 int(textSize.getWidth() * width), int(textSize.getHeight() * height) };
+    }
+    else {
+        assert(slider.isRotary());
+        int knobHeight = rotaryKnob.getHeight();
+        int knobWidth = rotaryKnob.getWidth();
+        if (knobWidth > width)
+        {
+            knobWidth = width;
+        }
+        layout.sliderBounds = { width/2, 0, knobWidth, knobHeight};
+        layout.textBoxBounds = { 0, int(knobHeight*1.1), knobWidth, int(knobHeight*0.2)};
+    }
     return layout;
 }

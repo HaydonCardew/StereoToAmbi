@@ -69,6 +69,7 @@ MainContentComponent::MainContentComponent()
     };
     azimuthControls.getDial()->setRotaryParameters(0.f, 6.282f, false);
     azimuthControls.setSuffix("°");
+    azimuthControls.getDial()->setTextValueSuffix(string("°"));
     azimuthControls.setDecimalPlaces(0);
     //direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
 
@@ -94,15 +95,11 @@ void MainContentComponent::resized()
     
     angleShown.setBoundsRelative(0.379, 0.11, angleShownSize, angleShownSize);
     
-    //direction.setBoundsRelative(0.22519f, 0.19f, 0.366223f, 0.241731f);
+    float controlLength = 0.8;
+    float controlHeight = 0.08;
+    azimuthControls.setBoundsRelative(0.217187, controlHeight, 0.136062, controlLength);
     
-    //spread.setBoundsRelative(0.25064f, 0.353489f, 0.0866108f, 0.467847f);
-    
-    //directionBorder.setBoundsRelative(0.233809f, 0.135913, 0.12f, 0.693495f);
-    
-    azimuthControls.setBoundsRelative(0.217187, 0.132231, 0.136062, 0.703208);
-    
-    deverbControls.setBoundsRelative(0.0135638, 0.132647, 0.187299, 0.703208);
+    deverbControls.setBoundsRelative(0.0135638, controlHeight, 0.187299, controlLength);
 }
 
 void MainContentComponent::paint(Graphics& g)
