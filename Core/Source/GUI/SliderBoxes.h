@@ -28,6 +28,7 @@ public:
     
     void setSuffix(string suffix);
     void setDecimalPlaces(int numberOfPlaces);
+    void setEnabled(bool state);
     
     shared_ptr<Slider> getSlider(string name);
     vector<shared_ptr<Slider>> sliders;

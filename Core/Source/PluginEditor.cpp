@@ -18,7 +18,7 @@
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p)
 {
-    setSize(600, 432);
+    setSize(772, 469);
     addAndMakeVisible(mainContentComponent);
     widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, *mainContentComponent.azimuthControls.getSlider("Width")); // this and the addAndMakeVisible() is fucking the gui. remove link to angle shown and it helps...
     offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, *mainContentComponent.azimuthControls.getDial());
@@ -29,7 +29,7 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
 
 void StereoToAmbiAudioProcessorEditor::resized()
 {
-    mainContentComponent.setBounds(0, 0, 600, 432);
+    mainContentComponent.setBounds(0, 0, 772, 469);
 }
 
 StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()
@@ -46,7 +46,7 @@ MainContentComponent::MainContentComponent()
 {
     setLookAndFeel(&laf);
     
-    background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);
+    background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);//.rescaled(600, 432, Graphics::ResamplingQuality::highResamplingQuality);
     
     setSize(background.getWidth(), background.getHeight());
     

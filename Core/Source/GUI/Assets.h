@@ -4,34 +4,31 @@
 
 namespace Assets
 {
-    extern const char*  Slider_png;
-    const int           Slider_pngSize = 4418;
+    extern const char*  OffSlider_png;
+    const int           OffSlider_pngSize = 1889;
 
-  #ifdef OLD
-    extern const char*  Knob_png;
-    const int           Knob_pngSize = 4785;
+    extern const char*  OffDial_png;
+    const int           OffDial_pngSize = 4782;
 
-  #endif
-  #ifdef OLD
+    extern const char*  PurpleSlider_png;
+    const int           PurpleSlider_pngSize = 3762;
+
+    extern const char*  BlueDial_png;
+    const int           BlueDial_pngSize = 6199;
+
     extern const char*  Background_png;
-    const int           Background_pngSize = 75598;
+    const int           Background_pngSize = 89959;
 
-  #endif
-  #ifdef OLD
-    extern const char*  Dial_png;
-    const int           Dial_pngSize = 2201;
+    extern const char*  PurpleDial_png;
+    const int           PurpleDial_pngSize = 6332;
 
-  #endif
-    extern const char*  Background_png;
-    const int           Background_pngSize = 153954;
+    extern const char*  Head_png;
+    const int           Head_pngSize = 964;
 
-    extern const char*  Dial_png;
-    const int           Dial_pngSize = 7386;
+    extern const char*  BlueSlider_png;
+    const int           BlueSlider_pngSize = 3779;
 
     extern const char*  Shadow_png;
-    const int           Shadow_pngSize = 3722;
-
-    extern const char*  Dial_copy_png;
-    const int           Dial_copy_pngSize = 7745;
+    const int           Shadow_pngSize = 6072;
 
 }

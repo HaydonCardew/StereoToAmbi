@@ -16,6 +16,8 @@ class Head : public Component
     public:
     Head ();
 
+    Image image;
+    
     Path head;
     Path rightEar;
     Path leftEar;

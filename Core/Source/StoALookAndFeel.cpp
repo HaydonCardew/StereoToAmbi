@@ -13,39 +13,25 @@
 
 StoALookAndFeel::StoALookAndFeel()
 {
-    dial = ImageCache::getFromMemory (Assets::Slider_png, Assets::Slider_pngSize);
-    rotaryKnob = ImageCache::getFromMemory (Assets::Dial_png, Assets::Dial_pngSize);
+    onDial = ImageCache::getFromMemory (Assets::BlueSlider_png, Assets::BlueSlider_pngSize);
+    offDial = ImageCache::getFromMemory (Assets::OffSlider_png, Assets::OffSlider_pngSize);
+    //assert(onDial.getWidth() == offDial.getWidth());
+    //assert(onDial.getHeight() == offDial.getHeight());
+    rotaryKnob = ImageCache::getFromMemory (Assets::BlueDial_png, Assets::BlueDial_pngSize);
     shadow = ImageCache::getFromMemory (Assets::Shadow_png, Assets::Shadow_pngSize);
-    float scaling = 0.75;
+    float scaling = 1.0;// 0.75;
     rotaryKnob = rotaryKnob.rescaled(rotaryKnob.getWidth() * scaling, rotaryKnob.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
     shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
 }
 
 void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider & slider)
 {
-    //g.drawRect(0, 0, width, height);
-    //g.drawRect(0, 0, x, y);
     const int lineThickness = 2;
-    int dialWidth = dial.getWidth();
-    /*if ( dialWidth > width )
-    {
-        dialWidth = width;
-    }*/
-    const int dialHeight = dial.getHeight();
+    const int dialWidth = onDial.getWidth();
+    const int dialHeight = onDial.getHeight();
     const int maxDialHeight = height - dialHeight;
     g.fillRect((width-lineThickness)/2, dialHeight/2, lineThickness, height);
-    g.drawImageAt(dial, (width-dialWidth)/2.f, sliderPos-(dialHeight/2));
-    //g.drawImageAt(dial, 0, 0);
-    //float scale = maxDialHeight * (sliderPos / maxSliderPos);
-    //g.drawImageAt(dial, 0, minSliderPos);
-    //g.drawImageAt(dial, 0, maxSliderPos);
-    
-    //g.drawImageAt(dial, 0, maxDialHeight);
-    // max - min
-    //int scale = ;
-    //g.fillRect((dialWidth/2)-(lineThickness/2), dialHeight/2, lineThickness, maxDialHeight);
-    //g.fillRect((dialWidth/2)-(lineThickness/2), (int)minSliderPos, lineThickness, int(maxSliderPos - minSliderPos));
-    //float newMaxSliderPos = maxSliderPos;// - dialHeight;
+    g.drawImageAt(slider.isEnabled() ? onDial : offDial, (width-dialWidth)/2.f, sliderPos-(dialHeight/2));
 }
 
 void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
@@ -74,7 +60,7 @@ Slider::SliderLayout StoALookAndFeel::getSliderLayout( Slider & slider)
     juce::Slider::SliderLayout layout;
     if (slider.isVertical())
     {
-        int sliderHeight = dial.getHeight();
+        const int sliderHeight = onDial.getHeight();
         Rectangle<float> sliderPos(0.0, 0.0);
         Rectangle<float> sliderSize(1.0, 0.95);
         Rectangle<float> textPos(0.0, 0.9);

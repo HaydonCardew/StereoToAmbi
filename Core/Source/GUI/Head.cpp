@@ -9,6 +9,7 @@
 */
 
 #include "Head.h"
+#include "Assets.h"
 
 Head::Head()
 {
@@ -19,6 +20,8 @@ Head::Head()
     angle = 0;
     size = 100;
     resized();
+    
+    image = ImageCache::getFromMemory(Assets::Head_png, Assets::Head_pngSize);
 }
 
 void Head::draw()
@@ -59,7 +62,7 @@ void Head::clearAllPaths()
 void Head::rotateBy (float inputAngle)
 {
     angle = inputAngle;
-    draw();
+    //draw();
 }
 
 void Head::rotate()
@@ -84,9 +87,11 @@ void Head::translateToOrigin(Path &object)
 
 void Head::paint(Graphics& g)
 {
-    g.setColour (Colours::white);
+    //g.drawImageAt(image, 0, 0);
+    g.drawImageTransformed(image, AffineTransform::rotation(angle, image.getWidth()/ 2.0f, image.getHeight()/ 2.0f));
+    /*g.setColour (Colours::white);
     for (int i = 0; i < classPaths.size(); i++)
     {
         g.fillPath(*classPaths[i]);
-    }
+    }*/
 }

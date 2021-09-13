@@ -99,6 +99,14 @@ void RowOfSliders::setDecimalPlaces(int numberOfPlaces)
     }
 }
 
+void RowOfSliders::setEnabled(bool state)
+{
+    for ( auto & slider : sliders)
+    {
+        slider->setEnabled(state);
+    }
+}
+
 RowOfSlidersWithDial::RowOfSlidersWithDial(vector<string> labelNames) : RowOfSliders(labelNames, 0.7), dial(make_shared<Slider>())
 {
     dial->setSliderStyle(Slider::Rotary);
@@ -143,10 +151,12 @@ void RowOfSlidersWithButton::constructButton()
         if (button->getToggleState())
         {
             border.setOn();
+            setEnabled(true);
         }
         else
         {
             border.setOff();
+            setEnabled(false);
         }
     };
     button->setState(juce::Button::buttonDown);
