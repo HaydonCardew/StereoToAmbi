@@ -14,7 +14,7 @@ namespace Assets
     const int           PurpleSlider_pngSize = 3762;
 
     extern const char*  BlueDial_png;
-    const int           BlueDial_pngSize = 6199;
+    const int           BlueDial_pngSize = 19946;
 
     extern const char*  Background_png;
     const int           Background_pngSize = 89959;
