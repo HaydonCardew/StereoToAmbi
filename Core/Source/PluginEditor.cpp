@@ -42,7 +42,7 @@ void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 }
 
 MainContentComponent::MainContentComponent()
-    : deverbControls({ "Threshold", "Sustain" }, "Reverb Extraction"), azimuthControls({"Width"})
+    : deverbControls({ "Threshold", "Sustain" }, "Reverb\n Extraction"), azimuthControls({"Width"})
 {
     setLookAndFeel(&laf);
     
@@ -89,11 +89,11 @@ void MainContentComponent::resized()
 {
     float listenerSize = 0.14764f;
     
-    listener.setBoundsRelative(0.60, 0.413713, listenerSize, listenerSize);
+    listener.setBoundsRelative(0.675, 0.445, listenerSize, listenerSize);
     
-    float angleShownSize = 0.762392f;
+    float angleShownSize = 0.733;
     
-    angleShown.setBoundsRelative(0.379, 0.11, angleShownSize, angleShownSize);
+    angleShown.setBoundsRelative(0.497, 0.145, angleShownSize, angleShownSize);
     
     float controlLength = 0.8;
     float controlHeight = 0.08;
