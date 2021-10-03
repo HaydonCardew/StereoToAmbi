@@ -20,11 +20,10 @@ class RowOfSliders : public Component
 {
 public:
     RowOfSliders(vector<string> labelNames, float relativeSliderHeight = 1.0);
-    RowOfSliders();
     ~RowOfSliders();
     
     void constructSliders();
-    void resized();
+    void resized() override;
     
     void setSuffix(string suffix);
     void setDecimalPlaces(int numberOfPlaces);
@@ -45,7 +44,7 @@ class RowOfSlidersWithDial : public RowOfSliders
 public:
     RowOfSlidersWithDial(vector<string> labelNames);
     RowOfSlidersWithDial();
-    void resized();
+    void resized() override;
     shared_ptr<Slider> getDial();
     shared_ptr<Slider> dial;
 };
@@ -56,7 +55,7 @@ class RowOfSlidersWithButton : public RowOfSliders
     RowOfSlidersWithButton(vector<string> labelNames, string buttonText);
     RowOfSlidersWithButton();
     void constructButton();
-    void resized();
+    void resized() override;
     shared_ptr<TextButton> getButton();
     shared_ptr<TextButton> button;
 };

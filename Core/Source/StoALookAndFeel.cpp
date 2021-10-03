@@ -19,9 +19,9 @@ StoALookAndFeel::StoALookAndFeel()
     //assert(onDial.getHeight() == offDial.getHeight());
     rotaryKnob = ImageCache::getFromMemory (Assets::BlueDial_png, Assets::BlueDial_pngSize);
     shadow = ImageCache::getFromMemory (Assets::Shadow_png, Assets::Shadow_pngSize);
-    float scaling = 1.0;// 0.75;
-    rotaryKnob = rotaryKnob.rescaled(rotaryKnob.getWidth() * scaling, rotaryKnob.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
-    shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
+    //float scaling = 0.8;// 0.75;
+    //rotaryKnob = rotaryKnob.rescaled(rotaryKnob.getWidth() * scaling, rotaryKnob.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
+    //shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
 }
 
 void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider & slider)
@@ -35,20 +35,39 @@ void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, in
 }
 
 void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
-{   
+{
+    //float shadowOffset = 0.1; // % of the dial size
+    //const int requiredWidth = float(width) * (1-2*shadowOffset);
+    if (rotaryKnob.getWidth() != width)
+    {
+        float scaling = float(width)/rotaryKnob.getWidth();// 0.75;
+        rotaryKnob = rotaryKnob.rescaled(rotaryKnob.getWidth() * scaling, rotaryKnob.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
+        //shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
+    }
+    // shadow size != dial size
+    
+    
+    // height = -16??
     const float knobWidth = rotaryKnob.getWidth();
     const float knobHeight = rotaryKnob.getHeight();
-    if (height < knobHeight)
-    {
-        height = knobHeight;
-    }
-    float shadowOffset = 5;
-    g.drawImageAt(shadow, ((width-shadow.getWidth())/2) + shadowOffset, ((height-shadow.getHeight())/2) + shadowOffset);
+    
+    /*const float shadowOffsetPixels = shadowOffset * width;
+    const float dialX = shadowOffsetPixels;
+    const float dialY = shadowOffsetPixels;
+    const float shadowX = shadowOffsetPixels*2;
+    const float shadowY = shadowOffsetPixels*2;*/
+    //g.drawImageAt(shadow, shadowX, shadowY);
+    float angle = sliderPosProportional * 2 * 3.141;
+    AffineTransform transform (AffineTransform::rotation (angle, knobWidth/2, knobHeight/2)
+                               .followedBy( AffineTransform::translation(x, y) ) );
+    /*g.drawImageAt(shadow, ((width-shadow.getWidth())/2) + shadowOffset, ((height-shadow.getHeight())/2) + shadowOffset);
+    
     float angle = sliderPosProportional * 2 * 3.141;
     AffineTransform transform (
                                AffineTransform::rotation ( angle, knobWidth/2, knobHeight/2 )
                                .followedBy( AffineTransform::translation((width-knobWidth)/2, (height-knobHeight)/2) )
                                );
+     */
     g.drawImageTransformed(rotaryKnob, transform);
 }
 
@@ -72,14 +91,10 @@ Slider::SliderLayout StoALookAndFeel::getSliderLayout( Slider & slider)
     }
     else {
         assert(slider.isRotary());
-        int knobHeight = rotaryKnob.getHeight();
-        int knobWidth = rotaryKnob.getWidth();
-        if (knobWidth > width)
-        {
-            knobWidth = width;
-        }
-        layout.sliderBounds = { width/2, 0, knobWidth, knobHeight};
-        layout.textBoxBounds = { 0, int(knobHeight*1.1), knobWidth, int(knobHeight*0.2)};
+        int textHeight = 20;
+        textHeight = textHeight > bounds.getHeight() ? bounds.getHeight() : textHeight;
+        layout.textBoxBounds = { 0, 0, bounds.getWidth(), textHeight };
+        layout.sliderBounds  = { 0, textHeight, bounds.getWidth(), bounds.getHeight() - textHeight };
     }
     return layout;
 }

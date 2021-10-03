@@ -14,14 +14,6 @@ RowOfSliders::RowOfSliders(vector<string> labelNames, float relativeSliderHeight
 {
     setLookAndFeel(&laf);
     constructSliders();
-    resized();
-}
-
-RowOfSliders::RowOfSliders() : labelNames({ "First", "Second", "Third" }), showBorder(true), sliderHeight(1.0)
-{
-    setLookAndFeel(&laf);
-    constructSliders();
-    resized();
 }
 
 RowOfSliders::~RowOfSliders()
@@ -45,7 +37,8 @@ void RowOfSliders::constructSliders()
         labels[i]->setText(labelNames[i], juce::dontSendNotification);
         labels[i]->setColour(juce::Label::textColourId, juce::Colours::grey);
         //labels[i]->attachToComponent(&(*sliders[i]), true);
-        labels[i]->setJustificationType(juce::Justification::centredBottom);
+        labels[i]->setJustificationType(juce::Justification::bottomLeft);
+        //labels[i]->setJustificationType(juce::Justification::bottomLeft);
         labels[i]->setMinimumHorizontalScale(1.0f);
         
         addAndMakeVisible(*sliders[i]);
@@ -59,17 +52,22 @@ void RowOfSliders::constructSliders()
 
 void RowOfSliders::resized()
 {
-    border.setBoundsRelative(0, 0, 1, 1);
-    const int nSliders = sliders.size();
+    const int nSliders = static_cast<int>(sliders.size());
     float increment = 1.f/nSliders;
-    float x = 0.f;
-    for (unsigned i = 0; i < sliders.size(); ++i)
+    float x = 0;
+    for (unsigned i = 0; i < nSliders; ++i)
     {
         sliders[i]->setBoundsRelative(x, 1.f-sliderHeight, increment, sliderHeight);
-        labels[i]->setBoundsRelative(x, 0, increment, 1.f-sliderHeight);
+        float width = labels[i]->getFont().getStringWidth(labels[i]->getText());
+        float widthRelative = width/getWidth();
+        //labels[i]->setBoundsRelative(x, 0, increment-(widthRelative/2), 1.f-sliderHeight);
+        labels[i]->setBoundsRelative(x+(increment/2)-(widthRelative/2), 0, widthRelative*2, 1.f-sliderHeight); //not loving the *2 but the actual size oesn't seem to quite work?
+        //labels[i]->setBoundsRelative(x, 0, increment, 1.f-sliderHeight);
         x += increment;
     }
+    border.setBounds(getLocalBounds());
 }
+
 shared_ptr<Slider> RowOfSliders::getSlider(string name)
 {
     assert(sliders.size() == labelNames.size()); // use map!
@@ -123,7 +121,10 @@ RowOfSlidersWithDial::RowOfSlidersWithDial() : RowOfSliders({"First", "Second"},
 void RowOfSlidersWithDial::resized()
 {
     RowOfSliders::resized();
-    dial->setBounds(10, 10, getLocalBounds().getWidth(), int(getLocalBounds().getHeight()*0.3));
+    const float scaling = 0.7;
+    const int start = getWidth() * (1-scaling)/2;
+    const int size = scaling * getWidth();
+    dial->setBounds (start, 5, size, getWidth());
 }
 shared_ptr<Slider> RowOfSlidersWithDial::getDial()
 {
@@ -171,6 +172,7 @@ void RowOfSlidersWithButton::resized()
     float buttonHeight = 0.4;
     const float heightForButton = 1.0 - sliderHeight;
     const float buttonHeightPos = 0.05;
+    Rectangle<int> b = getBounds();
     button->setBoundsRelative( (1.0 - buttonWidth)/2.0, buttonHeightPos, buttonWidth, heightForButton * buttonHeight );
 }
 
