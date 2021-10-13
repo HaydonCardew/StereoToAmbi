@@ -72,7 +72,7 @@ string floatToString(float number, unsigned decimalPlaces);
 
 uint64_t factorial(int x);
 
-int nCombinations(int n, int k);
+uint64_t nCombinations(int n, int k);
 
 }
 // debug assert

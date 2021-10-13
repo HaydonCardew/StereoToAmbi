@@ -87,7 +87,6 @@ MainContentComponent::MainContentComponent()
 
 void MainContentComponent::resized()
 {
-    Rectangle<int> b = getLocalBounds();
     float listenerSize = 0.14764f;
     
     listener.setBoundsRelative(0.675, 0.445, listenerSize, listenerSize);

@@ -172,7 +172,6 @@ void RowOfSlidersWithButton::resized()
     float buttonHeight = 0.4;
     const float heightForButton = 1.0 - sliderHeight;
     const float buttonHeightPos = 0.05;
-    Rectangle<int> b = getBounds();
     button->setBoundsRelative( (1.0 - buttonWidth)/2.0, buttonHeightPos, buttonWidth, heightForButton * buttonHeight );
 }
 

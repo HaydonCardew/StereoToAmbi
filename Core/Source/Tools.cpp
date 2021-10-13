@@ -23,7 +23,7 @@ uint64_t Tools::factorial(int x)
     return val;
 }
 
-int Tools::nCombinations(int n, int k)
+uint64_t Tools::nCombinations(int n, int k)
 {
     return factorial(n) / (factorial(n - k) * factorial(k));
 }

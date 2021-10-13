@@ -36,7 +36,6 @@ void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, in
 void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
 {
     unsigned shift = shadow.getWidth()-rotaryKnob.getWidth();
-    //shift /= 2;?
     if (rotaryKnob.getWidth() != width)
     {
         float scaling = float(width)/(shadow.getWidth()+shift);

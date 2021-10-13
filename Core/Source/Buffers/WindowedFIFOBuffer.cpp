@@ -117,7 +117,7 @@ void WindowedFIFOBuffer::clear()
 float WindowedFIFOBuffer::getWindowGain(WindowType windowType, float overlap)
 {
     float gain = 1.f;
-    float hopSize = 1-overlap;
+    //float hopSize = 1-overlap;
     switch (windowType)
     {
         case WindowType::hann:
