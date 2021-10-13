@@ -29,6 +29,6 @@ namespace Assets
     const int           BlueSlider_pngSize = 3779;
 
     extern const char*  Shadow_png;
-    const int           Shadow_pngSize = 6072;
+    const int           Shadow_pngSize = 5877;
 
 }

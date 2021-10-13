@@ -29,45 +29,26 @@ void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, in
     const int lineThickness = 2;
     const int dialWidth = onDial.getWidth();
     const int dialHeight = onDial.getHeight();
-    const int maxDialHeight = height - dialHeight;
     g.fillRect((width-lineThickness)/2, dialHeight/2, lineThickness, height);
     g.drawImageAt(slider.isEnabled() ? onDial : offDial, (width-dialWidth)/2.f, sliderPos-(dialHeight/2));
 }
 
 void StoALookAndFeel::drawRotarySlider(Graphics & g, int x, int y, int width, int height, float sliderPosProportional, float rotaryStartAngle, float rotaryEndAngle, Slider & slider)
 {
-    //float shadowOffset = 0.1; // % of the dial size
-    //const int requiredWidth = float(width) * (1-2*shadowOffset);
+    unsigned shift = shadow.getWidth()-rotaryKnob.getWidth();
+    //shift /= 2;?
     if (rotaryKnob.getWidth() != width)
     {
-        float scaling = float(width)/rotaryKnob.getWidth();// 0.75;
+        float scaling = float(width)/(shadow.getWidth()+shift);
         rotaryKnob = rotaryKnob.rescaled(rotaryKnob.getWidth() * scaling, rotaryKnob.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
-        //shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
+        shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
     }
-    // shadow size != dial size
-    
-    
-    // height = -16??
     const float knobWidth = rotaryKnob.getWidth();
     const float knobHeight = rotaryKnob.getHeight();
-    
-    /*const float shadowOffsetPixels = shadowOffset * width;
-    const float dialX = shadowOffsetPixels;
-    const float dialY = shadowOffsetPixels;
-    const float shadowX = shadowOffsetPixels*2;
-    const float shadowY = shadowOffsetPixels*2;*/
-    //g.drawImageAt(shadow, shadowX, shadowY);
     float angle = sliderPosProportional * 2 * 3.141;
     AffineTransform transform (AffineTransform::rotation (angle, knobWidth/2, knobHeight/2)
-                               .followedBy( AffineTransform::translation(x, y) ) );
-    /*g.drawImageAt(shadow, ((width-shadow.getWidth())/2) + shadowOffset, ((height-shadow.getHeight())/2) + shadowOffset);
-    
-    float angle = sliderPosProportional * 2 * 3.141;
-    AffineTransform transform (
-                               AffineTransform::rotation ( angle, knobWidth/2, knobHeight/2 )
-                               .followedBy( AffineTransform::translation((width-knobWidth)/2, (height-knobHeight)/2) )
-                               );
-     */
+                               .followedBy( AffineTransform::translation(x + shift, y) ) );
+    g.drawImage(shadow, Rectangle<float>(x + shift, y, shadow.getWidth(), shadow.getHeight()));
     g.drawImageTransformed(rotaryKnob, transform);
 }
 
