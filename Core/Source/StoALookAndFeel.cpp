@@ -15,13 +15,8 @@ StoALookAndFeel::StoALookAndFeel()
 {
     onDial = ImageCache::getFromMemory (Assets::BlueSlider_png, Assets::BlueSlider_pngSize);
     offDial = ImageCache::getFromMemory (Assets::OffSlider_png, Assets::OffSlider_pngSize);
-    //assert(onDial.getWidth() == offDial.getWidth());
-    //assert(onDial.getHeight() == offDial.getHeight());
     rotaryKnob = ImageCache::getFromMemory (Assets::BlueDial_png, Assets::BlueDial_pngSize);
     shadow = ImageCache::getFromMemory (Assets::Shadow_png, Assets::Shadow_pngSize);
-    //float scaling = 0.8;// 0.75;
-    //rotaryKnob = rotaryKnob.rescaled(rotaryKnob.getWidth() * scaling, rotaryKnob.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
-    //shadow = shadow.rescaled(shadow.getWidth() * scaling, shadow.getHeight() * scaling, Graphics::ResamplingQuality::highResamplingQuality);
 }
 
 void StoALookAndFeel::drawLinearSlider(Graphics & g, int x, int y, int width, int height, float sliderPos, float minSliderPos, float maxSliderPos, const Slider::SliderStyle style, Slider & slider)

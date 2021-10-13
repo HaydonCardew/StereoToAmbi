@@ -13,7 +13,7 @@
 using namespace std;
 
 MultiLevelThreshold::MultiLevelThreshold(int noOfThresholds, int fftSize, int histogramSize)
-	: leftHistogram(nHistogramBins), rightHistogram(nHistogramBins), noOfThresholds(noOfThresholds), fftSize(fftSize), sourcesPerChannel(noOfThresholds+1), totalNumberOfSources(sourcesPerChannel*STEREO), nHistogramBins(histogramSize)
+	: fftSize(fftSize), nHistogramBins(histogramSize), leftHistogram(nHistogramBins), rightHistogram(nHistogramBins), noOfThresholds(noOfThresholds), sourcesPerChannel(noOfThresholds+1), totalNumberOfSources(sourcesPerChannel*STEREO)
 {
 	panMap.resize(STEREO, vector<float>(fftSize,0));
 	magnitude.resize(STEREO, vector<float>(fftSize, 0));

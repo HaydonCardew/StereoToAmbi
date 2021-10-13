@@ -3,9 +3,8 @@
 #define PI 3.14159265359
 
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)
-: overlap(overlap), windowSize(windowSize),
-window(windowSize, WindowType::hann), windowType(WindowType::hann),
-inputBuffer(10000), outputBuffer(10000)
+: inputBuffer(10000), outputBuffer(10000), overlap(overlap), windowSize(windowSize),
+window(windowSize, WindowType::hann), windowType(WindowType::hann)
 {
     assert(windowSize > 0);
     inverseWindowGainFactor = 1/getWindowGain(windowType, overlap);

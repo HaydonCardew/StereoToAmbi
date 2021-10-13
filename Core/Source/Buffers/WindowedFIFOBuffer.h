@@ -32,16 +32,13 @@ public:
     void sendProcessedWindow(float *data);
     
 private:
-    const float overlap;
     FastAudioBuffer inputBuffer;
     FastAudioBuffer outputBuffer;
-    
-    const unsigned windowSize;
+    const float overlap;
     float inverseWindowGainFactor;
-    
-    float getWindowGain(WindowType windowType, float overlap);
-    
+    const unsigned windowSize;
     WindowFunction window;
     WindowType windowType;
     
+    float getWindowGain(WindowType windowType, float overlap);
 };

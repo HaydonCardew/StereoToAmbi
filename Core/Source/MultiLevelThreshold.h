@@ -17,16 +17,15 @@ private:
     
     vector<Histogram> histogram;
     
+    int fftSize;
 	int nHistogramBins;
+    Histogram leftHistogram;
+    Histogram rightHistogram;
 	int noOfThresholds;
-	int fftSize;
-
 	int width;
 	const int sourcesPerChannel;
 	const int totalNumberOfSources;
     
-    Histogram leftHistogram;
-    Histogram rightHistogram;
 
 public:
 

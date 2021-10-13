@@ -10,7 +10,7 @@
 
 #include "SliderBoxes.h"
 
-RowOfSliders::RowOfSliders(vector<string> labelNames, float relativeSliderHeight) : labelNames(labelNames), showBorder(true), sliderHeight(relativeSliderHeight)
+RowOfSliders::RowOfSliders(vector<string> labelNames, float relativeSliderHeight) : labelNames(labelNames), sliderHeight(relativeSliderHeight), showBorder(true)
 {
     setLookAndFeel(&laf);
     constructSliders();

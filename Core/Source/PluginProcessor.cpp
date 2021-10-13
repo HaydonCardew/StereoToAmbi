@@ -14,8 +14,8 @@
 #include <algorithm>
 
 //==============================================================================
-StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
-: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), extractedAudio((nThresholds+1)*STEREO, windowLength), deverb(fftSize), deverbAudio(STEREO*2, windowLength)
+StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor (int nThresholds)
+: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), deverb(fftSize), extractedAudio((nThresholds+1)*STEREO, windowLength), deverbAudio(STEREO*2, windowLength)
 #ifndef JucePlugin_PreferredChannelConfigurations
      , AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect

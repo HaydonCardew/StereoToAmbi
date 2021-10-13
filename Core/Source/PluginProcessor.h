@@ -86,9 +86,17 @@ private:
     
     enum { LEFT = 0, RIGHT = 1, STEREO = 2 };
     
-    unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
+    static const unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
     unsigned fftSize;
 	unsigned windowLength;
+    
+    dsp::FFT fft;
+    
+    MultiChannelWindowedFIFOBuffer stereoAudio;
+    
+    BFormatBuffer ambiAudio;
+    
+    MultiLevelThreshold multiLevelThreshold;
     
 	atomic<float>* width;
     atomic<float>* offset;
@@ -98,22 +106,18 @@ private:
     atomic<float>* deverbSustain;
     NormalisableRange<float> deverbSustainRange;
     
-	dsp::FFT fft;
-    MultiChannelWindowedFIFOBuffer stereoAudio;
-    BFormatBuffer ambiAudio;
 
-	MultiLevelThreshold multiLevelThreshold;
     Deverb deverb;
     vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer, ambientTimeBuffer;
     vector<MultiLevelThreshold::ComplexFft> extractedFfts, extractedSources, stereoTimeBuffer, stereoFreqBuffer;
 	vector<float> sourceAzimuths;
-    //vector<vector<float>> transferBuffer, ambienceTransferBuffer;
     
     bool convertParamToBool(float param) { return param > 0.5f ? true : false; };
     
     // test and should be private - initialise after window length though
     MultiChannelWindowedFIFOBuffer extractedAudio;
     MultiChannelWindowedFIFOBuffer deverbAudio;
+    
     //==============================================================================
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (StereoToAmbiAudioProcessor)
 };

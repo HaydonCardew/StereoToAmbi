@@ -42,7 +42,7 @@ void StereoToAmbiAudioProcessorEditor::paint (Graphics& g)
 }
 
 MainContentComponent::MainContentComponent()
-    : deverbControls({ "Threshold", "Sustain" }, "Reverb\n Extraction"), azimuthControls({"Width"})
+    : azimuthControls({"Width"}), deverbControls({ "Threshold", "Sustain" }, "Reverb\n Extraction")
 {
     setLookAndFeel(&laf);
     
@@ -59,8 +59,6 @@ MainContentComponent::MainContentComponent()
     
     azimuthControls.getDial()->setRange(0.0, 359.0, 1.0);
     azimuthControls.getDial()->onValueChange = [this] {
-        float val = azimuthControls.getDial()->getValue();
-        cout << "Value: " << azimuthControls.getDial()->getValue() << endl;
         listener.rotateBy(Tools::toRadians(azimuthControls.getDial()->getValue()));
         angleShown.changeOffset(Tools::toRadians(azimuthControls.getDial()->getValue()));
     };
