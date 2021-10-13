@@ -27,11 +27,10 @@ void AzimuthView::changeAzimuth(float azi)
 
 void AzimuthView::changeOffset(float azi)
 {
-    if (offset != azi && 6.282 >= azi && azi >= 0.f)
-    {
-        offset = azi;
-        drawPie();
-    }
+    offset = azi;
+    offset = offset >= (2 * 3.14) ? 0 : offset;
+    offset = offset < 0 ? 0 : offset;
+    drawPie();
 }
 
 void AzimuthView::paint(Graphics& g)

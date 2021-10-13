@@ -31,26 +31,22 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor(int nThresholds)
                        ),
 valueTree(*this, nullptr, "ValueTree",
 {
-    //std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME, 0.0f, 360.f, 90.0f),
     std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME,
                                           NormalisableRange<float>(0, 360, 1, 1), 90, "label?",
                                           AudioProcessorParameter::genericParameter,
                                           [](float value, int maximumStringLength){
                                              return Tools::floatToString(value, 0); }),
-    //std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME, 0.0f, 360.f, 0.0f),
     std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME,
                                           NormalisableRange<float>(0, 360, 1, 1), 0, "label?",
                                           AudioProcessorParameter::genericParameter,
                                           [](float value, int maximumStringLength){
                                              return Tools::floatToString(value, 0); }),
     std::make_unique<AudioParameterBool>(DEVERB_ID, DEVERB_NAME, true),
-    //std::make_unique<AudioParameterFloat>(DEVERB_THRESHOLD_ID, DEVERB_THRESHOLD_NAME, 0.1f, 0.9f, 0.1f),
     std::make_unique<AudioParameterFloat>(DEVERB_THRESHOLD_ID, DEVERB_THRESHOLD_NAME,
                                           NormalisableRange<float>(0.0, 100.0, 1, 1), 0, "label?",
                                           AudioProcessorParameter::genericParameter,
                                           [](float value, int maximumStringLength){
                                              return Tools::floatToString(value, 0); }),
-    //std::make_unique<AudioParameterFloat>(DEVERB_SUSTAIN_ID, DEVERB_SUSTAIN_NAME, 0.1f, 0.9f, 0.1f)
     std::make_unique<AudioParameterFloat>(DEVERB_SUSTAIN_ID, DEVERB_SUSTAIN_NAME,
                                           NormalisableRange<float>(0.0, 100.0, 1, 1), 0, "label?",
                                           AudioProcessorParameter::genericParameter,

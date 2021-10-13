@@ -10,6 +10,8 @@ Head::Head()
 void Head::rotateBy (float inputAngle)
 {
     angle = inputAngle;
+    angle = angle >= (2 * 3.14) ? 0 : angle;
+    angle = angle < 0 ? 0 : angle;
 }
 
 void Head::paint(Graphics& g)

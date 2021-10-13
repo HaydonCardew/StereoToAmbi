@@ -46,24 +46,21 @@ MainContentComponent::MainContentComponent()
 {
     setLookAndFeel(&laf);
     
-    background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);//.rescaled(600, 432, Graphics::ResamplingQuality::highResamplingQuality);
+    background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);
     
     setSize(background.getWidth(), background.getHeight());
     
     addAndMakeVisible(angleShown);
-    
-    //addAndMakeVisible(directionBorder);
-    
-    //addAndMakeVisible(spread);
-    //spread.setRange(0.0f, 3.1416f);
+
     azimuthControls.getSlider("Width")->onValueChange = [this] {
         angleShown.changeAzimuth(Tools::toRadians(azimuthControls.getSlider("Width")->getValue()));
     };
     azimuthControls.getSlider("Width")->setRange(0.0, 360.0, 1.0);
-    //azimuthControls.getSlider("Spread")->setPopupDisplayEnabled(true, true, nullptr);
     
-    azimuthControls.getDial()->setRange(0.0, 360.0, 1.0);
+    azimuthControls.getDial()->setRange(0.0, 359.0, 1.0);
     azimuthControls.getDial()->onValueChange = [this] {
+        float val = azimuthControls.getDial()->getValue();
+        cout << "Value: " << azimuthControls.getDial()->getValue() << endl;
         listener.rotateBy(Tools::toRadians(azimuthControls.getDial()->getValue()));
         angleShown.changeOffset(Tools::toRadians(azimuthControls.getDial()->getValue()));
     };
@@ -71,15 +68,11 @@ MainContentComponent::MainContentComponent()
     azimuthControls.setSuffix("°");
     azimuthControls.getDial()->setTextValueSuffix(string("°"));
     azimuthControls.setDecimalPlaces(0);
-    //direction.setTextBoxStyle(Slider::TextEntryBoxPosition::NoTextBox, true, 0.0f, 0.0f);
 
     addAndMakeVisible(listener);
     addAndMakeVisible(azimuthControls);
     
     deverbControls.setSuffix("%");
-    //deverbControls.setDecimalPlaces(0); // use when I've moved it to display correct values
-    //deverbControls.getSlider("Threshold")->setRange(0.0, 100.0, 1.0);
-    //deverbControls.getSlider("Cutoff")->setRange(0.0, 100.0, 1.0);
     
     addAndMakeVisible(deverbControls);
     resized();
