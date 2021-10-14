@@ -15,7 +15,7 @@
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor (int nThresholds)
-: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(MAX_AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), deverb(fftSize), extractedAudio((nThresholds+1)*STEREO, windowLength), deverbAudio(STEREO*2, windowLength)
+: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), deverb(fftSize), extractedAudio((nThresholds+1)*STEREO, windowLength), deverbAudio(STEREO*2, windowLength)
 #ifndef JucePlugin_PreferredChannelConfigurations
      , AudioProcessor (BusesProperties()
                      #if ! JucePlugin_IsMidiEffect
@@ -25,7 +25,7 @@ StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor (int nThresholds)
                         #ifdef STEREO_DECODER
                        .withOutput ("Output", AudioChannelSet::stereo())
                         #else
-                       .withOutput ("Output", AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
+                       .withOutput ("Output", AudioChannelSet::ambisonic (AMBI_ORDER))
                         #endif
                      #endif
                        ),
@@ -163,16 +163,16 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
     // This is the place where you check if the layout is supported.
     // https://forum.juce.com/t/vst-does-not-receive-update-in-channel-count-with-reaper/27932
     // https://forum.juce.com/t/channel-configurations-for-vst3/23956/6
-    if ( (layouts.getMainInputChannelSet() != AudioChannelSet::stereo()
-         || layouts.getMainInputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
+    /*if ( (layouts.getMainInputChannelSet() != AudioChannelSet::stereo()
+         || layouts.getMainInputChannelSet() != AudioChannelSet::ambisonic (AMBI_ORDER))
         #ifdef STEREO_DECODER
     && layouts.getMainOutputChannelSet() != AudioChannelSet::stereo())
         #else
-    && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (MAX_AMBI_ORDER))
+    && layouts.getMainOutputChannelSet() != AudioChannelSet::ambisonic (AMBI_ORDER))
         #endif
     {
         return false;
-    }
+    */
     return true;
   #endif
 }
@@ -181,27 +181,19 @@ bool StereoToAmbiAudioProcessor::isBusesLayoutSupported (const BusesLayout& layo
 void StereoToAmbiAudioProcessor::processBlock (AudioBuffer<float>& buffer, MidiBuffer& midiMessages)
 {
     ScopedNoDenormals noDenormals;
-    unsigned totalNumInputChannels  = getTotalNumInputChannels();
-    unsigned totalNumOutputChannels = getTotalNumOutputChannels();
-	auto nSamples = buffer.getNumSamples();
+    
+    const unsigned totalNumOutputChannels = getTotalNumOutputChannels();
+    
+    if ( getTotalNumInputChannels() < 2
+        || totalNumOutputChannels < numberOfBFormatChannels())
+    {
+        return;
+    }
 
-    // In case we have more outputs than inputs, this code clears any output
-    // channels that didn't contain input data, (because these aren't
-    // guaranteed to be empty - they may contain garbage).
-    // This is here to avoid people getting screaming feedback
-    // when they first compile a plugin, but obviously you don't need to keep
-    // this code if your algorithm always overwrites all the output channels.
-    for (auto i = totalNumInputChannels; i < totalNumOutputChannels; ++i)
+    for (auto i = numberOfBFormatChannels(); i < totalNumOutputChannels; ++i)
         buffer.clear (i, 0, buffer.getNumSamples());
-    // This is the place where you'd normally do the guts of your plugin's
-    // audio processing...
-    // Make sure to reset the state if your inner loop is processing
-    // the samples and the outer loop is handling the channels.
-    // Alternatively, you can process the samples with the channels
-    // interleaved by keeping the same state.
 
-	//buffer.clear(1, 0, nSamples);
-
+    auto nSamples = buffer.getNumSamples();
     stereoAudio.write({buffer.getReadPointer(LEFT), buffer.getReadPointer(RIGHT)}, nSamples, 0.25);
     
     while (stereoAudio.windowedAudioAvailable())

@@ -25,11 +25,43 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     deverbButton = make_unique<AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTree, DEVERB_ID, *mainContentComponent.deverbControls.getButton());
     deverbThresholdValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_THRESHOLD_ID, *mainContentComponent.deverbControls.getSlider("Threshold"));
     deverbSustainValue = make_unique<AudioProcessorValueTreeState::SliderAttachment>(processor.valueTree, DEVERB_SUSTAIN_ID, *mainContentComponent.deverbControls.getSlider("Sustain"));
+    
+    updateChannelCountInformation();
+    orderLabel.setText("Output order: " + to_string(processor.getOutputOrder()), dontSendNotification);
+    orderLabel.setColour(Label::textColourId, Colours::white);
+    startTimer(100);
+    addAndMakeVisible(inputChannelCount);
+    addAndMakeVisible(outputChannelCount);
+    addAndMakeVisible(orderLabel);
 }
 
 void StereoToAmbiAudioProcessorEditor::resized()
 {
     mainContentComponent.setBounds(0, 0, 772, 469);
+    orderLabel.setBoundsRelative         (0.36, 0.7 , 0.6, 0.1);
+    inputChannelCount.setBoundsRelative  (0.36, 0.75, 0.6, 0.1);
+    outputChannelCount.setBoundsRelative (0.36, 0.8 , 0.6, 0.1);
+}
+
+void StereoToAmbiAudioProcessorEditor::updateChannelCountInformation()
+{
+    int in = processor.getTotalNumInputChannels();
+    stringstream inputs;
+    inputs << "Input Channels: " << in << "/" << 2;
+    inputChannelCount.setText(inputs.str(), dontSendNotification);
+    inputChannelCount.setColour(Label::textColourId, in >= 2 ? Colours::white : Colours::red);
+    
+    int required = processor.numberOfBFormatChannels();
+    int out = processor.getTotalNumOutputChannels();
+    stringstream outputs;
+    outputs << "Output Channels: " << out << "/" << required;
+    outputChannelCount.setText(outputs.str(), dontSendNotification);
+    outputChannelCount.setColour(Label::textColourId, out >= required ? Colours::white : Colours::red);
+}
+
+void StereoToAmbiAudioProcessorEditor::timerCallback()
+{
+    updateChannelCountInformation();
 }
 
 StereoToAmbiAudioProcessorEditor::~StereoToAmbiAudioProcessorEditor()

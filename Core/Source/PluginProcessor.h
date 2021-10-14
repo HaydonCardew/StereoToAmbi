@@ -17,7 +17,7 @@
 #include "Deverb.h"
 
 //#define STEREO_DECODER
-#define MAX_AMBI_ORDER 3
+#define AMBI_ORDER 3
 
 #define WIDTH_NAME "Width"
 #define WIDTH_ID "width"
@@ -81,6 +81,8 @@ public:
     int deverbRead(float* buffer, int nSamples);
     
     AudioProcessorValueTreeState valueTree;
+    unsigned getOutputOrder () const { return AMBI_ORDER; }
+    unsigned numberOfBFormatChannels () const { return pow(AMBI_ORDER + 1, 2); };
     
 private:
     
