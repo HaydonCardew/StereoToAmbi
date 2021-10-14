@@ -18,21 +18,17 @@
 #include "GUI/Border.h"
 #include "GUI/SliderBoxes.h"
 
-class MainContentComponent : public Component
+class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor, juce::Timer
 {
 public:
-    MainContentComponent();
-    ~MainContentComponent();
+	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
+    ~StereoToAmbiAudioProcessorEditor();
 
-	StoALookAndFeel laf;
-
-    void paint (Graphics& g) override;
-
-	void resized() override;
-
-	//Slider direction;
-    //Slider spread;
-    //Border directionBorder;
+    
+    StoALookAndFeel laf;
+    //==============================================================================
+	void paint(Graphics& g) override;
+    void resized() override;
     
     RowOfSlidersWithDial azimuthControls;
     
@@ -41,24 +37,7 @@ public:
     Image background;
     
     RowOfSlidersWithButton deverbControls;
-	
-private:
     
-    //==============================================================================
-    JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (MainContentComponent)
-};
-
-class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor, juce::Timer
-{
-public:
-	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
-    ~StereoToAmbiAudioProcessorEditor();
-
-    //==============================================================================
-	void paint(Graphics& g) override;
-    void resized() override;
-    
-    MainContentComponent mainContentComponent;
 private:
     // This reference is provided as a quick way for your editor to
     // access the processor object that created it.
