@@ -1,7 +1,7 @@
-*.png
 *.wav
 *.dylib
 *.flac
 JuceLibraryCode/*
 Builds/*
 Assets/*
+Test/*
