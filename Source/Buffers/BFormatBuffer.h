@@ -16,17 +16,17 @@ class BFormatBuffer : public MultiChannelWindowedFIFOBuffer
 public:
     BFormatBuffer(unsigned maxOrder, unsigned windowSize);
     
-    enum ChannelOrder { SN3D, FuMa };
+    enum ChannelOrder { AmbiX, FuMa };
     enum { LEFT = 0, RIGHT = 1, STEREO = 2 };
     
-    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=SN3D);
-    void addAudioOjectsAsBFormat(const vector<vector<complex<float>>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=SN3D);
+    void addAudioOjectsAsBFormat(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=AmbiX);
+    void addAudioOjectsAsBFormat(const vector<vector<complex<float>>>& audioObjects, const vector<float>& azimuths, ChannelOrder channelOrder=AmbiX);
                                  
-    void addAudioOjectsAsBFormatWithAmbience(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, const vector<vector<float>>& ambience, const float centreAngle, ChannelOrder channelOrder=SN3D);
-    void addAudioOjectsAsBFormatWithAmbience(const vector<vector<complex<float>>>& audioObjects, const vector<float>& azimuths, const vector<vector<complex<float>>>& ambience, const float centreAngle, ChannelOrder channelOrder=SN3D);
+    void addAudioOjectsAsBFormatWithAmbience(const vector<vector<float>>& audioObjects, const vector<float>& azimuths, const vector<vector<float>>& ambience, const float centreAngle, ChannelOrder channelOrder=AmbiX);
+    void addAudioOjectsAsBFormatWithAmbience(const vector<vector<complex<float>>>& audioObjects, const vector<float>& azimuths, const vector<vector<complex<float>>>& ambience, const float centreAngle, ChannelOrder channelOrder=AmbiX);
     
     // simple stereo decoder for sanity checking
-    void readAsStereo(float* left, float* right, unsigned nSamples, ChannelOrder channelOrder=SN3D);
+    void readAsStereo(float* left, float* right, unsigned nSamples, ChannelOrder channelOrder=AmbiX);
     
 private:
     unsigned maxAmbiOrder;

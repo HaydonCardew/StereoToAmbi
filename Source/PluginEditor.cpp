@@ -18,7 +18,6 @@
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
     : AudioProcessorEditor (&p), processor (p), azimuthControls({"Width"}), deverbControls({ "Threshold", "Sustain" }, "Reverb\n Extraction")
 {
-    //setSize(772, 469);
     setLookAndFeel(&laf);
     
     background = ImageCache::getFromMemory(Assets::Background_png, Assets::Background_pngSize);
@@ -68,19 +67,16 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
 void StereoToAmbiAudioProcessorEditor::resized()
 {
     float listenerSize = 0.14764f;
-    
     listener.setBoundsRelative(0.675, 0.445, listenerSize, listenerSize);
     
     float angleShownSize = 0.733;
-    
     angleShown.setBoundsRelative(0.497, 0.145, angleShownSize, angleShownSize);
     
     float controlLength = 0.8;
     float controlHeight = 0.08;
     azimuthControls.setBoundsRelative(0.217187, controlHeight, 0.136062, controlLength);
-    
     deverbControls.setBoundsRelative(0.0135638, controlHeight, 0.187299, controlLength);
-    //mainContentComponent.setBounds(0, 0, 772, 469);
+    
     orderLabel.setBoundsRelative         (0.36, 0.7 , 0.6, 0.1);
     inputChannelCount.setBoundsRelative  (0.36, 0.75, 0.6, 0.1);
     outputChannelCount.setBoundsRelative (0.36, 0.8 , 0.6, 0.1);

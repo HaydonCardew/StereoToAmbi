@@ -118,7 +118,7 @@ void BFormatBuffer::addAmbienceToTransferBuffer ( const vector<vector<float>>& a
     assert(ambience.size() >= STEREO);
     assert(ambience[0].size() >= windowSize);
 
-    calculateAmbiCoefs(Tools::toRadians(centreAngle + 90), SN3D);
+    calculateAmbiCoefs(Tools::toRadians(centreAngle + 90), AmbiX);
     for ( unsigned j = 0; j < windowSize; ++j)
     {
         transferBuffer[0][j] += ambience[LEFT][j] * ambiCoefs[0];
@@ -127,7 +127,7 @@ void BFormatBuffer::addAmbienceToTransferBuffer ( const vector<vector<float>>& a
         transferBuffer[3][j] += ambience[LEFT][j] * ambiCoefs[3];
     }
     
-    calculateAmbiCoefs(Tools::toRadians(centreAngle - 90), SN3D);
+    calculateAmbiCoefs(Tools::toRadians(centreAngle - 90), AmbiX);
     for ( unsigned j = 0; j < windowSize; ++j)
     {
         transferBuffer[0][j] += ambience[RIGHT][j] * ambiCoefs[0];
@@ -166,7 +166,7 @@ void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
                 ambiCoefs[15] = sin(3 * azimuth);
             }
             break;
-        case SN3D: // https://www.blueripplesound.com/b-format - double check these
+        case AmbiX: // https://www.blueripplesound.com/b-format - double check these
             ambiCoefs[0] = 1;
             ambiCoefs[1] = sin(azimuth);
             ambiCoefs[2] = 0; // elev only
@@ -229,7 +229,7 @@ void BFormatBuffer::readAsStereo(float* left, float* right, unsigned nSamples, C
                 buffers[i]->read(&stereoTransferBuffer[0], nSamples);
             }
             break;
-        case SN3D:
+        case AmbiX:
             buffers[3]->read(&stereoTransferBuffer[0], nSamples); // X F<->B
             for(unsigned i = 0; i < nSamples; ++i)
             {

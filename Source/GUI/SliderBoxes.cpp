@@ -36,9 +36,7 @@ void RowOfSliders::constructSliders()
         labels.push_back(make_shared<Label>());
         labels[i]->setText(labelNames[i], juce::dontSendNotification);
         labels[i]->setColour(juce::Label::textColourId, juce::Colours::grey);
-        //labels[i]->attachToComponent(&(*sliders[i]), true);
         labels[i]->setJustificationType(juce::Justification::bottomLeft);
-        //labels[i]->setJustificationType(juce::Justification::bottomLeft);
         labels[i]->setMinimumHorizontalScale(1.0f);
         
         addAndMakeVisible(*sliders[i]);
@@ -60,9 +58,7 @@ void RowOfSliders::resized()
         sliders[i]->setBoundsRelative(x, 1.f-sliderHeight, increment, sliderHeight);
         float width = labels[i]->getFont().getStringWidth(labels[i]->getText());
         float widthRelative = width/getWidth();
-        //labels[i]->setBoundsRelative(x, 0, increment-(widthRelative/2), 1.f-sliderHeight);
-        labels[i]->setBoundsRelative(x+(increment/2)-(widthRelative/2), 0, widthRelative*2, 1.f-sliderHeight); //not loving the *2 but the actual size oesn't seem to quite work?
-        //labels[i]->setBoundsRelative(x, 0, increment, 1.f-sliderHeight);
+        labels[i]->setBoundsRelative(x+(increment/2)-(widthRelative/2), 0, widthRelative*2, 1.f-sliderHeight);
         x += increment;
     }
     border.setBounds(getLocalBounds());
@@ -70,7 +66,7 @@ void RowOfSliders::resized()
 
 shared_ptr<Slider> RowOfSliders::getSlider(string name)
 {
-    assert(sliders.size() == labelNames.size()); // use map!
+    assert(sliders.size() == labelNames.size()); // use map?
     for ( int i = 0; i < labels.size(); ++i )
     {
         if ( labelNames[i] == name )
@@ -121,7 +117,7 @@ RowOfSlidersWithDial::RowOfSlidersWithDial() : RowOfSliders({"First", "Second"},
 void RowOfSlidersWithDial::resized()
 {
     RowOfSliders::resized();
-    const float scaling = 0.7;
+    const float scaling = 0.8;
     const int start = getWidth() * (1-scaling)/2;
     const int size = scaling * getWidth();
     dial->setBounds (start, 5, size, getWidth());
