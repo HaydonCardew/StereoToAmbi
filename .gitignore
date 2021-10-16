@@ -1,4 +1,8 @@
 *.png
 *.wav
 *.dylib
-Core/Builds/*
+*.flac
+JuceLibraryCode/*
+Builds/*
+Assets/*
+Test/*
