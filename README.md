@@ -13,9 +13,9 @@ This plugin should be placed on a track with at least 16 channels. Input channel
 
 **Reverb Extraction**:
 
-**Threshold**:
+**Threshold**: The threshold for which correlation between left and right is deemed reverb instead of a direct signal.
 
-**Sustain**:
+**Sustain**: How suddenly a given signal will change between reverb and direct.
 
 **Direction**:
 
@@ -24,8 +24,11 @@ This plugin should be placed on a track with at least 16 channels. Input channel
 ## Contributing
 If you experience any problems please open an issue. Also, feel free to add any functionality an submit a pull request.
 
-### Building
+## Building
 This project is built with both JUCE. Please download the Projucer application and open StereoToAmbi.jucer.
+
+## Graphic Design
+A big thank you to my sister Hazel for providing GUI images. Check out her portfolio here: https://cardewdesign.wordpress.com
 
 ## License
 
