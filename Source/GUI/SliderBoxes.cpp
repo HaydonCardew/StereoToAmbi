@@ -108,20 +108,16 @@ RowOfSlidersWithDial::RowOfSlidersWithDial(vector<string> labelNames) : RowOfSli
     dial->setColour(Slider::textBoxOutlineColourId, Colours::transparentBlack);
     addAndMakeVisible(*dial);
 }
-RowOfSlidersWithDial::RowOfSlidersWithDial() : RowOfSliders({"First", "Second"}, 0.8), dial(make_shared<Slider>())
-{
-    dial->setSliderStyle(Slider::Rotary);
-    dial->setAlwaysOnTop(true);
-    addAndMakeVisible(*dial);
-}
+
 void RowOfSlidersWithDial::resized()
 {
     RowOfSliders::resized();
-    const float scaling = 0.8;
+    const float scaling = 0.75;
     const int start = getWidth() * (1-scaling)/2;
     const int size = scaling * getWidth();
     dial->setBounds (start, 5, size, getWidth());
 }
+
 shared_ptr<Slider> RowOfSlidersWithDial::getDial()
 {
     return dial;

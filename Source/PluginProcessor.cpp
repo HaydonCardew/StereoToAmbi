@@ -14,7 +14,7 @@
 #include <algorithm>
 
 //==============================================================================
-StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor (int nThresholds)
+StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor ()
 : AudioProcessor (BusesProperties().withInput  ("Input",  AudioChannelSet::stereo())
                         #ifdef STEREO_DECODER
                        .withOutput ("Output", AudioChannelSet::stereo())
@@ -260,5 +260,5 @@ void StereoToAmbiAudioProcessor::setStateInformation (const void* data, int size
 // This creates new instances of the plugin..
 AudioProcessor* JUCE_CALLTYPE createPluginFilter()
 {
-    return new StereoToAmbiAudioProcessor(2);
+    return new StereoToAmbiAudioProcessor();
 }

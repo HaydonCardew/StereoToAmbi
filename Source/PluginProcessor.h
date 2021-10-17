@@ -37,7 +37,7 @@ class StereoToAmbiAudioProcessor  : public AudioProcessor
 {
 public:
     //==============================================================================
-    StereoToAmbiAudioProcessor(int nThresholds);
+    StereoToAmbiAudioProcessor();
     ~StereoToAmbiAudioProcessor();
 
     //==============================================================================
@@ -89,6 +89,7 @@ private:
     enum { LEFT = 0, RIGHT = 1, STEREO = 2 };
     
     static const unsigned fftOrder = 13; // this controls fftSize and windowLength ~13 for MSc setting
+    static const unsigned nThresholds = 2;
     unsigned fftSize;
 	unsigned windowLength;
     
