@@ -11,7 +11,7 @@
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
 #include "GUI/Assets.h"
-#include "Tools.h"
+#include "Processing/Tools.h"
 
 //==============================================================================
 

@@ -1,5 +1,5 @@
 #include "WindowedFIFOBuffer.h"
-#include "../Tools.h"
+#include "../Processing/Tools.h"
 #define PI 3.14159265359
 
 WindowedFIFOBuffer::WindowedFIFOBuffer(const unsigned windowSize, const float overlap)

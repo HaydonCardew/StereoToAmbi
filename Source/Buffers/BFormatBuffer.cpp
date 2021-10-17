@@ -9,7 +9,7 @@
 */
 
 #include "BFormatBuffer.h"
-#include "../Tools.h"
+#include "../Processing/Tools.h"
 
 BFormatBuffer::BFormatBuffer(unsigned order, unsigned windowSize)
     : MultiChannelWindowedFIFOBuffer(pow((order+1), 2), windowSize), maxAmbiOrder(order), nAmbiChannels(pow((order+1), 2)), windowSize(windowSize)

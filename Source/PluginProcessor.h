@@ -11,10 +11,10 @@
 #pragma once
 
 #include "../JuceLibraryCode/JuceHeader.h"
-#include "MultiLevelThreshold.h"
+#include "Processing/MultiLevelThreshold.h"
 #include "Buffers/MultiChannelWindowedFIFOBuffer.h"
 #include "Buffers/BFormatBuffer.h"
-#include "Deverb.h"
+#include "Processing/Deverb.h"
 
 //#define STEREO_DECODER
 #define AMBI_ORDER 3

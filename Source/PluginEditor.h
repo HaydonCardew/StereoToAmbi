@@ -12,7 +12,7 @@
 
 #include "../JuceLibraryCode/JuceHeader.h"
 #include "PluginProcessor.h"
-#include "StoALookAndFeel.h"
+#include "GUI/StoALookAndFeel.h"
 #include "GUI/Head.h"
 #include "GUI/AzimuthView.h"
 #include "GUI/Border.h"

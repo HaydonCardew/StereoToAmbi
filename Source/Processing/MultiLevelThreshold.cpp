@@ -1,5 +1,4 @@
 #include "MultiLevelThreshold.h"
-
 #include <numeric>
 #include <algorithm>
 #include <iostream>

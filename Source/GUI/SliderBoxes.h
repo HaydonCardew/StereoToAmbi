@@ -11,7 +11,7 @@
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>
-#include "../StoALookAndFeel.h"
+#include "StoALookAndFeel.h"
 #include "Border.h"
 
 using namespace std;

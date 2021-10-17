@@ -10,50 +10,38 @@
 
 #include "PluginProcessor.h"
 #include "PluginEditor.h"
-#include "Tools.h"
+#include "Processing/Tools.h"
 #include <algorithm>
 
 //==============================================================================
 StereoToAmbiAudioProcessor::StereoToAmbiAudioProcessor (int nThresholds)
-: fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), deverb(fftSize), extractedAudio((nThresholds+1)*STEREO, windowLength), deverbAudio(STEREO*2, windowLength)
-#ifndef JucePlugin_PreferredChannelConfigurations
-     , AudioProcessor (BusesProperties()
-                     #if ! JucePlugin_IsMidiEffect
-                      #if ! JucePlugin_IsSynth
-                       .withInput  ("Input",  AudioChannelSet::stereo())
-                      #endif
+: AudioProcessor (BusesProperties().withInput  ("Input",  AudioChannelSet::stereo())
                         #ifdef STEREO_DECODER
                        .withOutput ("Output", AudioChannelSet::stereo())
                         #else
                        .withOutput ("Output", AudioChannelSet::ambisonic (AMBI_ORDER))
                         #endif
-                     #endif
                        ),
 valueTree(*this, nullptr, "ValueTree",
 {
     std::make_unique<AudioParameterFloat>(WIDTH_ID, WIDTH_NAME,
                                           NormalisableRange<float>(0, 360, 1, 1), 90, "label?",
                                           AudioProcessorParameter::genericParameter,
-                                          [](float value, int maximumStringLength){
-                                             return Tools::floatToString(value, 0); }),
+                                          [](float value, int maximumStringLength){ return Tools::floatToString(value, 0); }),
     std::make_unique<AudioParameterFloat>(OFFSET_ID, OFFSET_NAME,
                                           NormalisableRange<float>(0, 360, 1, 1), 0, "label?",
                                           AudioProcessorParameter::genericParameter,
-                                          [](float value, int maximumStringLength){
-                                             return Tools::floatToString(value, 0); }),
+                                          [](float value, int maximumStringLength){ return Tools::floatToString(value, 0); }),
     std::make_unique<AudioParameterBool>(DEVERB_ID, DEVERB_NAME, true),
     std::make_unique<AudioParameterFloat>(DEVERB_THRESHOLD_ID, DEVERB_THRESHOLD_NAME,
                                           NormalisableRange<float>(0.0, 100.0, 1, 1), 0, "label?",
                                           AudioProcessorParameter::genericParameter,
-                                          [](float value, int maximumStringLength){
-                                             return Tools::floatToString(value, 0); }),
+                                          [](float value, int maximumStringLength) { return Tools::floatToString(value, 0); }),
     std::make_unique<AudioParameterFloat>(DEVERB_SUSTAIN_ID, DEVERB_SUSTAIN_NAME,
                                           NormalisableRange<float>(0.0, 100.0, 1, 1), 0, "label?",
                                           AudioProcessorParameter::genericParameter,
-                                          [](float value, int maximumStringLength){
-                                             return Tools::floatToString(value, 0); })
-})
-#endif
+                                          [](float value, int maximumStringLength) { return Tools::floatToString(value, 0); })
+}), fftSize(pow(2,fftOrder)), windowLength(fftSize), fft(fftOrder), stereoAudio(STEREO, windowLength), ambiAudio(AMBI_ORDER, windowLength), multiLevelThreshold(nThresholds, fftSize, 100), deverb(fftSize), extractedAudio((nThresholds+1)*STEREO, windowLength), deverbAudio(STEREO*2, windowLength)
 {
 	extractedFfts.resize(multiLevelThreshold.getNumberOfExtractedSources(), MultiLevelThreshold::ComplexFft(fftSize, 0));
 	sourceAzimuths.resize(multiLevelThreshold.getNumberOfExtractedSources());

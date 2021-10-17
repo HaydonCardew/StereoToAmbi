@@ -15,6 +15,10 @@
         <FILE id="mFFdLD" name="Head.h" compile="0" resource="0" file="Source/GUI/Head.h"/>
         <FILE id="IuTkWa" name="SliderBoxes.cpp" compile="1" resource="0" file="Source/GUI/SliderBoxes.cpp"/>
         <FILE id="ajEbuZ" name="SliderBoxes.h" compile="0" resource="0" file="Source/GUI/SliderBoxes.h"/>
+        <FILE id="VWYaIm" name="StoALookAndFeel.cpp" compile="1" resource="0"
+              file="Source/GUI/StoALookAndFeel.cpp"/>
+        <FILE id="gdrn7s" name="StoALookAndFeel.h" compile="0" resource="0"
+              file="Source/GUI/StoALookAndFeel.h"/>
       </GROUP>
       <GROUP id="{AD98B56E-7E29-993E-2ED2-DAD26E7805EC}" name="Buffers">
         <FILE id="rbVWli" name="BFormatBuffer.cpp" compile="1" resource="0"
@@ -33,16 +37,18 @@
         <FILE id="G5bIgA" name="WindowedFIFOBuffer.h" compile="0" resource="0"
               file="Source/Buffers/WindowedFIFOBuffer.h"/>
       </GROUP>
-      <FILE id="sedT0P" name="Deverb.cpp" compile="1" resource="0" file="Source/Deverb.cpp"/>
-      <FILE id="fi8VfW" name="Deverb.h" compile="0" resource="0" file="Source/Deverb.h"/>
-      <FILE id="sKY93G" name="Tools.cpp" compile="1" resource="0" file="Source/Tools.cpp"/>
-      <FILE id="pOh1Pv" name="Tools.h" compile="0" resource="0" file="Source/Tools.h"/>
-      <FILE id="CxRkO6" name="StoALookAndFeel.cpp" compile="1" resource="0"
-            file="Source/StoALookAndFeel.cpp"/>
-      <FILE id="M1QcYU" name="StoALookAndFeel.h" compile="0" resource="0"
-            file="Source/StoALookAndFeel.h"/>
-      <FILE id="oRzJEB" name="Histogram.h" compile="0" resource="0" file="Source/Histogram.h"/>
-      <FILE id="Q7hs8l" name="Histogram.cpp" compile="1" resource="0" file="Source/Histogram.cpp"/>
+      <GROUP id="{7FB10CED-6B29-1226-B327-4C5FA871EF18}" name="Processing">
+        <FILE id="DC0yna" name="Deverb.cpp" compile="1" resource="0" file="Source/Processing/Deverb.cpp"/>
+        <FILE id="BGhhtI" name="Deverb.h" compile="0" resource="0" file="Source/Processing/Deverb.h"/>
+        <FILE id="ueOOPH" name="Histogram.cpp" compile="1" resource="0" file="Source/Processing/Histogram.cpp"/>
+        <FILE id="DVYYo1" name="Histogram.h" compile="0" resource="0" file="Source/Processing/Histogram.h"/>
+        <FILE id="AVGSwc" name="MultiLevelThreshold.cpp" compile="1" resource="0"
+              file="Source/Processing/MultiLevelThreshold.cpp"/>
+        <FILE id="ytwa60" name="MultiLevelThreshold.h" compile="0" resource="0"
+              file="Source/Processing/MultiLevelThreshold.h"/>
+        <FILE id="IVPzxJ" name="Tools.cpp" compile="1" resource="0" file="Source/Processing/Tools.cpp"/>
+        <FILE id="aP4rhN" name="Tools.h" compile="0" resource="0" file="Source/Processing/Tools.h"/>
+      </GROUP>
       <FILE id="y1B4HR" name="PluginProcessor.cpp" compile="1" resource="0"
             file="Source/PluginProcessor.cpp"/>
       <FILE id="WOzrTp" name="PluginProcessor.h" compile="0" resource="0"
@@ -50,10 +56,6 @@
       <FILE id="jOiO0p" name="PluginEditor.cpp" compile="1" resource="0"
             file="Source/PluginEditor.cpp"/>
       <FILE id="Q8Rb7A" name="PluginEditor.h" compile="0" resource="0" file="Source/PluginEditor.h"/>
-      <FILE id="O2eR1R" name="MultiLevelThreshold.cpp" compile="1" resource="0"
-            file="Source/MultiLevelThreshold.cpp"/>
-      <FILE id="WN70uN" name="MultiLevelThreshold.h" compile="0" resource="0"
-            file="Source/MultiLevelThreshold.h"/>
     </GROUP>
   </MAINGROUP>
   <EXPORTFORMATS>

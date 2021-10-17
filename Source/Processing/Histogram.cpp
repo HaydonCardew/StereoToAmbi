@@ -1,7 +1,7 @@
 #include "Histogram.h"
+#include "Tools.h"
 #include <numeric>
 #include <math.h>
-#include "Tools.h"
 #include <iostream>
 #include <algorithm>
 
