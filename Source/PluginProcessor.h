@@ -107,7 +107,6 @@ private:
     NormalisableRange<float> deverbThresholdRange;
     atomic<float>* deverbSustain;
     NormalisableRange<float> deverbSustainRange;
-    
 
     Deverb deverb;
     vector<MultiLevelThreshold::ComplexFft> directFreqBuffer, ambientFreqBuffer, ambientTimeBuffer;

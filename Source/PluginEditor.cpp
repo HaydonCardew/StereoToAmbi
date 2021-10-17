@@ -16,7 +16,7 @@
 //==============================================================================
 
 StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbiAudioProcessor& p)
-    : AudioProcessorEditor (&p), processor (p), azimuthControls({"Width"}), deverbControls({ "Threshold", "Sustain" }, "Reverb\n Extraction")
+    : AudioProcessorEditor (&p), azimuthControls({"Width"}), deverbControls({ "Threshold", "Sustain" }, "Reverb\n Extraction"), processor (p)
 {
     setLookAndFeel(&laf);
     
@@ -47,7 +47,6 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     deverbControls.setSuffix("%");
     
     addAndMakeVisible(deverbControls);
-    //addAndMakeVisible(mainContentComponent);
     widthValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, WIDTH_ID, *azimuthControls.getSlider("Width"));
     offsetValue = make_unique<AudioProcessorValueTreeState::SliderAttachment> (processor.valueTree, OFFSET_ID, *azimuthControls.getDial());
     deverbButton = make_unique<AudioProcessorValueTreeState::ButtonAttachment>(processor.valueTree, DEVERB_ID, *deverbControls.getButton());
@@ -60,6 +59,10 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     updateChannelCountInformation();
     orderLabel.setText("Output order: " + to_string(processor.getOutputOrder()), dontSendNotification);
     orderLabel.setColour(Label::textColourId, Colours::white);
+    
+    addAndMakeVisible(versionLabel);
+    versionLabel.setText("v" + string(VERSION), dontSendNotification);
+    versionLabel.setColour(Label::textColourId, Colours::white);
     startTimer(100);
     resized();
 }
@@ -67,19 +70,21 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
 void StereoToAmbiAudioProcessorEditor::resized()
 {
     float listenerSize = 0.14764f;
-    listener.setBoundsRelative(0.675, 0.445, listenerSize, listenerSize);
+    listener.setBoundsRelative (0.675, 0.445, listenerSize, listenerSize);
     
     float angleShownSize = 0.733;
-    angleShown.setBoundsRelative(0.497, 0.145, angleShownSize, angleShownSize);
+    angleShown.setBoundsRelative (0.497, 0.145, angleShownSize, angleShownSize);
     
     float controlLength = 0.8;
     float controlHeight = 0.08;
-    azimuthControls.setBoundsRelative(0.217187, controlHeight, 0.136062, controlLength);
-    deverbControls.setBoundsRelative(0.0135638, controlHeight, 0.187299, controlLength);
+    azimuthControls.setBoundsRelative (0.217187, controlHeight, 0.136062, controlLength);
+    deverbControls.setBoundsRelative (0.0135638, controlHeight, 0.187299, controlLength);
     
     orderLabel.setBoundsRelative         (0.36, 0.7 , 0.6, 0.1);
     inputChannelCount.setBoundsRelative  (0.36, 0.75, 0.6, 0.1);
     outputChannelCount.setBoundsRelative (0.36, 0.8 , 0.6, 0.1);
+    
+    versionLabel.setBoundsRelative (0.90, 0.95, 0.3, 0.05);
 }
 
 void StereoToAmbiAudioProcessorEditor::updateChannelCountInformation()

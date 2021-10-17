@@ -18,13 +18,14 @@
 #include "GUI/Border.h"
 #include "GUI/SliderBoxes.h"
 
+#define VERSION "0.1.0"
+
 class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor, juce::Timer
 {
 public:
 	StereoToAmbiAudioProcessorEditor(StereoToAmbiAudioProcessor&);
     ~StereoToAmbiAudioProcessorEditor();
 
-    
     StoALookAndFeel laf;
     //==============================================================================
 	void paint(Graphics& g) override;
@@ -46,6 +47,8 @@ private:
     juce::Label inputChannelCount;
     juce::Label outputChannelCount;
     juce::Label orderLabel;
+    juce::Label versionLabel;
+    
     void updateChannelCountInformation();
     void timerCallback() override;
     
