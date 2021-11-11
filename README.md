@@ -9,7 +9,7 @@ A plugin which performs blind source extraction on a left/right input, estimates
 
 
 ## Parameters
-**Reverb Extraction**:
+**Reverb Extraction**: Toggle the reverb extraction on/off.
 
 **Threshold**: The threshold for which correlation between left and right is deemed reverb instead of a direct signal.
 
@@ -20,7 +20,7 @@ A plugin which performs blind source extraction on a left/right input, estimates
 ## Usage
 This plugin should be placed on a track with at least 16 channels. Input channels 1 & 2 will be assumed to be stereo (left/right) and output channels 1-16 will be 3rd order ambisonic in AmbiX format.
 
-![Sound SOurce Distribution](https://github.com/HaydonCardew/StereoToAmbi/blob/master/Images/Width_Direction_Example.png?raw=true "How Sound Sources Are Distributed")
+![Sound Source Distribution](https://github.com/HaydonCardew/StereoToAmbi/blob/master/Images/Width_Direction_Example.png?raw=true "How Sound Sources Are Distributed")
 
 ## Contributing
 If you experience any problems please open an issue. Also, feel free to add any functionality and submit a pull request.
@@ -29,7 +29,7 @@ If you experience any problems please open an issue. Also, feel free to add any 
 This project is built via JUCE. Please download the Projucer application and open StereoToAmbi.jucer, then export to your chosen IDE.
 
 ## Pre-built Downloads
-Compiled versions of this plugin can be found here: ***
+Compiled versions of this plugin can be found here: ***  
 Versions available: ***
 
 ## Graphic Design
