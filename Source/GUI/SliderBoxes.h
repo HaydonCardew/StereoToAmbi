@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    SliderBoxes.h
-    Created: 16 Jan 2021 11:08:40pm
-    Author:  Haydon Cardew
-
-  ==============================================================================
-*/
-
 #pragma once
 #include "../JuceLibraryCode/JuceHeader.h"
 #include <vector>

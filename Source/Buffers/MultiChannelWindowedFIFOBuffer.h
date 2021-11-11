@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    MultiChannelWindowedFIFOBuffer.h
-    Created: 8 Nov 2020 4:51:51pm
-    Author:  Haydon Cardew
-
-  ==============================================================================
-*/
-
 #pragma once
 #include "WindowedFIFOBuffer.h"
 

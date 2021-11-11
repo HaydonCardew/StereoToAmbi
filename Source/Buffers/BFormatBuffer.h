@@ -1,13 +1,3 @@
-/*
-  ==============================================================================
-
-    BFormatBuffer.h
-    Created: 8 Nov 2020 4:53:39pm
-    Author:  Haydon Cardew
-
-  ==============================================================================
-*/
-
 #pragma once
 #include "MultiChannelWindowedFIFOBuffer.h"
 
