@@ -28,10 +28,6 @@ If you experience any problems please open an issue. Also, feel free to add any 
 ## Building
 This project is built via JUCE. Please download the Projucer application and open StereoToAmbi.jucer, then export to your chosen IDE.
 
-## Pre-built Downloads
-Compiled versions of this plugin can be found here: ***  
-Versions available: ***
-
 ## Graphic Design
 A big thank you to my sister Hazel for providing GUI images. Check out her portfolio here: https://cardewdesign.wordpress.com
 
