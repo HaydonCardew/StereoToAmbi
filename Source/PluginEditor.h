@@ -18,7 +18,7 @@
 #include "GUI/Border.h"
 #include "GUI/SliderBoxes.h"
 
-#define VERSION "v0.1-5b42"
+#define VERSION "v0.1-55ac"
 
 class StereoToAmbiAudioProcessorEditor : public AudioProcessorEditor, juce::Timer
 {

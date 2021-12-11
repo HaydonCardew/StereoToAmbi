@@ -61,7 +61,7 @@ StereoToAmbiAudioProcessorEditor::StereoToAmbiAudioProcessorEditor (StereoToAmbi
     orderLabel.setColour(Label::textColourId, Colours::white);
     
     addAndMakeVisible(versionLabel);
-    versionLabel.setText("v" + string(VERSION), dontSendNotification);
+    versionLabel.setText(string(VERSION), dontSendNotification);
     versionLabel.setColour(Label::textColourId, Colours::white);
     startTimer(100);
     resized();
@@ -84,7 +84,7 @@ void StereoToAmbiAudioProcessorEditor::resized()
     inputChannelCount.setBoundsRelative  (0.36, 0.75, 0.6, 0.1);
     outputChannelCount.setBoundsRelative (0.36, 0.8 , 0.6, 0.1);
     
-    versionLabel.setBoundsRelative (0.90, 0.95, 0.3, 0.05);
+    versionLabel.setBoundsRelative (0.85, 0.95, 0.3, 0.05);
 }
 
 void StereoToAmbiAudioProcessorEditor::updateChannelCountInformation()
