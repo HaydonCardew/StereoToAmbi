@@ -173,7 +173,7 @@ void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
                 ambiCoefs[15] = sin(3 * azimuth);
             }
             break;
-        case AmbiX: // https://www.blueripplesound.com/b-format - double check these
+        case AmbiX: // https://www.blueripplesound.com/b-format
             ambiCoefs[0] = 1;
             ambiCoefs[1] = sin(azimuth);
             ambiCoefs[2] = 0;

@@ -66,7 +66,7 @@ void RowOfSliders::resized()
 
 shared_ptr<Slider> RowOfSliders::getSlider(string name)
 {
-    assert(sliders.size() == labelNames.size()); // use map?
+    //assert(sliders.size() == labelNames.size()); // use map?
     for ( int i = 0; i < labels.size(); ++i )
     {
         if ( labelNames[i] == name )

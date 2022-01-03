@@ -65,7 +65,7 @@ Slider::SliderLayout StoALookAndFeel::getSliderLayout( Slider & slider)
                                  int(textSize.getWidth() * width), int(textSize.getHeight() * height) };
     }
     else {
-        assert(slider.isRotary());
+        //assert(slider.isRotary());
         int textHeight = 20;
         textHeight = textHeight > bounds.getHeight() ? bounds.getHeight() : textHeight;
         layout.textBoxBounds = { 0, 0, bounds.getWidth(), textHeight };
