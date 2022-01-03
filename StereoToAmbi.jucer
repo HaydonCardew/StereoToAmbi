@@ -61,8 +61,9 @@
   <EXPORTFORMATS>
     <XCODE_MAC targetFolder="Builds/MacOSX">
       <CONFIGURATIONS>
-        <CONFIGURATION isDebug="1" name="Debug" osxArchitecture="64BitIntel"/>
-        <CONFIGURATION isDebug="0" name="Release"/>
+        <CONFIGURATION isDebug="1" name="Debug" osxArchitecture="64BitIntel" macOSDeploymentTarget="10.9"
+                       osxCompatibility="10.9 SDK"/>
+        <CONFIGURATION isDebug="0" name="Release" macOSDeploymentTarget="10.9" osxCompatibility="10.9 SDK"/>
       </CONFIGURATIONS>
       <MODULEPATHS>
         <MODULEPATH id="juce_audio_basics" path="../../../Desktop/JUCE/modules"/>
