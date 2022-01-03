@@ -176,25 +176,25 @@ void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
         case AmbiX: // https://www.blueripplesound.com/b-format - double check these
             ambiCoefs[0] = 1;
             ambiCoefs[1] = sin(azimuth);
-            ambiCoefs[2] = 0; // elev only
+            ambiCoefs[2] = 0;
             ambiCoefs[3] = cos(azimuth);
             if(maxAmbiOrder > 1)
             {
-                ambiCoefs[8] = -0.5;
-                ambiCoefs[6] = 0;
-                ambiCoefs[4] = 0;
-                ambiCoefs[5] = cos(2*azimuth);
-                ambiCoefs[7] = sin(2*azimuth);
+                ambiCoefs[4] = sqrt(3/4) * sin(2 * azimuth);
+                ambiCoefs[5] = 0;
+                ambiCoefs[6] = -0.5;
+                ambiCoefs[7] = 0;
+                ambiCoefs[8] = sqrt(3/4) * cos(2 * azimuth);
             }
             if(maxAmbiOrder > 2)
             {
-                ambiCoefs[15] = 0;
-                ambiCoefs[13] = -0.7262 * cos(azimuth);
-                ambiCoefs[11] = -0.7262 * sin(azimuth);
-                ambiCoefs[9] = 0;
+                ambiCoefs[9] = sqrt(5/8) * sin(3 * azimuth);
                 ambiCoefs[10] = 0;
-                ambiCoefs[12] = cos(3 * azimuth);
-                ambiCoefs[14] = sin(3 * azimuth);
+                ambiCoefs[11] = -sqrt(3/8) * sin(azimuth);
+                ambiCoefs[12] = 0;
+                ambiCoefs[13] = -sqrt(3/8) * cos(azimuth);
+                ambiCoefs[14] = 0;
+                ambiCoefs[15] = sqrt(5/8) * cos(3 * azimuth);
             }
             break;
     }
