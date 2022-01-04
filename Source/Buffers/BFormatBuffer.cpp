@@ -180,21 +180,21 @@ void BFormatBuffer::calculateAmbiCoefs(float azimuth, ChannelOrder channelOrder)
             ambiCoefs[3] = cos(azimuth);
             if(maxAmbiOrder > 1)
             {
-                ambiCoefs[4] = sqrt(3/4) * sin(2 * azimuth);
+                ambiCoefs[4] = 0.866 * sin(2 * azimuth); //sqrt(3/4) = 0.866
                 ambiCoefs[5] = 0;
                 ambiCoefs[6] = -0.5;
                 ambiCoefs[7] = 0;
-                ambiCoefs[8] = sqrt(3/4) * cos(2 * azimuth);
+                ambiCoefs[8] = 0.866 * cos(2 * azimuth);
             }
             if(maxAmbiOrder > 2)
             {
-                ambiCoefs[9] = sqrt(5/8) * sin(3 * azimuth);
+                ambiCoefs[9] = 0.7905 * sin(3 * azimuth); // sqrt(5/8) = 0.7905
                 ambiCoefs[10] = 0;
-                ambiCoefs[11] = -sqrt(3/8) * sin(azimuth);
+                ambiCoefs[11] = -0.6124 * sin(azimuth); // sqrt(3/8) = 0.6124
                 ambiCoefs[12] = 0;
-                ambiCoefs[13] = -sqrt(3/8) * cos(azimuth);
+                ambiCoefs[13] = -0.6124 * cos(azimuth);
                 ambiCoefs[14] = 0;
-                ambiCoefs[15] = sqrt(5/8) * cos(3 * azimuth);
+                ambiCoefs[15] = 0.7905 * cos(3 * azimuth);
             }
             break;
     }
